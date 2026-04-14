@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학원 안내 | NeXT DOC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --navy: #00234B; --gold: #B89355; --bg-gray: #F8F9FA; }
+        body { font-family: 'Pretendard', sans-serif; color: #333; line-height: 1.8; background-color: #fff; }
+
+        /* 네비게이션 (모든 페이지 공통) */
+        .navbar { padding: 15px 0; background: #fff !important; border-bottom: 1px solid #eee; }
+        .nav-link { color: var(--navy) !important; font-weight: 700; margin: 0 10px; }
+        .nav-link.active { color: var(--gold) !important; border-bottom: 2px solid var(--gold); }
+
+        /* 페이지 헤더 */
+        .page-header { background: var(--navy); color: #fff; padding: 100px 0 60px; text-align: center; }
+        .page-header h1 { font-size: 2.5rem; font-weight: 800; }
+
+        /* 교육관 선택 탭 */
+        .location-tabs { margin-top: -30px; position: relative; z-index: 10; }
+        .location-tabs .nav-pills .nav-link {
+            background: #fff; color: var(--navy); border: 2px solid var(--navy);
+            border-radius: 50px; padding: 12px 40px; font-weight: 800; margin: 0 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .location-tabs .nav-pills .nav-link.active { background: var(--navy); color: #fff; }
+
+        /* 섹션 스타일 */
+        .section-padding { padding: 60px 0; }
+        .section-subtitle { 
+            font-size: 1.5rem; font-weight: 800; color: var(--navy); 
+            margin-bottom: 30px; border-left: 5px solid var(--gold); padding-left: 15px; 
+        }
+
+        /* 시간표 박스 */
+        .timetable-wrapper { 
+            background: var(--bg-gray); border-radius: 15px; padding: 40px; 
+            text-align: center; margin-bottom: 50px; border: 1px dashed #ccc;
+        }
+        .timetable-img { width: 100%; max-width: 900px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+        /* 게시판 스타일 */
+        .board-table { border-top: 2px solid var(--navy); }
+        .board-table thead th { background: #f1f3f5; padding: 15px; font-weight: 700; border-bottom: 1px solid #dee2e6; }
+        .board-table tbody td { padding: 15px; vertical-align: middle; }
+        .badge-notice { background: var(--gold); color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 3px; }
+
+        footer { background: #333; color: #fff; padding: 40px 0; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><img src="logo.jpg" height="50"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="about.html">학원 소개</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="guide.html">학원 안내</a></li>
+                    <li class="nav-item"><a class="nav-link" href="system.html">넥스트 닥 올케어 시스템</a></li>
+                    <li class="nav-item"><a class="nav-link" href="locations.html">교육관 안내</a></li>
+                    <li class="nav-item"><a class="nav-link" href="review.html">실적 & 후기</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>GUIDE</h1>
+            <p style="color:var(--gold)">각 교육관별 시간표 및 주요 공지사항을 확인하세요</p>
+        </div>
+    </header>
+
+    <div class="container location-tabs">
+        <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-daechi-tab" data-bs-toggle="pill" data-bs-target="#pills-daechi" type="button">1. 대치 교육관</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-gwangju-tab" data-bs-toggle="pill" data-bs-target="#pills-gwangju" type="button">2. 광주 교육관</button>
+            </li>
+        </ul>
+    </div>
+
+    <div class="container section-padding">
+        <div class="tab-content" id="pills-tabContent">
+            
+            <div class="tab-pane fade show active" id="pills-daechi" role="tabpanel">
+                <h3 class="section-subtitle">대치 교육관 시간표</h3>
+                <div class="timetable-wrapper">
+                    <img src="daechi_timetable.jpg" alt="대치 시간표" class="timetable-img" onerror="this.src='https://via.placeholder.com/900x500?text=Daechi+Timetable+Coming+Soon'">
+                </div>
+
+                <h3 class="section-subtitle">대치 공지사항</h3>
+                <div class="table-responsive">
+                    <table class="table board-table text-center">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">번호</th>
+                                <th style="width:65%">제목</th>
+                                <th style="width:15%">날짜</th>
+                                <th style="width:10%">조회</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2</td>
+                                <td class="text-start"><span class="badge-notice">공지</span> 2024 대치관 여름방학 의대 집중 커리큘럼 안내</td>
+                                <td>2024.05.10</td>
+                                <td>342</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td class="text-start">대치 교육관 주말 테스트 및 보강 스케줄 관련</td>
+                                <td>2024.05.01</td>
+                                <td>156</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-gwangju" role="tabpanel">
+                <h3 class="section-subtitle">광주 교육관 시간표</h3>
+                <div class="timetable-wrapper">
+                    <img src="gwangju_timetable.jpg" alt="광주 시간표" class="timetable-img" onerror="this.src='https://via.placeholder.com/900x500?text=Gwangju+Timetable+Coming+Soon'">
+                </div>
+
+                <h3 class="section-subtitle">광주 공지사항</h3>
+                <div class="table-responsive">
+                    <table class="table board-table text-center">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">번호</th>
+                                <th style="width:65%">제목</th>
+                                <th style="width:15%">날짜</th>
+                                <th style="width:10%">조회</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2</td>
+                                <td class="text-start"><span class="badge-notice">공지</span> [광주] 초등 사고력 수학 6월 신규 개강 안내</td>
+                                <td>2024.05.15</td>
+                                <td>289</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td class="text-start">광주 교육관 셔틀버스 노선 개편 안내 (수완/장덕)</td>
+                                <td>2024.04.25</td>
+                                <td>412</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p class="mb-0">© NeXT DOC. All Rights Reserved. | 상담문의: 062. 616. 2465</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
