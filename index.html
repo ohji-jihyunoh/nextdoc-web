@@ -3,32 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeXT DOC | 의대·이공계 준비 올케어 교육기관</title>
+    <title>넥스트 닥 | NeXT Doc</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
     <style>
-        :root { --navy: #00234B; --gold: #B89355; }
-        body { font-family: 'Pretendard', sans-serif; color: var(--navy); }
-        
-        /* 네비게이션 */
-        .navbar { padding: 15px 0; background: #fff !important; }
-        .nav-link { color: var(--navy) !important; font-weight: 700; margin: 0 10px; }
-        .nav-link:hover { color: var(--gold) !important; }
-
-        /* 메인 비주얼 */
-        .hero-section { 
-            height: 80vh; 
-            background: linear-gradient(rgba(0,35,75,0.8), rgba(0,35,75,0.8)), url('main_bg.jpg') center/cover;
-            display: flex; align-items: center; justify-content: center; color: #fff; text-align: center;
+        :root {
+            --next-navy: #00234B;
+            --next-gold: #B89355;
         }
-        .hero-title { font-size: 3.5rem; font-weight: 800; margin-bottom: 20px; }
-        .hero-title span { color: var(--gold); }
+
+        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; }
+
+        /* --- 1. 인트로 애니메이션 레이어 (복구) --- */
+        #intro-layer {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s;
+        }
+
+        #intro-logo {
+            width: 300px;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: logoAppear 2s forwards;
+        }
+
+        @keyframes logoAppear {
+            0% { opacity: 0; transform: scale(0.8); filter: blur(5px); }
+            50% { opacity: 1; transform: scale(1); filter: blur(0); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .hidden { opacity: 0; visibility: hidden; }
+
+        /* --- 2. 네비게이션 --- */
+        .navbar {
+            transition: all 0.4s ease;
+            padding: 20px 0;
+            background-color: white !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+        .navbar.scrolled { padding: 10px 0; }
+        .navbar-brand img { height: 50px; transition: 0.4s; }
+        .navbar.scrolled .navbar-brand img { height: 40px; }
+        
+        .nav-link { 
+            font-weight: 700; 
+            color: var(--next-navy) !important; 
+            margin: 0 12px; 
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .nav-link:hover { color: var(--next-gold) !important; }
+        .nav-link.active { color: var(--next-gold) !important; }
+
+        /* --- 3. 메인 히어로 --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, var(--next-navy) 0%, #00152e 100%);
+            display: flex; align-items: center; justify-content: center;
+            color: white; text-align: center;
+        }
+        .hero h1 span { color: var(--next-gold); }
+        .btn-gold { 
+            background-color: var(--next-gold); color: white; border: none; 
+            padding: 15px 40px; font-weight: bold; border-radius: 0; transition: 0.3s;
+            text-decoration: none; display: inline-block;
+        }
+        .btn-gold:hover { background-color: #a38249; color: white; transform: translateY(-3px); }
+
+        /* --- 4. 그리드 시스템 --- */
+        .section-title h2 { color: var(--next-navy); font-weight: 800; text-align: center; margin-bottom: 50px; }
+        .grid-item {
+            border: 1px solid #eee;
+            padding: 60px 30px;
+            transition: 0.4s;
+            background: white;
+            text-align: center;
+            cursor: pointer;
+        }
+        .grid-item:hover { background: var(--next-navy); color: white; transform: translateY(-5px); }
+        .grid-item .number { color: var(--next-gold); font-weight: bold; font-size: 1.2rem; display: block; margin-bottom: 15px; }
+
+        footer { background: #1a1a1a; color: white; padding: 60px 0; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg fixed-top border-bottom shadow-sm">
+    <div id="intro-layer">
+        <img src="logo.jpg" id="intro-logo" alt="NeXT Doc 로고">
+    </div>
+
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="index.html"><img src="logo.jpg" height="50"></a>
+            <a class="navbar-brand" href="index.html"><img src="logo.jpg" alt="NeXT Doc"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -44,16 +120,75 @@
         </div>
     </nav>
 
-    <section class="hero-section">
-        <div class="container">
-            <h1 class="hero-title">NeXT <span>DOC</span></h1>
-            <p class="fs-4">의대·최상위 이공계 진학을 위한<br>상위 1% 명품 올케어 교육 시스템</p>
-            <div class="mt-5">
-                <a href="about.html" class="btn btn-outline-light btn-lg px-5 border-2">자세히 보기</a>
+    <section class="hero">
+        <div data-aos="fade-up" data-aos-delay="2500"> 
+            <h1 class="display-3 fw-bold">미래의 선택지를 넓히는<br><span>의대 & 이공계</span> 입시 설계</h1>
+            <p class="lead mt-4 mb-5">초·중 시기, 우리 아이의 골든타임을 잡으세요.</p>
+            <a href="about.html" class="btn btn-gold btn-lg">NeXT DOC 시작하기 ></a>
+        </div>
+    </section>
+
+    <section id="program" class="py-5 bg-white">
+        <div class="container py-5">
+            <div class="section-title" data-aos="fade-up">
+                <h2>NeXT Doc Core Program</h2>
+            </div>
+            <div class="row g-0">
+                <div class="col-md-4 grid-item" data-aos="fade-up" data-aos-delay="100">
+                    <span class="number">01</span>
+                    <h4>사고력 수학</h4>
+                    <p>단순 암기가 아닌 원리를 관통하는 사고력 확장</p>
+                </div>
+                <div class="col-md-4 grid-item" data-aos="fade-up" data-aos-delay="200">
+                    <span class="number">02</span>
+                    <h4>통합 과학</h4>
+                    <p>물·화·생·지 통합 커리큘럼으로 기초 확립</p>
+                </div>
+                <div class="col-md-4 grid-item" data-aos="fade-up" data-aos-delay="300">
+                    <span class="number">03</span>
+                    <h4>입시 매니징</h4>
+                    <p>개별 학습 속도에 맞춘 밀착 관리 로드맵</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <footer>
+        <div class="container text-center">
+            <p class="mb-2">대치 본원: 삼성로71길 18 대치스터디타워 5층</p>
+            <p class="mb-4">광주 직영점: 광주광역시 광산구 장신로 98 롯데아울렛 A관 5층</p>
+            <p class="opacity-50">T. 062. 616. 2465 | © NeXT Doc. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // 1. 인트로 및 AOS 초기화 (복구)
+        window.addEventListener('load', function() {
+            // AOS는 페이지 로드와 동시에 초기화하되, 인트로 시간에 맞춰 작동하게 함
+            AOS.init({ 
+                duration: 1000, 
+                once: true,
+                startEvent: 'DOMContentLoaded' // 인트로 도중 미리 계산 방지
+            });
+
+            const intro = document.getElementById('intro-layer');
+            setTimeout(() => {
+                if(intro) {
+                    intro.classList.add('hidden');
+                }
+            }, 2500);
+        });
+
+        // 2. 스크롤 시 상단바 축소
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 </html>
