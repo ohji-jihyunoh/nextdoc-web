@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>실적 & 후기 | NeXT DOC</title>
+    <title>올케어 시스템 | NeXT DOC</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
@@ -20,12 +20,7 @@
 
         /* --- 1. 헤더 및 네비게이션 --- */
         header { width: 100%; }
-        .navbar {
-            transition: all 0.4s ease;
-            padding: 15px 0;
-            background-color: white !important;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-        }
+        .navbar { padding: 15px 0; background-color: white !important; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
         .navbar-brand img { height: 45px; }
         .nav-link { font-weight: 700; color: var(--next-navy) !important; font-size: 16px; margin: 0 10px; transition: 0.3s; }
         .nav-link:hover, .nav-link.active { color: var(--next-gold) !important; }
@@ -35,72 +30,72 @@
             font-size: 16px; font-weight: 700; transition: 0.3s;
         }
 
-        /* --- 2. 페이지 헤더 --- */
+        /* --- 2. 서브 페이지 헤더 --- */
         .page-header { 
             background: linear-gradient(135deg, var(--next-navy) 0%, #00152e 100%); 
             color: #fff; padding: 140px 0 80px; text-align: center; 
         }
         .page-header h1 { font-size: 3rem; font-weight: 800; letter-spacing: 0.1em; }
 
-        /* --- 3. 탭 스타일 --- */
-        .review-tabs { margin-top: -35px; position: relative; z-index: 10; }
-        .review-tabs .nav-pills .nav-link {
-            background: #fff; color: var(--next-navy) !important;
-            border: 2px solid var(--next-gold);
-            border-radius: 50px; padding: 12px 40px; font-weight: 800; margin: 0 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;
+        /* --- 3. 시스템 세부 탭 버튼 --- */
+        .system-tabs-wrapper { margin-top: -35px; position: relative; z-index: 10; }
+        .system-tabs .nav-link {
+            background: #fff; color: var(--next-navy); border: 2px solid var(--next-gold);
+            border-radius: 12px; padding: 15px 10px; font-weight: 700; margin: 5px;
+            transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .review-tabs .nav-pills .nav-link.active { 
-            background: var(--next-gold) !important; color: #fff !important; border-color: var(--next-gold); 
+        .system-tabs .nav-link.active { background: var(--next-gold) !important; color: #fff !important; }
+
+        /* --- 4. 컨텐츠 박스 --- */
+        .section-padding { padding: 80px 0; }
+        .content-box { 
+            background: var(--next-navy); color: white; border-radius: 25px; padding: 60px 50px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: none;
         }
-
-        /* --- 4. 실적 & 후기 게시판 --- */
-        .performance-container, .board-container { max-width: 1100px; margin: 0 auto; padding: 80px 0; }
-        .performance-img { width: 100%; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 1px solid #eee; }
         
-        .board-table { border-top: 2px solid var(--next-navy); }
-        .board-table thead th { background: #f8f9fa; padding: 18px; color: var(--next-navy); border-bottom: 1px solid #dee2e6; }
-        .board-table tbody tr { cursor: pointer; transition: 0.2s; }
-        .board-table tbody tr:hover { background-color: #f9f4eb; }
-        .board-table tbody td { padding: 20px 15px; font-size: 1.1rem; border-bottom: 1px solid #eee; }
-        
-        .badge-review { background: var(--next-gold); color: white; padding: 4px 12px; border-radius: 3px; font-size: 0.85rem; font-weight: 700; margin-right: 10px; }
-        .badge-student { background: var(--next-navy); }
+        .system-title { font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 10px; }
+        .system-desc { font-size: 1.25rem; color: var(--next-gold); font-weight: 700; margin-bottom: 40px; }
 
-        /* --- 5. 모달 슬라이드 스타일 --- */
-        .modal-content { border-radius: 20px; border: none; overflow: hidden; }
-        .modal-body { padding: 0; background: #f8f9fa; }
-        .modal-body img { width: 100%; height: auto; }
-        
-        .carousel-control-prev-icon, .carousel-control-next-icon {
-            filter: invert(1) grayscale(100) brightness(0.5);
-            width: 3rem; height: 3rem;
-        }
+        .point-list { list-style: none; padding: 0; }
+        .point-list li { position: relative; padding-left: 30px; margin-bottom: 15px; font-size: 1.1rem; color: rgba(255,255,255,0.9); }
+        .point-list li::before { content: "\F26A"; font-family: "bootstrap-icons"; position: absolute; left: 0; color: var(--next-gold); font-weight: 900; }
 
-        /* --- 6. 푸터 --- */
+        .roadmap-img { width: 100%; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); }
+
+        /* --- 5. 푸터 --- */
         footer { background: #fff; color: #555; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
 
-        /* --- [중요] 모바일 최적화 (Style 안으로 이동 완료) --- */
+        /* --- [중요] 모달/모바일 최적화 및 애니메이션 --- */
         @media (max-width: 768px) {
             .page-header { padding: 100px 0 60px; }
-            .page-header h1 { font-size: 2.2rem !important; }
+            .page-header h1 { font-size: 1.8rem !important; letter-spacing: 0.05em; }
             
-            .performance-container, .board-container { padding: 40px 15px !important; }
-            
-            /* 탭 버튼 최적화: 수직으로 안 떨어지게 flex-fill 적용 */
-            .review-tabs { margin-top: -25px; }
-            .review-tabs .nav-pills .nav-link { 
-                padding: 12px 5px; font-size: 0.85rem; margin: 3px; flex: 1; text-align: center;
+            /* 탭 메뉴 가로 스크롤 형태로 유지 */
+            .system-tabs-wrapper { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; padding-bottom: 10px; }
+            .system-tabs { display: flex !important; flex-wrap: nowrap !important; width: max-content; margin: 0 auto; }
+            .system-tabs .nav-item { flex: 0 0 auto; }
+            .system-tabs .nav-link { font-size: 0.85rem; padding: 12px 15px; }
+
+            /* 컨텐츠 박스 애니메이션 (아래에서 위로) */
+            .tab-pane.active .content-box {
+                animation: slideUpContent 0.6s ease-out forwards;
+            }
+            @keyframes slideUpContent {
+                from { opacity: 0; transform: translateY(40px); }
+                to { opacity: 1; transform: translateY(0); }
             }
 
-            /* 게시판 리스트 폰트 및 간격 조정 */
-            .board-table thead th, .board-table tbody td { padding: 15px 10px; font-size: 0.9rem; }
-            .badge-review { padding: 3px 8px; font-size: 0.7rem; margin-right: 5px; }
+            .section-padding { padding: 40px 0; }
+            .content-box { padding: 40px 20px; border-radius: 15px; text-align: center; }
+            .system-title { font-size: 1.5rem; }
+            .system-desc { font-size: 1rem; margin-bottom: 25px; }
             
-            /* 이미지 라운딩 조정 */
-            .performance-img { border-radius: 10px; }
+            .point-list { text-align: left; display: inline-block; }
+            .point-list li { font-size: 0.95rem; }
 
-            /* 네비게이션 모바일 메뉴 (index.html 스타일) */
+            .roadmap-img { margin-top: 30px; border-radius: 10px; }
+
+            /* 네비게이션 모바일 최적화 */
             .navbar-brand img { height: 35px; }
             .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; text-align: center; }
             .nav-link { margin: 10px 0; font-size: 1.1rem; }
@@ -123,9 +118,9 @@
                     <ul class="navbar-nav ms-auto align-items-center">
                         <li class="nav-item"><a class="nav-link" href="about.html">학원 소개</a></li>
                         <li class="nav-item"><a class="nav-link" href="guide.html">학원 안내</a></li>
-                        <li class="nav-item"><a class="nav-link" href="system.html">넥스트 닥 올케어 시스템</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="system.html">넥스트 닥 올케어 시스템</a></li>
                         <li class="nav-item"><a class="nav-link" href="locations.html">교육관 안내</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="review.html">실적 & 후기</a></li>
+                        <li class="nav-item"><a class="nav-link" href="review.html">실적 & 후기</a></li>
                         <li class="nav-item"><a class="nav-link btn-apply-nav" href="apply.html">설명회 신청</a></li>
                     </ul>
                 </div>
@@ -135,72 +130,110 @@
 
     <header class="page-header">
         <div class="container" data-aos="fade-down">
-            <h1>수상 실적 & 후기</h1>
-            <p class="mt-3 fs-5 px-2" style="color:var(--next-gold); font-weight: 600;">결과로 증명하고 진심 어린 후기로 보답합니다</p>
+            <h1>NeXT DOC 올케어 시스템</h1>
+            <p class="mt-2 fs-6 opacity-75" style="color:var(--next-gold); font-weight: 600;">진학을 넘어 미래의 역량까지 설계하는 정교한 관리</p>
         </div>
     </header>
 
-    <div class="container review-tabs">
-        <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
-            <li class="nav-item flex-fill flex-md-initial">
-                <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#pills-result" type="button">대회 수상 실적</button>
-            </li>
-            <li class="nav-item flex-fill flex-md-initial">
-                <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#pills-review" type="button">학부모 & 학생 후기</button>
-            </li>
+    <div class="container system-tabs-wrapper">
+        <ul class="nav nav-pills system-tabs" id="pills-tab" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#sys1">수학 학습</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sys2">과학 탐구</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sys3">비교과 전략</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sys4">학생부 설계</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sys5">학습 관리</button></li>
         </ul>
     </div>
 
-    <main class="container">
+    <main class="container section-padding pb-5">
         <div class="tab-content" id="pills-tabContent">
             
-            <div class="tab-pane fade show active" id="pills-result">
-                <div class="performance-container text-center" data-aos="fade-up">
-                    <img src="contents31.png" alt="넥스트 닥 수상 실적" class="performance-img">
+            <div class="tab-pane fade show active" id="sys1">
+                <div class="content-box">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-7">
+                            <h3 class="system-title">01. 수학 전문 계통 학습</h3>
+                            <p class="system-desc">"연산부터 심화까지, 흔들리지 않는 수학 역량"</p>
+                            <ul class="point-list">
+                                <li><strong>초등:</strong> 최상위S + 기본응용 (2개월 완성)</li>
+                                <li><strong>중등:</strong> 개념 정리 + RPM | 쎈 마스터</li>
+                                <li><strong>고등:</strong> 의대 진학용 H | AP | EP 연계 심화</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-5"><img src="contents15.png" class="roadmap-img" alt="수학"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="pills-review">
-                <div class="board-container" data-aos="fade-up">
-                    <div class="table-responsive">
-                        <table class="table board-table text-center">
-                            <thead>
-                                <tr><th style="width:20%">번호</th><th style="width:80%">제목</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr onclick="openReviewModal(['contents47.png', 'contents48.png'], '학생 성장 스토리 (Part 1 & 2)')">
-                                    <td>10</td>
-                                    <td class="text-start"><span class="badge-review badge-student">학생 후기</span> 초등 5학년 입학 중1 재원생 후기</td>
-                                </tr>
-                                <tr onclick="openReviewModal('contents46.png', '학부모 후기 09')"><td>09</td><td class="text-start"><span class="badge-review">학부모 후기</span> 목동 W중 3학년 000 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents45.png', '학부모 후기 08')"><td>08</td><td class="text-start"><span class="badge-review">학부모 후기</span> 하나고 1학년 000 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents44.png', '학부모 후기 07')"><td>07</td><td class="text-start"><span class="badge-review">학부모 후기</span> 목동 M중 2학년 0 0 0 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents43.png', '학부모 후기 06')"><td>06</td><td class="text-start"><span class="badge-review">학부모 후기</span> 송파지역 J초 6학년 0 0 0 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents42.png', '학부모 후기 05')"><td>05</td><td class="text-start"><span class="badge-review">학부모 후기</span> 대치 D중 2학년 0 0 0 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents41.png', '학부모 후기 04')"><td>04</td><td class="text-start"><span class="badge-review">학부모 후기</span> D 국제중 1학년 00 0 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents40.png', '학부모 후기 03')"><td>03</td><td class="text-start"><span class="badge-review">학부모 후기</span> 목동 D중 1•U 초 6 남매 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents39.png', '학부모 후기 02')"><td>02</td><td class="text-start"><span class="badge-review">학부모 후기</span> 용산 S초 6 / Y중 1 형제 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents38.png', '학부모 후기 01')"><td>01</td><td class="text-start"><span class="badge-review">학부모 후기</span> 대치 H중 1학년 0 0 0 어머님</td></tr>
-                            </tbody>
-                        </table>
+            <div class="tab-pane fade" id="sys2">
+                <div class="content-box">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-7">
+                            <h3 class="system-title">02. 과학 통합·탐구 시스템</h3>
+                            <p class="system-desc">"의대 진학의 핵심인 연구력 전문 지도"</p>
+                            <ul class="point-list">
+                                <li><strong>통합 브리핑:</strong> 물/화/생/지 유기적 원리 연결</li>
+                                <li><strong>실험 설계:</strong> 변인 통제 및 가설 검증 교육</li>
+                                <li><strong>산출물 완성:</strong> 영재원 및 특목고용 탐구 보고서</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-5"><img src="contents10.png" class="roadmap-img" alt="과학"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="sys3">
+                <div class="content-box">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-7">
+                            <h3 class="system-title">03. 맞춤형 비교과(EC) 전략</h3>
+                            <p class="system-desc">"차별화된 포트폴리오로 경쟁력 확보"</p>
+                            <ul class="point-list">
+                                <li><strong>대회 지도:</strong> 발명품, 과학전람회 주제 선정</li>
+                                <li><strong>국제 로드맵:</strong> ISEF, AMC, Genius Olympiad</li>
+                                <li><strong>영재원 케어:</strong> 대학부설 산출물 및 면접 지도</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-5"><img src="contents24.png" class="roadmap-img" alt="비교과"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="sys4">
+                <div class="content-box">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-7">
+                            <h3 class="system-title">04. 학생부 설계 & 컨설팅</h3>
+                            <p class="system-desc">"데이터를 통해 학생부를 예술로 만듭니다"</p>
+                            <ul class="point-list">
+                                <li><strong>Dream Map:</strong> 희망 전공 연계 3년 활동 기획</li>
+                                <li><strong>세특 관리:</strong> 탐구 역량이 돋보이는 소재 발굴</li>
+                                <li><strong>독서 로드맵:</strong> 전공 적합성 수준 높은 도서 추천</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-5"><img src="contents32.png" class="roadmap-img" alt="학생부"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="sys5">
+                <div class="content-box">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-7">
+                            <h3 class="system-title">05. 노트 기반 학습기록 관리</h3>
+                            <p class="system-desc">"기록으로 완성하는 넥스트 닥의 학습 관리"</p>
+                            <ul class="point-list">
+                                <li><strong>All-Care 노트:</strong> 강의 요약 및 피드백 완전 학습</li>
+                                <li><strong>메타인지 훈련:</strong> 아는 것과 모르는 것 명확히 구분</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-5"><img src="contents23.png" class="roadmap-img" alt="학습관리"></div>
                     </div>
                 </div>
             </div>
 
         </div>
     </main>
-
-    <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="reviewModalLabel">후기 상세 보기</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="modalBodyContent"></div>
-            </div>
-        </div>
-    </div>
 
     <footer>
         <div class="container">
@@ -215,37 +248,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
         AOS.init({ duration: 1000, once: true });
-        
-        function openReviewModal(imgInput, title) {
-            const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
-            const modalBody = document.getElementById('modalBodyContent');
-            document.getElementById('reviewModalLabel').innerText = title;
-            modalBody.innerHTML = ''; 
-            
-            if (Array.isArray(imgInput)) {
-                let carouselHtml = `
-                    <div id="reviewCarousel" class="carousel slide" data-bs-ride="false">
-                        <div class="carousel-inner">
-                            ${imgInput.map((img, index) => `
-                                <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                                    <img src="${img}" alt="후기 이미지 ${index + 1}">
-                                </div>
-                            `).join('')}
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#reviewCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#reviewCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                `;
-                modalBody.innerHTML = carouselHtml;
-            } else {
-                modalBody.innerHTML = `<img src="${imgInput}" alt="후기 이미지">`;
-            }
-            modal.show();
-        }
     </script>
 </body>
 </html>
