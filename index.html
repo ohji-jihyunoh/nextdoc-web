@@ -38,13 +38,15 @@
             0% { opacity: 0; transform: scale(0.8); filter: blur(5px); }
             100% { opacity: 1; transform: scale(1.1); filter: blur(0); }
         }
-        .hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        /* [수정] 인트로가 끝나면 클릭을 방해하지 않도록 처리 */
+        .hidden { opacity: 0; visibility: hidden; pointer-events: none !important; }
 
         /* --- 2. 헤더 및 네비게이션 --- */
         .navbar {
             padding: 15px 0;
             background-color: white !important;
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            z-index: 1050; /* 인트로 레이어 아래, 일반 컨텐츠 위 */
         }
         .navbar-brand img { height: 45px; }
         .nav-link { 
@@ -102,12 +104,41 @@
         /* --- 6. 푸터 --- */
         footer { background: #fff; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
 
-        /* --- [중요] 모바일 최적화 CSS --- */
+        /* --- [중요] 모바일 최적화 및 탭 애니메이션 (반드시 Style 안에 위치) --- */
         @media (max-width: 768px) {
             #intro-logo { width: 220px; }
             
             .navbar-brand img { height: 35px; }
-            .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; }
+            .navbar-collapse { 
+                background: white; 
+                padding: 20px; 
+                border-top: 1px solid #eee; 
+                text-align: center;
+            }
+
+            /* [수정] 모바일 메뉴 글자 애니메이션 (아래서 위로, 오른쪽에서 왼쪽으로) */
+            .navbar-collapse.show .nav-item {
+                animation: slideUpLeft 0.5s ease forwards;
+                opacity: 0;
+            }
+            @keyframes slideUpLeft {
+                from { 
+                    opacity: 0; 
+                    transform: translate(40px, 40px); /* 오른쪽(40px) 아래(40px)에서 시작 */
+                }
+                to { 
+                    opacity: 1; 
+                    transform: translate(0, 0); /* 제자리로 */
+                }
+            }
+            /* 메뉴 순서대로 등장 */
+            .nav-item:nth-child(1) { animation-delay: 0.1s; }
+            .nav-item:nth-child(2) { animation-delay: 0.2s; }
+            .nav-item:nth-child(3) { animation-delay: 0.3s; }
+            .nav-item:nth-child(4) { animation-delay: 0.4s; }
+            .nav-item:nth-child(5) { animation-delay: 0.5s; }
+            .nav-item:nth-child(6) { animation-delay: 0.6s; }
+
             .nav-link { margin: 10px 0; font-size: 1.1rem; }
             .btn-apply-nav { width: 100%; text-align: center; margin: 10px 0; }
 
