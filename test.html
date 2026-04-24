@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeXT DOC 학기 종합 진단 리포트</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <style>
+        :root { --primary: #1A2B4C; --secondary: #3b5998; --accent: #e74c3c; --bg: #f4f7f9; --border: #e2e8f0; }
+        body { font-family: 'Pretendard', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        
+        .input-section { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 40px; }
+        .header-controls { display: flex; gap: 20px; margin-bottom: 30px; align-items: center; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid var(--border); }
+        select, input[type="text"] { padding: 12px; font-size: 1.1em; border: 1px solid #ccc; border-radius: 6px; font-weight: bold; color: var(--primary); }
+        
+        .exam-input-container { display: flex; gap: 30px; flex-wrap: wrap; margin-bottom: 30px; }
+        .exam-box { flex: 1; min-width: 45%; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 25px; }
+        .exam-box h3 { margin-top: 0; color: var(--primary); border-bottom: 2px solid var(--border); padding-bottom: 15px; font-size: 1.4em; }
+        
+        .omr-grid { display: flex; flex-wrap: wrap; gap: 15px; } 
+        .omr-item { display: flex; align-items: center; gap: 10px; background: #f8fafc; padding: 10px 15px; border-radius: 8px; border: 1px solid #d1d5db; width: calc(25% - 20px); box-sizing: border-box; }
+        .omr-item label { font-size: 1.1em; font-weight: bold; color: #4b5563; white-space: nowrap; }
+        .omr-item input { width: 100%; height: 40px; text-align: center; font-size: 1.2em; border: 2px solid #9ca3af; border-radius: 6px; padding: 5px; font-weight: bold; color: var(--primary); }
+        .omr-item input:focus { border-color: var(--secondary); background-color: #eef2f5; outline: none; }
+        
+        .btn-generate { margin-top: 10px; width: 100%; padding: 20px; font-size: 1.4em; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-print { margin-top: 15px; width: 100%; padding: 15px; font-size: 1.2em; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; display: none; font-weight: bold; }
+
+        .report-section { display: none; width: 210mm; margin: 0 auto; }
+        /* 💡 로고 겹침 방지: padding-bottom을 80px로 여유있게 늘림 */
+        .page { background: white; padding: 30px 40px 80px 40px; box-sizing: border-box; min-height: 297mm; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 20px; position: relative; overflow: hidden; }
+        
+        .report-header { border-bottom: 3px solid var(--primary); padding-bottom: 10px; margin-bottom: 15px; text-align: center; }
+        .report-header h1 { margin: 0; color: var(--primary); font-size: 2.2em; letter-spacing: -1px; }
+
+        .guide-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 12px 20px; margin-bottom: 15px; font-size: 0.95em; line-height: 1.6; color: #444; text-align: justify; word-break: keep-all; }
+        .guide-box strong { color: var(--primary); }
+
+        .score-summary { display: flex; gap: 15px; margin-bottom: 15px; }
+        .score-card { flex: 1; border-radius: 8px; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: background 0.3s; }
+        .score-card h3 { margin: 0 0 8px 0; font-size: 1.1em; }
+        .score-card .score { font-size: 2.2em; font-weight: 900; }
+
+        .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .chart-container { border: 1px solid var(--border); border-radius: 8px; padding: 10px; height: 240px; display: flex; flex-direction: column; background: white; }
+        .chart-container h3 { text-align: center; margin-top: 0; margin-bottom: 5px; font-size: 1em; color: #444; }
+        .chart-wrapper { flex: 1; position: relative; width: 100%; height: 100%; }
+
+        /* 💡 2페이지 여백 최적화 */
+        .nextdoc-comment-box { background: #f0f4f8; border-left: 5px solid var(--secondary); padding: 20px; border-radius: 0 8px 8px 0; margin-bottom: 20px; }
+        .nextdoc-comment-box h3 { margin: 0 0 10px 0; color: var(--primary); font-size: 1.3em; display: flex; align-items: center; gap: 10px; }
+        .nextdoc-comment-box .comment-content { font-size: 1.05em; line-height: 1.6; color: #333; text-align: justify; word-break: keep-all; }
+
+        .five-type-section { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .five-type-section h3 { margin-top: 0; color: var(--primary); font-size: 1.3em; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 10px; }
+        
+        /* 💡 기출분석법 막대그래프 높이 및 여백 축소 */
+        .type-group { border-bottom: 1px dashed #e2e8f0; padding-bottom: 8px; margin-bottom: 10px; }
+        .type-group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .type-bar-row { display: flex; align-items: center; }
+        .type-label { width: 140px; font-weight: bold; font-size: 0.95em; color: #444; line-height: 1.2; }
+        .type-bar-container { flex: 1; background: #e2e8f0; height: 16px; border-radius: 8px; overflow: hidden; position: relative; margin: 0 15px; } /* 높이 16px로 슬림화 */
+        .type-bar-fill { height: 100%; border-radius: 8px; transition: width 1s ease-in-out; }
+        .type-score { width: 85px; text-align: right; font-weight: bold; font-size: 1em; color: var(--primary); line-height: 1.2; }
+
+        .page-logo-footer { position: absolute; bottom: 15px; left: 0; right: 0; text-align: center; height: 15mm; display: flex; justify-content: center; align-items: center; }
+        .page-logo-footer img { max-width: 60mm; max-height: 10mm; height: auto; width: auto; }
+
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body { background: white; padding: 0; margin: 0; }
+            .input-section, .btn-print { display: none !important; }
+            .report-section { display: block !important; width: 100%; margin: 0; }
+            /* 💡 인쇄 시 로고 겹침 방지: padding-bottom을 25mm로 강제 지정 */
+            .page { height: 297mm; min-height: 297mm; page-break-after: always; box-shadow: none; margin: 0; padding: 12mm 15mm 25mm 15mm !important; }
+            .page-logo-footer { bottom: 10mm; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="input-section">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 style="color:var(--primary); margin:0;">📝 NeXT DOC 채점 및 리포트 생성</h2>
+            <div style="font-size:0.9em; color:#666; background:#f0f4f8; padding:8px 15px; border-radius:20px;">
+                💡 5대 기출분석법 막대 여백이 최적화되었습니다.
+            </div>
+        </div>
+        
+        <div class="header-controls">
+            <label>과정 선택:</label>
+            <select id="courseSelect" onchange="loadExamGrid()">
+                <option value="m1_sang">중1(상) 과정</option>
+                <option value="m2_sang">중2(상) 과정</option>
+                <option value="m3_sang">중3(상) 과정</option>
+                <option value="h1_1">공통수학1 과정</option>
+                <option value="h1_2">공통수학2 과정</option>
+            </select>
+            <label style="margin-left: 20px;">학생 이름:</label>
+            <input type="text" id="studentName" placeholder="예: 홍길동" style="width: 150px;">
+        </div>
+
+        <div class="exam-input-container">
+            <div class="exam-box">
+                <h3>📖 중간고사 <span id="midCnt"></span></h3>
+                <div class="omr-grid" id="midtermGrid"></div>
+            </div>
+            <div class="exam-box">
+                <h3>📖 기말고사 <span id="finCnt"></span></h3>
+                <div class="omr-grid" id="finalGrid"></div>
+            </div>
+        </div>
+
+        <button class="btn-generate" onclick="generateReport()">통합 분석 및 성적표 자동 생성</button>
+        <button class="btn-print" id="printBtn" onclick="window.print()">🖨️ PDF 양면 인쇄 / 저장</button>
+    </div>
+
+    <div class="report-section" id="reportSection">
+        
+        <div class="page page-one">
+            <div class="report-header">
+                <h1 id="outHeaderTitle">학생 과정 종합분석표</h1>
+            </div>
+
+            <div class="guide-box" id="examGuideText">
+                안내 멘트 생성 중...
+            </div>
+
+            <div class="score-summary">
+                <div class="score-card" id="cardMid">
+                    <h3>중간고사 점수</h3>
+                    <div class="score" id="midScoreOut">0</div>
+                </div>
+                <div class="score-card" id="cardFin">
+                    <h3>기말고사 점수</h3>
+                    <div class="score" id="finScoreOut">0</div>
+                </div>
+                <div class="score-card" id="cardAvg">
+                    <h3>학기 통합 성취도</h3>
+                    <div class="score" id="avgScoreOut">0</div>
+                </div>
+            </div>
+
+            <div class="analysis-grid">
+                <div class="chart-container">
+                    <h3>📊 단원별 성취도(100점 환산)</h3>
+                    <div class="chart-wrapper"><canvas id="unitChart"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <h3>📈 난이도별 정답률(%)</h3>
+                    <div class="chart-wrapper"><canvas id="diffChart"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <h3>🎯 전체 등급 분포 및 나의 위치</h3>
+                    <div class="chart-wrapper"><canvas id="distChart"></canvas></div>
+                </div>
+                <div class="chart-container">
+                    <h3>⚖️ 누적 평균 비교 분석</h3>
+                    <div class="chart-wrapper"><canvas id="compareChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="page-logo-footer">
+                <img src="가로로고_로고.png" alt="NeXT DOC 로고">
+            </div>
+        </div>
+
+        <div class="page page-two">
+            <div class="report-header">
+                <h1>📋 종합 평가 및 기출유형 분석</h1>
+            </div>
+            
+            <div class="nextdoc-comment-box">
+                <h3>👨‍🏫 NeXT DOC 코멘트</h3>
+                <div class="comment-content" id="nextdocCommentText">분석 중입니다...</div>
+            </div>
+
+            <div class="five-type-section">
+                <h3 id="typeSectionTitle">🔍 기출분석법으로 본 나의 점수</h3>
+                <p id="typeSectionDesc" style="color:#666; margin-bottom:15px; font-size:0.95em;">NeXT DOC만의 핵심 기출 유형 분석을 통해 학생의 중간/기말 유형별 적응력과 취약점을 정밀하게 진단합니다.</p>
+                <div id="fiveTypeBars"></div>
+            </div>
+
+            <div class="page-logo-footer">
+                <img src="가로로고_로고.png" alt="NeXT DOC 로고">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // =========================================================================================
+    // 💡 [데이터베이스 세팅]
+    // 💡 각 과정 객체 안에 dist: [A비율, B비율, C비율, D비율, E비율] 항목이 추가되었습니다!
+    // =========================================================================================
+    const examDatabase = {
+        "m1_sang": {
+            title: "중1(상) 과정 종합분석표",
+            dist: [70.9, 15, 4.9, 3.9, 5.3], // 💡 중1(상) 전체 등급 분포 비율 (%)
+            midterm: [
+                {q:1, ans:"4", unit:"소인수분해", diff:"하", type:"기점", score:3},
+                {q:2, ans:"4", unit:"정수와 유리수", diff:"하", type:"기점", score:3},
+                {q:3, ans:"4", unit:"문자의 사용과 식의 계산", diff:"하", type:"기점", score:3},
+                {q:4, ans:"1", unit:"문자의 사용과 식의 계산", diff:"하", type:"기점", score:3},
+                {q:5, ans:"5", unit:"문자의 사용과 식의 계산", diff:"하", type:"기점", score:3},
+                {q:6, ans:"2", unit:"소인수분해", diff:"중", type:"선출", score:4},
+                {q:7, ans:"5", unit:"소인수분해", diff:"중", type:"기점", score:4},
+                {q:8, ans:"4", unit:"정수와 유리수", diff:"중", type:"기점", score:4},
+                {q:9, ans:"1", unit:"정수와 유리수", diff:"중", type:"기점", score:4},
+                {q:10, ans:"3", unit:"문자의 사용과 식의 계산", diff:"중", type:"기점", score:4},
+                {q:11, ans:"3", unit:"정수와 유리수", diff:"중", type:"기점", score:4},
+                {q:12, ans:"1", unit:"정수와 유리수", diff:"중", type:"기점", score:4},
+                {q:13, ans:"1", unit:"문자의 사용과 식의 계산", diff:"중", type:"기점", score:4},
+                {q:14, ans:"2", unit:"문자의 사용과 식의 계산", diff:"중", type:"기점", score:4},
+                {q:15, ans:"2", unit:"문자의 사용과 식의 계산", diff:"중", type:"선출", score:4},
+                {q:16, ans:"3", unit:"소인수분해", diff:"상", type:"중심", score:5},
+                {q:17, ans:"5", unit:"최대공약수와 최소공배수", diff:"상", type:"중심", score:5},
+                {q:18, ans:"2", unit:"정수와 유리수", diff:"상", type:"중심", score:5},
+                {q:19, ans:"3", unit:"정수와 유리수", diff:"상", type:"선출", score:5},
+                {q:20, ans:"4", unit:"정수와 유리수", diff:"상", type:"중심", score:5},
+                {q:21, ans:"1", unit:"최대공약수와 최소공배수", diff:"상", type:"중심", score:5},
+                {q:22, ans:"1", unit:"정수와 유리수", diff:"상", type:"기점", score:5},
+                {q:23, ans:"1", unit:"문자의 사용과 식의 계산", diff:"상", type:"선출", score:5},
+                {q:24, ans:"1", unit:"문자의 사용과 식의 계산", diff:"상", type:"지연", score:5}
+            ],
+            final: [
+                {q:1, ans:"4", unit:"일차방정식", diff:"하", type:"기점", score:3},
+                {q:2, ans:"4", unit:"일차방정식", diff:"하", type:"기점", score:3},
+                {q:3, ans:"4", unit:"식의 계산", diff:"하", type:"기점", score:3},
+                {q:4, ans:"3", unit:"정비례 반비례", diff:"하", type:"기점", score:3},
+                {q:5, ans:"5", unit:"좌표와 그래프", diff:"하", type:"중", score:3},
+                {q:6, ans:"2", unit:"좌표와 그래프", diff:"중", type:"기점", score:4},
+                {q:7, ans:"4", unit:"일차방정식", diff:"중", type:"기점", score:4},
+                {q:8, ans:"4", unit:"일차방정식", diff:"중", type:"기점", score:4},
+                {q:9, ans:"1", unit:"일차방정식", diff:"중", type:"기점", score:4},
+                {q:10, ans:"5", unit:"정비례 반비례", diff:"중", type:"기점", score:4},
+                {q:11, ans:"1", unit:"좌표와 그래프", diff:"중", type:"기점", score:4},
+                {q:12, ans:"5", unit:"좌표와 그래프", diff:"중", type:"기점", score:4},
+                {q:13, ans:"1", unit:"정비례 반비례", diff:"중", type:"기점", score:4},
+                {q:14, ans:"5", unit:"정비례 반비례", diff:"중", type:"고필", score:4},
+                {q:15, ans:"2", unit:"좌표와 그래프", diff:"중", type:"기점", score:4},
+                {q:16, ans:"3", unit:"일차방정식", diff:"상", type:"기점", score:5},
+                {q:17, ans:"3", unit:"일차방정식", diff:"상", type:"고필", score:5},
+                {q:18, ans:"5", unit:"일차방정식", diff:"상", type:"기점", score:5},
+                {q:19, ans:"3", unit:"정비례 반비례", diff:"상", type:"기점", score:5},
+                {q:20, ans:"2", unit:"일차방정식", diff:"상", type:"중심", score:5},
+                {q:21, ans:"1", unit:"일차방정식", diff:"상", type:"중심", score:5},
+                {q:22, ans:"1", unit:"일차방정식", diff:"상", type:"선출", score:5},
+                {q:23, ans:"1", unit:"정비례 반비례", diff:"상", type:"기점", score:5},
+                {q:24, ans:"1", unit:"정비례 반비례", diff:"상", type:"기점", score:5}
+            ]
+        },
+        "m2_sang": {
+            title: "중2(상) 과정 종합분석표",
+            dist: [55, 21.9, 6.3, 6.7, 10], // 💡 중2(상) 전체 등급 분포 비율 (%)
+            midterm: [
+                {q:1, ans:"5", unit:"유리수와 순환소수", diff:"하", type:"기점", score:4},
+                {q:2, ans:"3", unit:"일차부등식", diff:"하", type:"기점", score:4},
+                {q:3, ans:"3", unit:"식의 계산", diff:"하", type:"기점", score:4},
+                {q:4, ans:"5", unit:"식의 계산", diff:"하", type:"기점", score:4},
+                {q:5, ans:"1", unit:"유리수와 순환소수", diff:"하", type:"기점", score:4},
+                {q:6, ans:"4", unit:"유리수와 순환소수", diff:"하", type:"기점", score:4},
+                {q:7, ans:"4", unit:"식의 계산", diff:"하", type:"기점", score:5},
+                {q:8, ans:"3", unit:"식의 계산", diff:"중", type:"지연", score:5},
+                {q:9, ans:"4", unit:"일차부등식", diff:"중", type:"기점", score:5},
+                {q:10, ans:"4", unit:"식의 계산", diff:"중", type:"기점", score:5},
+                {q:11, ans:"1", unit:"식의 계산", diff:"하", type:"기점", score:5},
+                {q:12, ans:"3", unit:"유리수와 순환소수", diff:"중", type:"지연", score:5},
+                {q:13, ans:"3", unit:"일차부등식", diff:"중", type:"지연", score:5},
+                {q:14, ans:"1", unit:"식의 계산", diff:"중", type:"중심", score:5},
+                {q:15, ans:"2", unit:"일차부등식", diff:"중", type:"중심", score:5},
+                {q:16, ans:"2", unit:"일차부등식", diff:"중", type:"기점", score:5},
+                {q:17, ans:"5", unit:"유리수와 순환소수", diff:"중", type:"중심", score:5},
+                {q:18, ans:"1", unit:"식의 계산", diff:"상", type:"선출", score:5},
+                {q:19, ans:"3", unit:"식의 계산", diff:"상", type:"선출", score:5},
+                {q:20, ans:"2", unit:"유리수와 순환소수", diff:"상", type:"중심", score:5},
+                {q:21, ans:"1", unit:"일차부등식", diff:"하", type:"기점", score:3},
+                {q:22, ans:"1", unit:"유리수와 순환소수", diff:"중", type:"중심", score:3},
+            ],
+            final: [
+                {q:1, ans:"2", unit:"연립일차방정식", diff:"하", type:"기점", score:4},
+                {q:2, ans:"2", unit:"연립일차방정식", diff:"하", type:"기점", score:4},
+                {q:3, ans:"4", unit:"연립일차방정식", diff:"하", type:"기점", score:4},
+                {q:4, ans:"5", unit:"일차함수", diff:"하", type:"기점", score:4},
+                {q:5, ans:"5", unit:"일차함수", diff:"하", type:"기점", score:4},
+                {q:6, ans:"1", unit:"연립일차방정식", diff:"하", type:"기점", score:4},
+                {q:7, ans:"5", unit:"연립일차방정식", diff:"하", type:"기점", score:5},
+                {q:8, ans:"5", unit:"연립일차방정식", diff:"중", type:"고필", score:5},
+                {q:9, ans:"3", unit:"일차함수", diff:"중", type:"기점", score:5},
+                {q:10, ans:"5", unit:"일차함수", diff:"하", type:"지연", score:5},
+                {q:11, ans:"1", unit:"연립일차방정식", diff:"하", type:"기점", score:5},
+                {q:12, ans:"4", unit:"일차함수", diff:"중", type:"기점", score:5},
+                {q:13, ans:"3", unit:"연립일차방정식", diff:"하", type:"기점", score:5},
+                {q:14, ans:"2", unit:"연립일차방정식", diff:"하", type:"기점", score:5},
+                {q:15, ans:"4", unit:"일차함수", diff:"상", type:"선출", score:5},
+                {q:16, ans:"1", unit:"일차함수", diff:"상", type:"중심", score:5},
+                {q:17, ans:"4", unit:"일차함수", diff:"중", type:"기점", score:5},
+                {q:18, ans:"3", unit:"연립일차방정식", diff:"중", type:"지연", score:5},
+                {q:19, ans:"3", unit:"일차함수", diff:"상", type:"고필", score:5},
+                {q:20, ans:"2", unit:"일차함수", diff:"상", type:"중심", score:5},
+                {q:21, ans:"1", unit:"일차함수", diff:"상", type:"지연", score:6},
+            ]
+        },
+        "m3_sang": {
+            title: "중3(상) 과정 종합분석표",
+            dist: [53.8, 16.2, 11.3, 4.5, 14.3], // 💡 중3(상) 전체 등급 분포 비율 (%)
+            midterm: [
+                {q:1, ans:"1", unit:"제곱근과 실수", diff:"하", type:"기점", score:4},
+                {q:2, ans:"1", unit:"제곱근과 실수", diff:"하", type:"기점", score:4},
+                {q:3, ans:"4", unit:"제곱근과 실수", diff:"하", type:"기점", score:4},
+                {q:4, ans:"3", unit:"이차방정식", diff:"하", type:"기점", score:4},
+                {q:5, ans:"5", unit:"제곱근과 실수", diff:"하", type:"기점", score:4},
+                {q:6, ans:"5", unit:"이차방정식", diff:"하", type:"기점", score:5},
+                {q:7, ans:"4", unit:"제곱근과 실수", diff:"하", type:"기점", score:5},
+                {q:8, ans:"4", unit:"제곱근과 실수", diff:"하", type:"기점", score:5},
+                {q:9, ans:"2", unit:"제곱근과 실수", diff:"중", type:"중심", score:5},
+                {q:10, ans:"2", unit:"인수분해", diff:"중", type:"선출", score:5},
+                {q:11, ans:"3", unit:"제곱근과 실수", diff:"중", type:"기점", score:5},
+                {q:12, ans:"5", unit:"제곱근과 실수", diff:"중", type:"기점", score:5},
+                {q:13, ans:"5", unit:"이차방정식", diff:"중", type:"지연", score:5},
+                {q:14, ans:"1", unit:"인수분해", diff:"중", type:"기점", score:5},
+                {q:15, ans:"3", unit:"제곱근과 실수", diff:"상", type:"중심", score:5},
+                {q:16, ans:"4", unit:"이차방정식", diff:"중", type:"기점", score:5},
+                {q:17, ans:"4", unit:"이차방정식", diff:"중", type:"기점", score:5},
+                {q:18, ans:"2", unit:"이차방정식", diff:"중", type:"지연", score:5},
+                {q:19, ans:"3", unit:"제곱근과 실수", diff:"중", type:"기점", score:5},
+                {q:20, ans:"2", unit:"인수분해", diff:"상", type:"선출", score:5},
+                {q:21, ans:"5", unit:"제곱근과 실수", diff:"상", type:"중심", score:5},
+            ],
+            final: [
+                {q:1, ans:"4", unit:"이차함수", diff:"하", type:"기점", score:4},
+                {q:2, ans:"5", unit:"이차함수", diff:"하", type:"고필", score:4},
+                {q:3, ans:"3", unit:"이차함수", diff:"하", type:"기점", score:4},
+                {q:4, ans:"3", unit:"이차함수", diff:"하", type:"기점", score:4},
+                {q:5, ans:"3", unit:"이차함수", diff:"중", type:"지연", score:4},
+                {q:6, ans:"1", unit:"이차함수", diff:"하", type:"기점", score:5},
+                {q:7, ans:"1", unit:"이차방정식", diff:"하", type:"기점", score:5},
+                {q:8, ans:"5", unit:"이차함수", diff:"하", type:"기점", score:5},
+                {q:9, ans:"4", unit:"이차함수", diff:"중", type:"기점", score:5},
+                {q:10, ans:"2", unit:"이차함수", diff:"중", type:"기점", score:5},
+                {q:11, ans:"2", unit:"이차함수", diff:"중", type:"기점", score:5},
+                {q:12, ans:"1", unit:"이차함수", diff:"중", type:"기점", score:4},
+                {q:13, ans:"3", unit:"이차함수", diff:"상", type:"중심", score:5},
+                {q:14, ans:"4", unit:"이차방정식", diff:"중", type:"기점", score:4},
+                {q:15, ans:"2", unit:"이차함수", diff:"중", type:"기점", score:4},
+                {q:16, ans:"3", unit:"이차함수", diff:"상", type:"중심", score:5},
+                {q:17, ans:"1", unit:"이차함수", diff:"상", type:"중심", score:5},
+                {q:18, ans:"1", unit:"이차함수", diff:"상", type:"중심", score:5},
+                {q:19, ans:"5", unit:"이차함수", diff:"상", type:"중심", score:5},
+                {q:20, ans:"3", unit:"이차함수", diff:"상", type:"중심", score:5},
+                {q:21, ans:"2", unit:"이차함수", diff:"중", type:"기점", score:4},
+                {q:22, ans:"1", unit:"이차함수", diff:"중", type:"기점", score:4},
+            ]
+        },
+        "h1_1": {
+            title: "공통수학1 과정 종합분석표",
+            dist: [4, 21, 25.6, 24.8, 24.5], // 💡 고1(상) 전체 등급 분포 비율 (%)
+            midterm: [
+                {q:1, ans:"4", unit:"다항식의 연산", diff:"하", type:"기점", score:3.3},
+                {q:2, ans:"3", unit:"이차방정식과 이차함수", diff:"하", type:"기점", score:3.4},
+                {q:3, ans:"5", unit:"항등식과 나머지정리", diff:"하", type:"기점", score:3.5},
+                {q:4, ans:"2", unit:"이차방정식과 이차함수", diff:"하", type:"기점", score:3.6},
+                {q:5, ans:"2", unit:"복소수와 이차방정식", diff:"하", type:"기점", score:3.7},
+                {q:6, ans:"1", unit:"복소수와 이차방정식", diff:"하", type:"기점", score:3.8},
+                {q:7, ans:"5", unit:"항등식과 나머지정리", diff:"하", type:"기점", score:3.9},
+                {q:8, ans:"5", unit:"이차방정식과 이차함수", diff:"중", type:"지연", score:4},
+                {q:9, ans:"4", unit:"복소수와 이차방정식", diff:"중", type:"기점", score:4.1},
+                {q:10, ans:"3", unit:"다항식의 연산", diff:"중", type:"지연", score:4.2},
+                {q:11, ans:"2", unit:"항등식과 나머지정리", diff:"중", type:"기점", score:4.3},
+                {q:12, ans:"1", unit:"복소수와 이차방정식", diff:"중", type:"기점", score:4.4},
+                {q:13, ans:"1", unit:"이차방정식과 이차함수", diff:"중", type:"중심", score:4.5},
+                {q:14, ans:"4", unit:"항등식과 나머지정리", diff:"중", type:"중심", score:4.6},
+                {q:15, ans:"3", unit:"이차방정식과 이차함수", diff:"중", type:"중심", score:4.7},
+                {q:16, ans:"4", unit:"이차방정식과 이차함수", diff:"중", type:"중심", score:4.8},
+                {q:17, ans:"3", unit:"이차방정식과 이차함수", diff:"중", type:"중심", score:4.9},
+                {q:18, ans:"1", unit:"인수분해", diff:"상", type:"기점", score:5},
+                {q:19, ans:"1", unit:"이차방정식과 이차함수", diff:"상", type:"중심", score:5.2},
+                {q:20, ans:"1", unit:"이차방정식과 이차함수", diff:"상", type:"중심", score:5.4},
+                {q:21, ans:"1", unit:"항등식과 나머지정리", diff:"상", type:"중심", score:5.7},
+                {q:22, ans:"1", unit:"인수분해", diff:"상", type:"중심", score:9},
+            ],
+            final: [
+                {q:1, ans:"3", unit:"경우의 수", diff:"하", type:"기점", score:3},
+                {q:2, ans:"3", unit:"여러가지 부등식", diff:"하", type:"기점", score:3},
+                {q:3, ans:"4", unit:"여러가지 방정식", diff:"하", type:"기점", score:3},
+                {q:4, ans:"1", unit:"행렬", diff:"하", type:"기점", score:3.4},
+                {q:5, ans:"2", unit:"경우의 수", diff:"하", type:"지연", score:3.6},
+                {q:6, ans:"1", unit:"여러가지 부등식", diff:"하", type:"기점", score:3.8},
+                {q:7, ans:"5", unit:"행렬", diff:"하", type:"기점", score:3.9},
+                {q:8, ans:"3", unit:"행렬", diff:"중", type:"기점", score:4},
+                {q:9, ans:"2", unit:"경우의 수", diff:"중", type:"지연", score:4.1},
+                {q:10, ans:"2", unit:"여러가지 방정식", diff:"중", type:"지연", score:4.2},
+                {q:11, ans:"5", unit:"행렬", diff:"중", type:"중심", score:4.3},
+                {q:12, ans:"4", unit:"여러가지 방정식", diff:"중", type:"지연", score:4.4},
+                {q:13, ans:"4", unit:"행렬", diff:"중", type:"중심", score:4.5},
+                {q:14, ans:"5", unit:"경우의 수", diff:"중", type:"기점", score:4.7},
+                {q:15, ans:"3", unit:"경우의 수", diff:"중", type:"중심", score:4.9},
+                {q:16, ans:"1", unit:"여러가지 부등식", diff:"상", type:"중심", score:5},
+                {q:17, ans:"4", unit:"경우의 수", diff:"상", type:"중심", score:5.2},
+                {q:18, ans:"1", unit:"행렬", diff:"상", type:"중심", score:5.0},
+                {q:19, ans:"1", unit:"여러가지 부등식", diff:"상", type:"중심", score:5.5},
+                {q:20, ans:"1", unit:"여러가지 방정식", diff:"상", type:"기점", score:5.5},
+                {q:21, ans:"1", unit:"경우의 수", diff:"상", type:"중심", score:6},
+                {q:22, ans:"1", unit:"여러가지 방정식", diff:"상", type:"기점", score:9},
+            ]
+        },
+        "h1_2": {
+            title: "공통수학2 과정 종합분석표",
+            dist: [12, 18, 40, 20, 10], // 💡 고1(하) 전체 등급 분포 비율 (%)
+            midterm: [
+                {q:1, ans:"1", unit:"평면좌표", diff:"하", type:"기점", score:3.3},
+                {q:2, ans:"5", unit:"원의 방정식", diff:"하", type:"기점", score:3.4},
+                {q:3, ans:"1", unit:"원의 방정식", diff:"하", type:"기점", score:3.5},
+                {q:4, ans:"5", unit:"직선의 방정식", diff:"하", type:"기점", score:3.6},
+                {q:5, ans:"2", unit:"원의 방정식", diff:"하", type:"기점", score:3.7},
+                {q:6, ans:"4", unit:"도형의 이동", diff:"하", type:"지연", score:3.8},
+                {q:7, ans:"3", unit:"원의 방정식", diff:"하", type:"지연", score:3.9},
+                {q:8, ans:"3", unit:"직선의 방정식", diff:"중", type:"기점", score:4},
+                {q:9, ans:"1", unit:"직선의 방정식", diff:"중", type:"기점", score:4.1},
+                {q:10, ans:"3", unit:"도형의 이동", diff:"중", type:"지연", score:4.2},
+                {q:11, ans:"4", unit:"직선의 방정식", diff:"중", type:"기점", score:4.3},
+                {q:12, ans:"4", unit:"직선의 방정식", diff:"중", type:"지연", score:4.4},
+                {q:13, ans:"5", unit:"도형의 이동", diff:"중", type:"지연", score:4.5},
+                {q:14, ans:"2", unit:"원의 방정식", diff:"중", type:"중심", score:4.6},
+                {q:15, ans:"3", unit:"원의 방정식", diff:"중", type:"기점", score:4.7},
+                {q:16, ans:"2", unit:"평면좌표", diff:"중", type:"중심", score:4.8},
+                {q:17, ans:"4", unit:"도형의 이동", diff:"중", type:"중심", score:4.9},
+                {q:18, ans:"1", unit:"직선의 방정식", diff:"상", type:"중심", score:5},
+                {q:19, ans:"1", unit:"원의 방정식", diff:"상", type:"중심", score:5.2},
+                {q:20, ans:"1", unit:"원의 방정식", diff:"상", type:"중심", score:5.4},
+                {q:21, ans:"1", unit:"평면좌표", diff:"상", type:"중심", score:5.7},
+                {q:22, ans:"1", unit:"원의 방정식", diff:"상", type:"중심", score:5.9},
+            ],
+            final: [
+                {q:1, ans:"3", unit:"집합", diff:"하", type:"기점", score:3.6},
+                {q:2, ans:"2", unit:"유리함수", diff:"하", type:"기점", score:3.6},
+                {q:3, ans:"5", unit:"함수", diff:"하", type:"기점", score:3.6},
+                {q:4, ans:"4", unit:"함수", diff:"하", type:"기점", score:3.7},
+                {q:5, ans:"4", unit:"집합", diff:"하", type:"기점", score:3.7},
+                {q:6, ans:"1", unit:"무리함수", diff:"하", type:"기점", score:3.8},
+                {q:7, ans:"5", unit:"유리함수", diff:"하", type:"기점", score:3.8},
+                {q:8, ans:"2", unit:"집합", diff:"중", type:"기점", score:4},
+                {q:9, ans:"3", unit:"명제", diff:"중", type:"기점", score:4},
+                {q:10, ans:"2", unit:"명제", diff:"중", type:"기점", score:4.1},
+                {q:11, ans:"1", unit:"함수", diff:"중", type:"기점", score:4.2},
+                {q:12, ans:"4", unit:"함수", diff:"중", type:"중심", score:4.3},
+                {q:13, ans:"5", unit:"함수", diff:"중", type:"지연", score:4.3},
+                {q:14, ans:"1", unit:"명제", diff:"중", type:"기점", score:4.4},
+                {q:15, ans:"5", unit:"유리함수", diff:"중", type:"중심", score:4.5},
+                {q:16, ans:"2", unit:"함수", diff:"중", type:"중심", score:4.7},
+                {q:17, ans:"3", unit:"무리함수", diff:"중", type:"중심", score:4.7},
+                {q:18, ans:"1", unit:"무리함수", diff:"상", type:"기점", score:5},
+                {q:19, ans:"1", unit:"함수", diff:"상", type:"중심", score:5.5},
+                {q:20, ans:"1", unit:"함수", diff:"상", type:"기점", score:5.5},
+                {q:21, ans:"1", unit:"무리함수", diff:"상", type:"지연", score:6},
+                {q:22, ans:"1", unit:"명제", diff:"상", type:"기점", score:9},
+            ]
+        }
+    }; 
+
+    let unitChart, diffChart, distChart, compareChart;
+
+    window.onload = function() {
+        if (typeof ChartDataLabels !== 'undefined') {
+            Chart.register(ChartDataLabels);
+            Chart.defaults.set('plugins.datalabels', {
+                color: '#1A2B4C',
+                font: { weight: 'bold' }
+            });
+        }
+        loadExamGrid();
+    }
+
+    function loadExamGrid() {
+        const courseId = document.getElementById('courseSelect').value;
+        const db = examDatabase[courseId];
+        
+        const midGrid = document.getElementById('midtermGrid');
+        const finGrid = document.getElementById('finalGrid');
+        midGrid.innerHTML = ''; finGrid.innerHTML = '';
+
+        document.getElementById('midCnt').innerText = `(${db.midterm.length}문항)`;
+        document.getElementById('finCnt').innerText = `(${db.final.length}문항)`;
+
+        db.midterm.forEach(item => {
+            midGrid.innerHTML += `<div class="omr-item"><label>${item.q}번</label><input type="text" id="m_${item.q}"></div>`;
+        });
+        db.final.forEach(item => {
+            finGrid.innerHTML += `<div class="omr-item"><label>${item.q}번</label><input type="text" id="f_${item.q}"></div>`;
+        });
+    }
+
+    function applyGradeColor(elementId, score) {
+        let el = document.getElementById(elementId);
+        let color = "";
+        if(score >= 90) color = "linear-gradient(135deg, #1A2B4C, #3b5998)"; 
+        else if(score >= 80) color = "linear-gradient(135deg, #1e8449, #27ae60)"; 
+        else if(score >= 70) color = "linear-gradient(135deg, #d68910, #f39c12)"; 
+        else if(score >= 60) color = "linear-gradient(135deg, #ba4a00, #e67e22)"; 
+        else color = "linear-gradient(135deg, #c0392b, #e74c3c)"; 
+        
+        el.style.background = color;
+        el.style.color = "white";
+        el.querySelector('h3').style.color = "rgba(255,255,255,0.9)";
+        el.querySelector('.score').style.color = "white";
+    }
+
+    function generateReport() {
+        const courseId = document.getElementById('courseSelect').value;
+        const studentName = document.getElementById('studentName').value || "미상";
+        const db = examDatabase[courseId];
+        
+        let isHighSchool = courseId.includes('h');
+        
+        document.getElementById('outHeaderTitle').innerHTML = `<span style="color:var(--primary);">${studentName}</span> 학생 ${db.title}`;
+
+        let midScore = 0, finScore = 0;
+        let unitStats = {};
+        let dStats = { '상':{t:0, c:0}, '중':{t:0, c:0}, '하':{t:0, c:0} };
+        
+        let typeStats = { 
+            "기점": { mid: {t:0, c:0}, fin: {t:0, c:0} }, 
+            "고필": { mid: {t:0, c:0}, fin: {t:0, c:0} }, 
+            "지연": { mid: {t:0, c:0}, fin: {t:0, c:0} }, 
+            "중심": { mid: {t:0, c:0}, fin: {t:0, c:0} }, 
+            "선출": { mid: {t:0, c:0}, fin: {t:0, c:0} } 
+        };
+
+        const processExam = (examType, dataArray, prefix) => {
+            dataArray.forEach(item => {
+                const el = document.getElementById(`${prefix}_${item.q}`);
+                const rawStudentAns = el ? el.value : "";
+                const cleanStudentAns = rawStudentAns.replace(/\s+/g, '').toLowerCase(); 
+                const cleanCorrectAns = String(item.ans).replace(/\s+/g, '').toLowerCase();
+                
+                let isCorrect = false;
+
+                if (cleanStudentAns !== "") {
+                    if (cleanStudentAns === cleanCorrectAns) {
+                        isCorrect = true;
+                    } else if (cleanStudentAns === 'o' || cleanStudentAns === 'ㅇ' || cleanStudentAns === '0') {
+                        isCorrect = true;
+                    } else if (cleanStudentAns === String(item.score)) {
+                        isCorrect = true;
+                    }
+                }
+
+                if(!unitStats[item.unit]) unitStats[item.unit] = { t:0, c:0 };
+                unitStats[item.unit].t += 1;
+                dStats[item.diff].t += 1;
+                
+                let qType = item.type || "기점";
+                if(typeStats[qType]) typeStats[qType][examType].t += item.score; 
+
+                if(isCorrect) {
+                    if(examType === 'mid') midScore += item.score;
+                    else finScore += item.score;
+                    
+                    unitStats[item.unit].c += 1;
+                    dStats[item.diff].c += 1;
+                    if(typeStats[qType]) typeStats[qType][examType].c += item.score; 
+                }
+            });
+        };
+
+        processExam('mid', db.midterm, 'm');
+        processExam('fin', db.final, 'f');
+
+        let avgScore = Number(((midScore + finScore) / 2).toFixed(1));
+        
+        document.getElementById('midScoreOut').innerText = Number((midScore).toFixed(1));
+        document.getElementById('finScoreOut').innerText = Number((finScore).toFixed(1));
+        document.getElementById('avgScoreOut').innerText = avgScore;
+
+        applyGradeColor('cardMid', midScore);
+        applyGradeColor('cardFin', finScore);
+        applyGradeColor('cardAvg', avgScore);
+
+        let validTypeCount = 0;
+        for(let key in typeStats) {
+            if((typeStats[key].mid.t + typeStats[key].fin.t) > 0) validTypeCount++;
+        }
+
+        document.getElementById('examGuideText').innerHTML = `본 의대 입문진단평가 검사지는 수학 과목에 대한 학습 상태를 객관적으로 진단 하기 위해 (주)넥스트닥에서 개발하였습니다. 본 검사지는 학습자의 역량을 보다 객관적으로 정확하게 진단하고자, 객관적인 지표인 실제 학교의 기출문제들로 구성되어 있으며, 본 검사지의 리포트에서는 수학 역량을 결정짓는 <strong>${validTypeCount}개의 핵심 역량</strong>을 중점으로 분석하고, 과학적이고 입체적인 분석 방법을 통해서 학습자의 현재 학습 상태를 면밀히 분석 할 수 있는 국내 최고의 수학 역량 검사지 입니다.`;
+        
+        document.getElementById('typeSectionTitle').innerHTML = `🔍 ${validTypeCount}가지 기출분석법으로 본 나의 점수`;
+        document.getElementById('typeSectionDesc').innerHTML = `NeXT DOC만의 ${validTypeCount}가지 핵심 기출 유형 분석을 통해 학생의 중간/기말 유형별 적응력과 취약점을 정밀하게 진단합니다.`;
+
+        let scoreDB = JSON.parse(localStorage.getItem('nextdoc_history')) || {};
+        let uniqueKey = studentName + "_" + courseId + "_" + Date.now(); 
+        scoreDB[uniqueKey] = avgScore;
+        localStorage.setItem('nextdoc_history', JSON.stringify(scoreDB));
+
+        let totalSum = 0; let totalCount = 0;
+        for(let key in scoreDB) {
+            totalSum += scoreDB[key];
+            totalCount++;
+        }
+        let accumulatedAvg = totalCount > 0 ? Number((totalSum / totalCount).toFixed(1)) : avgScore;
+
+        const uLabels = Object.keys(unitStats);
+        const uData = uLabels.map(u => Number(((unitStats[u].c / unitStats[u].t)*100).toFixed(1)));
+        const diffLabels = ['상', '중', '하'];
+        const diffData = diffLabels.map(d => dStats[d].t > 0 ? Number(((dStats[d].c / dStats[d].t)*100).toFixed(1)) : 0);
+
+        const distData = db.dist || [10, 25, 40, 15, 10]; 
+        
+        let myGradeIndex = 4; 
+        if(avgScore >= 90) myGradeIndex = 0; 
+        else if(avgScore >= 80) myGradeIndex = 1; 
+        else if(avgScore >= 70) myGradeIndex = 2; 
+        else if(avgScore >= 60) myGradeIndex = 3; 
+
+        generateNeXTDOCComment(avgScore, unitStats, dStats, typeStats, isHighSchool);
+
+        drawCharts(uLabels, uData, diffLabels, diffData, distData, myGradeIndex, avgScore, accumulatedAvg);
+        drawFiveTypes(typeStats, isHighSchool);
+
+        document.getElementById('reportSection').style.display = 'block';
+        document.getElementById('printBtn').style.display = 'block';
+        document.getElementById('reportSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function generateNeXTDOCComment(avgScore, unitStats, diffStats, typeStats, isHighSchool) {
+        let text = "";
+        
+        if(avgScore >= 90) text += `본 학생은 이번 학기 통합 성취도 ${avgScore}점으로 매우 우수한 학업 성취를 달성했습니다. 전체적인 개념 이해도와 응용력이 뛰어나며, 최상위권 안착을 위한 심화 학습이 권장됩니다. `;
+        else if(avgScore >= 80) text += `본 학생은 이번 학기 통합 성취도 ${avgScore}점으로 안정적인 학업 성취를 보이고 있습니다. 꾸준한 학습 태도가 돋보이며, 상위권 도약을 위해 약간의 오답 클리닉이 병행된다면 더 좋은 결과가 기대됩니다. `;
+        else if(avgScore >= 70) text += `본 학생은 학기 통합 성취도 ${avgScore}점으로 기본 개념은 형성되어 있으나, 일부 단원 및 유형에서 개념 보완이 필요한 상태입니다. `;
+        else text += `본 학생은 학기 통합 성취도 ${avgScore}점으로 현재 전체적인 수학적 개념의 뼈대를 다시 잡는 집중 클리닉이 필요합니다. `;
+
+        let weakUnit = "";
+        let lowestUnitRate = 100;
+        for(let u in unitStats) {
+            let rate = Number(((unitStats[u].c / unitStats[u].t) * 100).toFixed(1));
+            if(rate < lowestUnitRate && unitStats[u].t > 1) { lowestUnitRate = rate; weakUnit = u; }
+        }
+
+        if(weakUnit) {
+            text += `<br><br>세부 단원 분석 결과, 전체 단원 중 <strong>[${weakUnit}]</strong> 영역의 성취도가 비교적 낮게 나타나 해당 단원의 집중적인 복습이 필수적입니다. `;
+        }
+
+        let lowestType = "";
+        let lowestTypeRate = 100;
+        for(let key in typeStats) {
+            let totalT = typeStats[key].mid.t + typeStats[key].fin.t;
+            let totalC = typeStats[key].mid.c + typeStats[key].fin.c;
+            if(totalT > 0) { 
+                let rate = Number(((totalC / totalT) * 100).toFixed(1));
+                if(rate < lowestTypeRate) {
+                    lowestTypeRate = rate;
+                    lowestType = key;
+                }
+            }
+        }
+
+        if(lowestTypeRate < 100) { 
+            if(lowestType === "기점") {
+                text += `특히 무조건 맞아야 하는 <strong>기본점수 문제(기점)</strong>에서 실수가 발생하여 아쉬움을 남겼습니다. 흔들림 없는 베이스를 위해 기초 연산과 필수 개념을 다시 한번 견고하게 다지는 과정이 최우선으로 필요합니다.`;
+            } else if(lowestType === "고필") {
+                text += `특히 <strong>고등 연계문제(고필)</strong>에 대한 대비가 다소 부족합니다. 현재 학습 중인 내용이 고등 과정으로 어떻게 확장되는지 연결 고리를 파악하는 심화 관점의 훈련이 필요합니다.`;
+            } else if(lowestType === "지연") {
+                text += `특히 <strong>지난학기 연계문제(지연)</strong>에서 취약점이 발견되었습니다. 현재 진도뿐만 아니라 이전 과정 중 누수된 개념이 없는지 철저한 후행 복습이 반드시 병행되어야 합니다.`;
+            } else if(lowestType === "중심") {
+                if (isHighSchool) {
+                    text += `특히 <strong>고등학교 심화문제(고심)</strong> 해결력이 다소 아쉽습니다. 기본기는 갖추어져 있으나, 복합적인 사고를 요하는 고등 심화 문제에 대한 끈기 있는 집중 훈련이 요구됩니다.`;
+                } else {
+                    text += `특히 <strong>중학교 심화문제(중심)</strong> 해결력이 다소 아쉽습니다. 기본기는 갖추어져 있으나, 복합적인 사고를 요하는 고난도 문제에 대한 끈기 있는 집중 훈련이 요구됩니다.`;
+                }
+            } else if(lowestType === "선출") {
+                text += `특히 <strong>선생님 출제 문제(선출)</strong> 등 낯설고 변형된 유형에 약한 모습을 보입니다. 학교 수업의 핵심을 간파하고 다양한 변형 문제에 유연하게 대처하는 실전 응용력을 길러야 합니다.`;
+            }
+        }
+
+        document.getElementById('nextdocCommentText').innerHTML = text;
+    }
+
+    function drawCharts(uL, uD, diffL, diffD, distD, gIndex, myAvg, accAvg) {
+        if(unitChart) unitChart.destroy();
+        if(diffChart) diffChart.destroy();
+        if(distChart) distChart.destroy();
+        if(compareChart) compareChart.destroy();
+
+        const unitColors = uD.map(score => {
+            if(score >= 90) return '#3b5998'; 
+            if(score >= 80) return '#27ae60'; 
+            if(score >= 70) return '#f39c12'; 
+            if(score >= 60) return '#e67e22'; 
+            return '#e74c3c'; 
+        });
+
+        unitChart = new Chart(document.getElementById('unitChart'), {
+            type: 'bar',
+            data: { 
+                labels: uL, 
+                datasets: [{ 
+                    data: uD, 
+                    backgroundColor: unitColors, 
+                    borderRadius: 4 
+                }] 
+            },
+            options: { 
+                maintainAspectRatio: false, 
+                layout: { padding: { top: 20 } },
+                scales: { 
+                    y: { min: 0, max: 100, display: false },
+                    x: { ticks: { font: { size: 10 } } }
+                }, 
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: function(ctx){ return ctx.parsed.y + '점'; } } },
+                    datalabels: { 
+                        align: 'end', 
+                        anchor: 'end', 
+                        color: function(context) { return unitColors[context.dataIndex]; },
+                        font: { size: 11, weight: 'bold' }, 
+                        formatter: function(v){ return v + '점'; } 
+                    }
+                } 
+            }
+        });
+
+        diffChart = new Chart(document.getElementById('diffChart'), {
+            type: 'bar',
+            data: { labels: diffL, datasets: [{ data: diffD, backgroundColor: ['#e74c3c', '#f39c12', '#27ae60'], borderRadius: 4 }] },
+            options: { 
+                maintainAspectRatio: false, 
+                layout: { padding: { top: 20 } },
+                scales: { y: { min: 0, max: 100, display: false } }, 
+                plugins: { 
+                    legend: { display: false }, 
+                    tooltip: { callbacks: { label: function(ctx){ return ctx.parsed.y + '%'; } } },
+                    datalabels: { align: 'end', anchor: 'end', color: '#1A2B4C', font: { size: 11 }, formatter: function(v){ return v + '%'; } }
+                } 
+            }
+        });
+
+        const bgColors = ['#cbd5e1', '#cbd5e1', '#cbd5e1', '#cbd5e1', '#cbd5e1'];
+        bgColors[gIndex] = '#e74c3c';
+
+        distChart = new Chart(document.getElementById('distChart'), {
+            type: 'bar',
+            data: { 
+                labels: ['A(90~)', 'B(80~)', 'C(70~)', 'D(60~)', 'E(~59)'], 
+                datasets: [{ data: distD, backgroundColor: bgColors, borderRadius: 4 }] 
+            },
+            options: { 
+                maintainAspectRatio: false, 
+                layout: { padding: { top: 20 } },
+                scales: { y: { beginAtZero: true, display: false } }, 
+                plugins: { 
+                    legend: { display: false },
+                    title: { display: true, text: '빨간 막대가 학생의 현재 위치입니다', font: { size: 12 }, color: '#666' },
+                    datalabels: { align: 'end', anchor: 'end', color: '#1A2B4C', font: { size: 11 }, formatter: function(v){ return v + '%'; } }
+                } 
+            }
+        });
+
+        compareChart = new Chart(document.getElementById('compareChart'), {
+            type: 'bar',
+            data: { 
+                labels: ['넥스트닥 누적 평균', '나의 학기 평균'], 
+                datasets: [{ data: [accAvg, myAvg], backgroundColor: ['#9ca3af', '#1A2B4C'], borderRadius: 4, barThickness: 50 }] 
+            },
+            options: { 
+                maintainAspectRatio: false, 
+                layout: { padding: { top: 20 } },
+                scales: { y: { min: 0, max: 100, display: false } }, 
+                plugins: { 
+                    legend: { display: false },
+                    datalabels: { align: 'end', anchor: 'end', color: '#1A2B4C', font: { size: 11 }, formatter: function(v){ return v + '점'; } }
+                },
+                animation: { duration: 1500 }
+            }
+        });
+    }
+
+    function drawFiveTypes(stats, isHighSchool) {
+        const typeKeys = ["기점", "고필", "지연", "중심", "선출"];
+        let html = "";
+        
+        typeKeys.forEach(key => {
+            let midT = stats[key].mid.t;
+            let midC = stats[key].mid.c;
+            let finT = stats[key].fin.t;
+            let finC = stats[key].fin.c;
+            
+            if (midT === 0 && finT === 0) return; 
+
+            let displayKey = key;
+            if (isHighSchool && key === "중심") displayKey = "고심";
+
+            html += `<div class="type-group">`;
+
+            if (midT > 0) {
+                let s = Number(midC.toFixed(1));
+                let f = Number(midT.toFixed(1));
+                let percent = f > 0 ? Number(((s / f) * 100).toFixed(1)) : 0;
+                
+                let colorStart = "#3b5998"; let colorEnd = "#1A2B4C";
+                if(percent < 60) { colorStart = "#e74c3c"; colorEnd = "#c0392b"; }
+                else if(percent < 80) { colorStart = "#f39c12"; colorEnd = "#d35400"; }
+
+                html += `
+                <div class="type-bar-row" style="${finT > 0 ? 'margin-bottom: 6px;' : 'margin-bottom: 0;'}">
+                    <div class="type-label">${displayKey} 문제 <span style="color:#888; font-size:0.85em;">(중간)</span></div>
+                    <div class="type-bar-container">
+                        <div class="type-bar-fill" style="width: ${percent}%; background: linear-gradient(90deg, ${colorStart}, ${colorEnd});"></div>
+                    </div>
+                    <div class="type-score">${s} / ${f}점<br><span style="font-size:0.8em; color:#888;">(${percent}%)</span></div>
+                </div>`;
+            }
+
+            if (finT > 0) {
+                let s = Number(finC.toFixed(1));
+                let f = Number(finT.toFixed(1));
+                let percent = f > 0 ? Number(((s / f) * 100).toFixed(1)) : 0;
+                
+                let colorStart = "#3b5998"; let colorEnd = "#1A2B4C";
+                if(percent < 60) { colorStart = "#e74c3c"; colorEnd = "#c0392b"; }
+                else if(percent < 80) { colorStart = "#f39c12"; colorEnd = "#d35400"; }
+
+                html += `
+                <div class="type-bar-row" style="margin-bottom: 0;">
+                    <div class="type-label">${displayKey} 문제 <span style="color:#888; font-size:0.85em;">(기말)</span></div>
+                    <div class="type-bar-container">
+                        <div class="type-bar-fill" style="width: ${percent}%; background: linear-gradient(90deg, ${colorStart}, ${colorEnd});"></div>
+                    </div>
+                    <div class="type-score">${s} / ${f}점<br><span style="font-size:0.8em; color:#888;">(${percent}%)</span></div>
+                </div>`;
+            }
+            
+            html += `</div>`;
+        });
+        document.getElementById('fiveTypeBars').innerHTML = html;
+    }
+</script>
+</body>
+</html>

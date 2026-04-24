@@ -38,7 +38,6 @@
             0% { opacity: 0; transform: scale(0.8); filter: blur(5px); }
             100% { opacity: 1; transform: scale(1.1); filter: blur(0); }
         }
-        /* [수정] 인트로가 끝나면 클릭을 방해하지 않도록 처리 */
         .hidden { opacity: 0; visibility: hidden; pointer-events: none !important; }
 
         /* --- 2. 헤더 및 네비게이션 --- */
@@ -46,7 +45,7 @@
             padding: 15px 0;
             background-color: white !important;
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            z-index: 1050; /* 인트로 레이어 아래, 일반 컨텐츠 위 */
+            z-index: 1050;
         }
         .navbar-brand img { height: 45px; }
         .nav-link { 
@@ -94,64 +93,44 @@
         .core-box:hover { background: #fcf9f4; border-color: var(--next-gold); }
         .core-box h5 { color: var(--next-gold); font-weight: 800; margin-bottom: 15px; font-size: 1.3rem; }
 
-        /* --- 5. 채점 프로그램 (PC 전용) --- */
-        .pre-footer { background-color: #f8f9fa; padding: 60px 0; text-align: center; }
+        /* --- 5. 채점 프로그램 섹션 (아이콘만 남김) --- */
+        .pre-footer { background-color: #f8f9fa; padding: 40px 0; text-align: center; }
         .btn-score-program {
-            background-color: #333; color: white; padding: 15px 35px;
-            font-weight: bold; border-radius: 50px; text-decoration: none; display: inline-block;
+            background-color: transparent; 
+            color: #ccc; 
+            font-size: 28px; 
+            text-decoration: none; 
+            display: inline-block;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
         }
+        .btn-score-program:hover { color: var(--next-navy); transform: rotate(90deg); }
 
         /* --- 6. 푸터 --- */
         footer { background: #fff; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
 
-        /* --- [중요] 모바일 최적화 및 탭 애니메이션 (반드시 Style 안에 위치) --- */
         @media (max-width: 768px) {
             #intro-logo { width: 220px; }
-            
             .navbar-brand img { height: 35px; }
-            .navbar-collapse { 
-                background: white; 
-                padding: 20px; 
-                border-top: 1px solid #eee; 
-                text-align: center;
-            }
-
-            /* [수정] 모바일 메뉴 글자 애니메이션 (아래서 위로, 오른쪽에서 왼쪽으로) */
-            .navbar-collapse.show .nav-item {
-                animation: slideUpLeft 0.5s ease forwards;
-                opacity: 0;
-            }
-            @keyframes slideUpLeft {
-                from { 
-                    opacity: 0; 
-                    transform: translate(40px, 40px); /* 오른쪽(40px) 아래(40px)에서 시작 */
-                }
-                to { 
-                    opacity: 1; 
-                    transform: translate(0, 0); /* 제자리로 */
-                }
-            }
-            /* 메뉴 순서대로 등장 */
+            .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; text-align: center; }
+            .navbar-collapse.show .nav-item { animation: slideUpLeft 0.5s ease forwards; opacity: 0; }
+            @keyframes slideUpLeft { from { opacity: 0; transform: translate(40px, 40px); } to { opacity: 1; transform: translate(0, 0); } }
             .nav-item:nth-child(1) { animation-delay: 0.1s; }
             .nav-item:nth-child(2) { animation-delay: 0.2s; }
             .nav-item:nth-child(3) { animation-delay: 0.3s; }
             .nav-item:nth-child(4) { animation-delay: 0.4s; }
             .nav-item:nth-child(5) { animation-delay: 0.5s; }
             .nav-item:nth-child(6) { animation-delay: 0.6s; }
-
             .nav-link { margin: 10px 0; font-size: 1.1rem; }
             .btn-apply-nav { width: 100%; text-align: center; margin: 10px 0; }
-
             .hero { height: 70vh; }
             .hero h1 { font-size: 2.2rem; }
             .sub-text { font-size: 1.1rem; }
             .btn-main-gold { width: 100%; padding: 15px; }
-
             .core-section { padding: 60px 0; }
             .core-box { padding: 40px 20px; border-right: none !important; border-bottom: 1px solid #eee; }
-            
-            .pre-footer { display: none !important; }
-            
+            .pre-footer { display: none !important; } /* 모바일에서는 숨김 */
             footer { padding: 40px 20px; font-size: 12px; }
         }
     </style>
@@ -220,18 +199,17 @@
 
         <section class="pre-footer d-none d-md-block">
             <div class="container" data-aos="zoom-in">
-                <h4 class="fw-bold mb-4" style="color:var(--next-navy)">입학테스트 진단 결과 확인</h4>
-                <a href="입학테스트 성적처리프로그램.html" class="btn-score-program">
-                    ⚙️ 입학테스트 채점프로그램 실행
-                </a>
+                <button onclick="accessAdmin()" class="btn-score-program">
+                    ⚙️
+                </button>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="container">
-            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자등록번호: 315-87-01300</p>
-            <p>서울특별시 강남구 삼성로71길 18, 5층 대치동, 대치스터디타워</p>
+            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자번호: 315-87-01300</p>
+            <p>서울특별시 강남구 삼성로71길 18, 5층</p>
             <p>T. 02. 567. 9155  | E. nextdoc@naver.com</p>
             <p class="mt-4 opacity-50">© 2024 NeXT Doc. All Rights Reserved.</p>
         </div>
@@ -247,6 +225,16 @@
                 AOS.init({ duration: 1000, once: true });
             }, 2000);
         });
+
+        // [추가] 암호 확인 및 이동 함수
+        function accessAdmin() {
+            const pw = prompt("관리자 암호를 입력하세요.");
+            if (pw === "nextdoc9155!!") {
+                window.location.href = "test.html";
+            } else if (pw !== null) {
+                alert("암호가 올바르지 않습니다.");
+            }
+        }
     </script>
 </body>
 </html>
