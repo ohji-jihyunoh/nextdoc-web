@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>설명회 신청 | NeXT DOC</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
     <style>
         :root {
             --next-navy: #00234B;
@@ -12,7 +16,6 @@
             --next-light-gray: #f8f9fa;
         }
 
-        /* 배경: 메인과 동일한 남색 그라데이션 */
         body { 
             font-family: 'Pretendard', sans-serif; 
             background: linear-gradient(135deg, var(--next-navy) 0%, #00152e 100%);
@@ -21,9 +24,10 @@
             display: flex;
             flex-direction: column;
             padding-top: 120px; 
+            word-break: keep-all;
         }
         
-        /* --- [수정] 헤더 및 네비게이션 (index.html과 동일하게 16px 확대) --- */
+        /* --- 1. 헤더 및 네비게이션 (16px) --- */
         header { width: 100%; }
         .navbar {
             transition: all 0.4s ease;
@@ -35,96 +39,80 @@
         .nav-link { 
             font-weight: 700; 
             color: var(--next-navy) !important; 
-            font-size: 16px; /* 14px -> 16px 확대 */
+            font-size: 16px; 
             margin: 0 10px; 
             transition: 0.3s;
         }
-        .nav-link:hover { color: var(--next-gold) !important; }
+        .nav-link:hover, .nav-link.active { color: var(--next-gold) !important; }
 
         .btn-apply-nav {
-            background-color: var(--next-gold); 
-            color: white !important;
-            padding: 10px 22px !important; /* 버튼 크기 확대 */
-            border-radius: 5px; 
-            margin-left: 15px;
-            font-size: 16px; /* 버튼 폰트 확대 */
-            font-weight: 700;
-            transition: 0.3s;
+            background-color: var(--next-gold); color: white !important;
+            padding: 10px 22px !important; border-radius: 5px; margin-left: 15px;
+            font-size: 16px; font-weight: 700; transition: 0.3s;
         }
-        .btn-apply-nav:hover { background-color: #a38249; transform: translateY(-2px); }
 
-        /* --- 신청 컨텐츠 박스 --- */
-        .content-wrapper { flex: 1; }
+        /* --- 2. 신청 컨텐츠 박스 --- */
+        .content-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; }
         
         .apply-container { 
-            max-width: 850px; 
-            margin: 0 auto 50px; 
+            max-width: 800px; 
+            width: 100%;
             background: white; 
             padding: 60px 40px; 
             border-radius: 20px; 
             box-shadow: 0 20px 50px rgba(0,0,0,0.3); 
             text-align: center; 
         }
-        .apply-title { color: var(--next-navy); font-weight: 800; margin-bottom: 15px; font-size: 2rem; }
-        .apply-subtitle { color: #666; margin-bottom: 45px; }
+        .apply-title { color: var(--next-navy); font-weight: 800; margin-bottom: 15px; font-size: 2.2rem; }
+        .apply-subtitle { color: #666; margin-bottom: 40px; font-size: 1.1rem; }
         
-        /* 내부 지역 선택 탭 */
+        /* 탭 스타일 */
         .nav-pills .nav-link-tab { 
-            color: var(--next-navy); 
-            border: 1px solid #ddd; 
-            margin: 0 10px; 
-            padding: 15px 35px; 
-            font-weight: 700; 
-            border-radius: 50px;
-            transition: 0.3s;
-            font-size: 16px;
+            color: var(--next-navy); border: 1px solid #ddd; margin: 0 10px; 
+            padding: 15px 40px; font-weight: 700; border-radius: 50px; transition: 0.3s;
         }
         .nav-pills .nav-link-tab.active { 
-            background-color: var(--next-gold) !important; 
-            border-color: var(--next-gold); 
-            color: white; 
-            box-shadow: 0 5px 15px rgba(184, 147, 85, 0.3);
+            background-color: var(--next-gold) !important; border-color: var(--next-gold); 
+            color: white !important; box-shadow: 0 5px 15px rgba(184, 147, 85, 0.3);
         }
 
-        .tab-content { 
-            margin-top: 40px; 
-            padding: 40px 20px; 
-            border-top: 1px solid #eee; 
-        }
+        .tab-content { margin-top: 30px; padding-top: 30px; border-top: 1px solid #eee; }
+        
         .btn-form { 
-            background-color: var(--next-navy); 
-            color: white; 
-            padding: 18px 50px; 
-            font-weight: bold; 
-            border-radius: 5px; 
-            text-decoration: none; 
-            display: inline-block; 
-            transition: 0.3s; 
-            margin-top: 20px;
+            background-color: var(--next-navy); color: white; padding: 18px 50px; 
+            font-weight: bold; border-radius: 8px; text-decoration: none; 
+            display: inline-block; transition: 0.3s; margin-top: 20px; font-size: 1.1rem;
         }
-        .btn-form:hover { 
-            background-color: var(--next-gold); 
-            color: white; 
-            transform: translateY(-3px);
-        }
+        .btn-form:hover { background-color: var(--next-gold); color: white; transform: translateY(-3px); }
 
-        /* --- [수정] 푸터 (index.html과 동일한 화이트 배경 스타일로 통일) --- */
-        footer { 
-            background: #fff; 
-            color: #555; 
-            padding: 60px 0; 
-            font-size: 13.5px; 
-            text-align: center;
-            border-top: 1px solid #eee;
-        }
-        footer strong { color: #333; }
+        /* --- 3. 푸터 --- */
+        footer { background: #fff; color: #555; padding: 60px 0; font-size: 13.5px; text-align: center; border-top: 1px solid #eee; }
         footer p { margin-bottom: 6px; line-height: 1.6; }
 
+        /* --- [중요] 모바일 최적화 전용 (Style 안으로 이동) --- */
         @media (max-width: 768px) {
             body { padding-top: 100px; }
-            .apply-container { padding: 40px 20px; margin: 0 15px 50px; }
-            .nav-link { font-size: 15px; margin: 5px 0; }
+            
+            /* 신청 컨텐츠 박스 조정 */
+            .apply-container { padding: 40px 20px; margin: 0 15px 40px; border-radius: 15px; }
+            .apply-title { font-size: 1.6rem; }
+            .apply-subtitle { font-size: 0.95rem; margin-bottom: 30px; }
+            
+            /* 탭 버튼 조정 */
+            .nav-pills .nav-link-tab { 
+                padding: 12px 20px; font-size: 0.9rem; margin: 5px; flex: 1;
+            }
+            
+            /* 신청 버튼 꽉 차게 */
+            .btn-form { width: 100%; padding: 15px; font-size: 1rem; }
+            
+            /* 네비게이션 모바일 최적화 */
+            .navbar-brand img { height: 35px; }
+            .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; text-align: center; }
+            .nav-link { margin: 10px 0; font-size: 1.1rem; }
             .btn-apply-nav { margin-left: 0; margin-top: 10px; width: 100%; text-align: center; }
+            
+            footer { padding: 40px 20px; font-size: 12px; }
         }
     </style>
 </head>
@@ -152,31 +140,31 @@
     </header>
 
     <div class="content-wrapper">
-        <div class="container">
-            <div class="apply-container">
+        <div class="container d-flex justify-content-center">
+            <div class="apply-container" data-aos="zoom-in">
                 <h2 class="apply-title">설명회 참여 신청</h2>
                 <p class="apply-subtitle">참석을 원하시는 교육관을 선택해 주세요.</p>
 
                 <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
-                    <li class="nav-item">
-                        <button class="nav-link-tab active btn" id="pills-daechi-tab" data-bs-toggle="pill" data-bs-target="#pills-daechi" type="button">대치 본원</button>
+                    <li class="nav-item flex-fill flex-md-initial">
+                        <button class="nav-link-tab active btn w-100" id="pills-daechi-tab" data-bs-toggle="pill" data-bs-target="#pills-daechi" type="button">대치 본원</button>
                     </li>
-                    <li class="nav-item">
-                        <button class="nav-link-tab btn" id="pills-gwangju-tab" data-bs-toggle="pill" data-bs-target="#pills-gwangju" type="button">광주 직영</button>
+                    <li class="nav-item flex-fill flex-md-initial">
+                        <button class="nav-link-tab btn w-100" id="pills-gwangju-tab" data-bs-toggle="pill" data-bs-target="#pills-gwangju" type="button">광주 직영</button>
                     </li>
                 </ul>
 
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-daechi">
-                        <h4 style="color:var(--next-navy); font-weight:800;">대치 본원 설명회 신청</h4>
-                        <p class="mb-4 text-muted">최상위권 입시의 중심, 대치 본원만의<br>독보적인 의대 합격 전략을 공개합니다.</p>
-                        <a href="https://buly.kr/nextdocDC" target="_blank" class="btn btn-form">대치 본원 신청서 작성 (Google 폼)</a>
+                        <h4 style="color:var(--next-navy); font-weight:800;">대치 본원 설명회</h4>
+                        <p class="mb-4 text-muted">대치 본원만의 독보적인<br>의대 합격 전략을 공개합니다.</p>
+                        <a href="https://buly.kr/nextdocDC" target="_blank" class="btn-form">신청서 작성 (Google 폼)</a>
                     </div>
                     
                     <div class="tab-pane fade" id="pills-gwangju">
-                        <h4 style="color:var(--next-navy); font-weight:800;">광주 직영 설명회 신청</h4>
-                        <p class="mb-4 text-muted">호남권 최상위 교육의 기준, 광주 직영점에서<br>자녀의 입시 로드맵을 설계해 드립니다.</p>
-                        <a href="https://buly.kr/nextdocGJ" target="_blank" class="btn btn-form">광주 직영 신청서 작성 (Google 폼)</a>
+                        <h4 style="color:var(--next-navy); font-weight:800;">광주 직영 설명회</h4>
+                        <p class="mb-4 text-muted">광주 직영점에서 자녀의 입시<br>로드맵을 설계해 드립니다.</p>
+                        <a href="https://buly.kr/nextdocGJ" target="_blank" class="btn-form">신청서 작성 (Google 폼)</a>
                     </div>
                 </div>
             </div>
@@ -185,58 +173,17 @@
 
     <footer>
         <div class="container">
-            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자등록번호: 315-87-01300</p>
-            <p>서울특별시 강남구 삼성로71길 18, 5층 대치동, 대치스터디타워</p>
+            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자번호: 315-87-01300</p>
+            <p>서울특별시 강남구 삼성로71길 18, 5층</p>
             <p>T. 02. 567. 9155  | E. nextdoc@naver.com</p>
             <p class="mt-4 opacity-50">© 2024 NeXT Doc. All Rights Reserved.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
 </body>
 </html>
-/* --- 모바일 최적화 전용 (768px 이하) --- */
-@media (max-width: 768px) {
-    /* 1. 상단 제목 크기 줄이기 (화면 밖으로 나가는 것 방지) */
-    .page-header h1 {
-        font-size: 2rem !important;
-        letter-spacing: 0.05em !important;
-    }
-    
-    /* 2. 섹션 위아래 간격 줄이기 (모바일은 너무 넓으면 안 예뻐요) */
-    .section-padding, .location-section {
-        padding: 50px 0 !important;
-    }
-
-    /* 3. 탭 버튼 크기 조정 (손가락 터치하기 편하게) */
-    .system-tabs .nav-link, .review-tabs .nav-pills .nav-link {
-        font-size: 0.85rem !important;
-        padding: 10px 5px !important;
-        margin: 3px !important;
-    }
-
-    /* 4. 컨텐츠 박스 안쪽 여백 줄이기 */
-    .content-box {
-        padding: 30px 20px !important;
-    }
-
-    /* 5. 텍스트 크기 미세 조정 */
-    .system-title {
-        font-size: 1.6rem !important;
-    }
-    .system-desc {
-        font-size: 1rem !important;
-        margin-bottom: 25px !important;
-    }
-
-    /* 6. 이미지가 화면 꽉 차게 */
-    .roadmap-img, .map-img, .performance-img {
-        margin-top: 20px !important;
-    }
-
-    /* 7. 푸터 폰트 크기 */
-    footer {
-        font-size: 12px !important;
-        padding: 40px 0 !important;
-    }
-}

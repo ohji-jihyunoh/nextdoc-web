@@ -7,6 +7,7 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <style>
         :root {
@@ -15,7 +16,7 @@
             --next-light-gray: #f8f9fa;
         }
 
-        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; }
+        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.6; }
 
         /* --- 1. 인트로 애니메이션 --- */
         #intro-layer {
@@ -25,95 +26,103 @@
             background-color: white;
             display: flex; justify-content: center; align-items: center;
             z-index: 9999;
-            transition: opacity 1s ease, visibility 1s;
+            transition: opacity 0.8s ease, visibility 0.8s;
         }
         #intro-logo {
-            width: 320px;
+            width: 280px;
             opacity: 0;
             transform: scale(0.8);
-            animation: logoAppear 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation: logoAppear 1.8s forwards;
         }
         @keyframes logoAppear {
-            0% { opacity: 0; transform: scale(0.8); filter: blur(8px); }
-            50% { opacity: 1; transform: scale(1.05); filter: blur(0); }
-            100% { opacity: 1; transform: scale(1.15); }
+            0% { opacity: 0; transform: scale(0.8); filter: blur(5px); }
+            100% { opacity: 1; transform: scale(1.1); filter: blur(0); }
         }
-        .hidden { opacity: 0; visibility: hidden; }
+        .hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-        /* --- 2. 헤더 및 네비게이션 (글자 크기 확대) --- */
-        header { width: 100%; }
+        /* --- 2. 헤더 및 네비게이션 --- */
         .navbar {
-            transition: all 0.4s ease;
             padding: 15px 0;
             background-color: white !important;
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
         .navbar-brand img { height: 45px; }
         .nav-link { 
-            font-weight: 700; 
-            color: var(--next-navy) !important; 
-            font-size: 16px; /* [수정] 14px -> 16px 확대 */
-            margin: 0 10px; /* [수정] 메뉴 간 간격 조정 */
-            transition: 0.3s;
+            font-weight: 700; color: var(--next-navy) !important; 
+            font-size: 16px; margin: 0 10px; transition: 0.3s;
         }
         .nav-link:hover { color: var(--next-gold) !important; }
         
         .btn-apply-nav {
             background-color: var(--next-gold); color: white !important;
-            padding: 10px 22px !important; /* [수정] 폰트 크기에 맞춰 버튼 크기 조절 */
-            border-radius: 5px; margin-left: 15px;
-            font-size: 16px; /* [수정] 신청 버튼 폰트도 확대 */
-            font-weight: 700;
-            transition: 0.3s;
+            padding: 10px 22px !important; border-radius: 5px; 
+            font-size: 16px; font-weight: 700; transition: 0.3s;
         }
-        .btn-apply-nav:hover { background-color: #a38249; transform: translateY(-2px); }
 
-        /* --- 3. 메인 히어로 (70vh) --- */
+        /* --- 3. 메인 히어로 --- */
         .hero {
-            height: 70vh;
+            height: 80vh;
             background: linear-gradient(135deg, var(--next-navy) 0%, #00152e 100%);
             display: flex; align-items: center; justify-content: center;
             color: white; text-align: center; padding: 0 20px;
-            margin-top: 60px;
         }
         .zoom-in-box {
             opacity: 0;
-            animation: zoomInMain 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-            animation-delay: 2.5s;
+            animation: zoomInMain 1.2s forwards;
+            animation-delay: 2s;
         }
         @keyframes zoomInMain {
-            0% { opacity: 0; transform: scale(0.5); }
+            0% { opacity: 0; transform: scale(0.8); }
             100% { opacity: 1; transform: scale(1); }
         }
-        .hero h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.3; margin-bottom: 10px; }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.3; margin-bottom: 15px; }
         .hero h1 span { color: var(--next-gold); }
-        .sub-text { font-size: 1.15rem; color: var(--next-gold); font-weight: 500; margin-bottom: 25px; letter-spacing: 1px; }
+        .sub-text { font-size: 1.2rem; color: var(--next-gold); margin-bottom: 30px; font-weight: 600; }
         .btn-main-gold {
-            background-color: var(--next-gold); color: white; border: none; padding: 14px 45px;
+            background-color: var(--next-gold); color: white; padding: 15px 40px;
             font-weight: bold; text-decoration: none; display: inline-block; transition: 0.3s;
         }
-        .btn-main-gold:hover { background-color: #a38249; transform: translateY(-3px); color: white; }
 
-        /* --- 4. 채점 프로그램 버튼 --- */
-        .pre-footer { background-color: #f1f3f5; padding: 50px 0; text-align: center; border-top: 1px solid #eee; }
-        .btn-score-program {
-            background-color: #333; color: white; padding: 14px 35px;
-            font-weight: bold; border-radius: 50px; text-decoration: none; display: inline-block; transition: 0.3s;
+        /* --- 4. 코어 프로그램 섹션 --- */
+        .core-section { padding: 100px 0; background: white; }
+        .core-box { 
+            padding: 50px 30px; border: 1px solid #eee; transition: 0.3s; 
+            height: 100%; display: flex; flex-direction: column; justify-content: center;
         }
-        .btn-score-program:hover { background-color: var(--next-navy); transform: scale(1.05); color: white; }
+        .core-box:hover { background: #fcf9f4; border-color: var(--next-gold); }
+        .core-box h5 { color: var(--next-gold); font-weight: 800; margin-bottom: 15px; font-size: 1.3rem; }
 
-        /* --- 5. 푸터 (공통) --- */
-        footer { background: #fff; color: #555; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
-        .footer-info-container p { margin-bottom: 6px; line-height: 1.6; }
+        /* --- 5. 채점 프로그램 (PC 전용) --- */
+        .pre-footer { background-color: #f8f9fa; padding: 60px 0; text-align: center; }
+        .btn-score-program {
+            background-color: #333; color: white; padding: 15px 35px;
+            font-weight: bold; border-radius: 50px; text-decoration: none; display: inline-block;
+        }
 
+        /* --- 6. 푸터 --- */
+        footer { background: #fff; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
+
+        /* --- [중요] 모바일 최적화 CSS (반드시 style 안에 위치) --- */
         @media (max-width: 768px) {
-            .hero { height: 60vh; }
-            .hero h1 { font-size: 2rem; }
-            .sub-text { font-size: 1rem; }
-            .btn-main-gold { width: 100%; padding: 14px; }
-            #intro-logo { width: 200px; }
-            .nav-link { font-size: 15px; margin: 5px 0; }
-            .btn-apply-nav { margin-left: 0; margin-top: 10px; width: 100%; text-align: center; }
+            #intro-logo { width: 220px; }
+            
+            .navbar-brand img { height: 35px; }
+            .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; }
+            .nav-link { margin: 10px 0; font-size: 1.1rem; }
+            .btn-apply-nav { width: 100%; text-align: center; margin: 10px 0; }
+
+            .hero { height: 70vh; }
+            .hero h1 { font-size: 2.2rem; }
+            .sub-text { font-size: 1.1rem; }
+            .btn-main-gold { width: 100%; padding: 15px; }
+
+            .core-section { padding: 60px 0; }
+            .core-box { padding: 40px 20px; border-right: none !important; border-bottom: 1px solid #eee; }
+            
+            /* 채점 프로그램 모바일에서 숨기기 */
+            .pre-footer { display: none !important; }
+            
+            footer { padding: 40px 20px; font-size: 12px; }
         }
     </style>
 </head>
@@ -149,31 +158,37 @@
             <div class="zoom-in-box"> 
                 <h1 class="fw-bold">미래의 선택지를 넓히는<br><span>의대 & 이공계</span> 입시 설계</h1>
                 <p class="sub-text">"넥스트 닥 올케어 시스템"</p>
-                <a href="system.html" class="btn-main-gold">넥스트 닥 교육과정 ></a>
+                <a href="system.html" class="btn-main-gold">넥스트 닥 교육과정 확인하기 ></a>
             </div>
         </section>
 
-        <section class="py-5 bg-white">
-            <div class="container py-5 text-center" data-aos="fade-up">
-                <h2 class="fw-bold mb-5" style="color:var(--next-navy)">NeXT Doc Core Program</h2>
-                <div class="row g-0" style="border: 1px solid #eee;">
-                    <div class="col-md-4 p-5 border-end">
-                        <h5 class="fw-bold" style="color:var(--next-gold)">01. 사고력 수학</h5>
-                        <p class="small text-muted">원리를 관통하는 사고력 확장</p>
+        <section class="core-section">
+            <div class="container text-center">
+                <h2 class="fw-bold mb-5" style="color:var(--next-navy)" data-aos="fade-up">NeXT Doc Core Program</h2>
+                <div class="row g-0 shadow-sm" data-aos="fade-up">
+                    <div class="col-md-4">
+                        <div class="core-box border-end">
+                            <h5>01. 사고력 수학</h5>
+                            <p class="text-muted mb-0">원리를 관통하는 사고력 확장<br>창의적 문제해결 능력 배양</p>
+                        </div>
                     </div>
-                    <div class="col-md-4 p-5 border-end">
-                        <h5 class="fw-bold" style="color:var(--next-gold)">02. 통합 과학</h5>
-                        <p class="small text-muted">물·화·생·지 통합 커리큘럼</p>
+                    <div class="col-md-4">
+                        <div class="core-box border-end">
+                            <h5>02. 통합 과학</h5>
+                            <p class="text-muted mb-0">물·화·생·지 통합 커리큘럼<br>이공계 진학의 탄탄한 기초</p>
+                        </div>
                     </div>
-                    <div class="col-md-4 p-5">
-                        <h5 class="fw-bold" style="color:var(--next-gold)">03. 입시 매니징</h5>
-                        <p class="small text-muted">밀착 관리 로드맵 시스템</p>
+                    <div class="col-md-4">
+                        <div class="core-box">
+                            <h5>03. 입시 매니징</h5>
+                            <p class="text-muted mb-0">학생별 밀착 관리 시스템<br>성공적인 입시 로드맵 설계</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="pre-footer">
+        <section class="pre-footer d-none d-md-block">
             <div class="container" data-aos="zoom-in">
                 <h4 class="fw-bold mb-4" style="color:var(--next-navy)">입학테스트 진단 결과 확인</h4>
                 <a href="입학테스트 성적처리프로그램.html" class="btn-score-program">
@@ -184,7 +199,7 @@
     </main>
 
     <footer>
-        <div class="container footer-info-container">
+        <div class="container">
             <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자등록번호: 315-87-01300</p>
             <p>서울특별시 강남구 삼성로71길 18, 5층 대치동, 대치스터디타워</p>
             <p>T. 02. 567. 9155  | E. nextdoc@naver.com</p>
@@ -194,59 +209,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
+        // 인트로 애니메이션 제어
         window.addEventListener('load', function() {
             const intro = document.getElementById('intro-layer');
             setTimeout(() => {
                 if(intro) intro.classList.add('hidden');
                 AOS.init({ duration: 1000, once: true });
-            }, 2500);
+            }, 2000);
         });
     </script>
 </body>
 </html>
-
-/* --- 모바일 최적화 전용 (768px 이하) --- */
-@media (max-width: 768px) {
-    /* 1. 상단 제목 크기 줄이기 (화면 밖으로 나가는 것 방지) */
-    .page-header h1 {
-        font-size: 2rem !important;
-        letter-spacing: 0.05em !important;
-    }
-    
-    /* 2. 섹션 위아래 간격 줄이기 (모바일은 너무 넓으면 안 예뻐요) */
-    .section-padding, .location-section {
-        padding: 50px 0 !important;
-    }
-
-    /* 3. 탭 버튼 크기 조정 (손가락 터치하기 편하게) */
-    .system-tabs .nav-link, .review-tabs .nav-pills .nav-link {
-        font-size: 0.85rem !important;
-        padding: 10px 5px !important;
-        margin: 3px !important;
-    }
-
-    /* 4. 컨텐츠 박스 안쪽 여백 줄이기 */
-    .content-box {
-        padding: 30px 20px !important;
-    }
-
-    /* 5. 텍스트 크기 미세 조정 */
-    .system-title {
-        font-size: 1.6rem !important;
-    }
-    .system-desc {
-        font-size: 1rem !important;
-        margin-bottom: 25px !important;
-    }
-
-    /* 6. 이미지가 화면 꽉 차게 */
-    .roadmap-img, .map-img, .performance-img {
-        margin-top: 20px !important;
-    }
-
-    /* 7. 푸터 폰트 크기 */
-    footer {
-        font-size: 12px !important;
-        padding: 40px 0 !important;
-    }
-}

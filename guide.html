@@ -16,7 +16,7 @@
             --next-naver-green: #03C75A;
         }
 
-        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.8; }
+        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.8; word-break: keep-all; }
 
         /* --- 1. 헤더 및 네비게이션 --- */
         header { width: 100%; }
@@ -27,13 +27,13 @@
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
         .navbar-brand img { height: 45px; }
-        .nav-link { font-weight: 700; color: var(--next-navy) !important; font-size: 16px; margin: 0 10px; }
+        .nav-link { font-weight: 700; color: var(--next-navy) !important; font-size: 16px; margin: 0 10px; transition: 0.3s; }
         .nav-link:hover, .nav-link.active { color: var(--next-gold) !important; }
         
         .btn-apply-nav {
             background-color: var(--next-gold); color: white !important;
             padding: 10px 22px !important; border-radius: 5px; margin-left: 15px;
-            font-size: 16px; font-weight: 700;
+            font-size: 16px; font-weight: 700; transition: 0.3s;
         }
 
         /* --- 2. 페이지 헤더 --- */
@@ -48,9 +48,9 @@
         .nav-pills .nav-link-loc {
             background: #fff; color: var(--next-navy); border: 2px solid var(--next-gold);
             border-radius: 50px; padding: 12px 40px; font-weight: 800; margin: 0 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;
         }
-        .nav-pills .nav-link-loc.active { background: var(--next-gold); color: #fff; border-color: var(--next-gold); }
+        .nav-pills .nav-link-loc.active { background: var(--next-gold); color: #fff !important; border-color: var(--next-gold); }
 
         /* --- 4. 섹션 스타일 --- */
         .section-padding { padding: 80px 0; }
@@ -62,26 +62,13 @@
         .campus-info-box { background: #f9f9f9; padding: 30px; border-radius: 15px; margin-bottom: 30px; border-top: 3px solid var(--next-navy); }
         .campus-info-box i { color: var(--next-gold); margin-right: 10px; }
 
-        /* [신규] 네이버 블로그 연결 버튼 스타일 */
+        /* 블로그 버튼 */
         .blog-link-wrapper { margin-bottom: 50px; text-align: center; }
         .btn-naver-blog {
-            display: inline-block;
-            background-color: var(--next-naver-green);
-            color: white !important;
-            padding: 15px 35px;
-            border-radius: 50px;
-            font-weight: 800;
-            text-decoration: none;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(3, 199, 90, 0.2);
-            transition: 0.3s;
+            display: inline-block; background-color: var(--next-naver-green); color: white !important;
+            padding: 15px 35px; border-radius: 50px; font-weight: 800; text-decoration: none;
+            font-size: 1.1rem; box-shadow: 0 4px 15px rgba(3, 199, 90, 0.2); transition: 0.3s;
         }
-        .btn-naver-blog:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(3, 199, 90, 0.3);
-            filter: brightness(1.1);
-        }
-        .btn-naver-blog i { margin-right: 8px; font-size: 1.2rem; }
 
         /* 달력 스타일 */
         .calendar-table { width: 100%; border-collapse: collapse; background: #fff; table-layout: fixed; }
@@ -97,15 +84,34 @@
         .board-table tbody td { padding: 20px 15px; font-size: 1.1rem; border-bottom: 1px solid #eee; }
         .badge-notice { background: var(--next-gold); color: white; padding: 4px 12px; border-radius: 3px; font-size: 0.85rem; font-weight: 700; margin-right: 10px; }
 
-        /* 모달 이미지 스타일 */
-        .modal-body img { width: 100%; height: auto; border-radius: 10px; }
-
         /* --- 5. 푸터 --- */
         footer { background: #fff; color: #555; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
-        
+
+        /* --- [수정] 모달/모바일 최적화 (Style 안으로 이동) --- */
         @media (max-width: 768px) {
-            .nav-pills .nav-link-loc { padding: 10px 20px; font-size: 0.9rem; }
-            .btn-naver-blog { font-size: 0.95rem; padding: 12px 25px; width: 100%; }
+            .page-header { padding: 100px 0 60px; }
+            .page-header h1 { font-size: 2.2rem !important; }
+            
+            .section-padding { padding: 60px 0; }
+            .section-subtitle { font-size: 1.4rem; text-align: center; border-left: none; padding-left: 0; }
+            
+            .location-tabs-section { margin-top: -25px; }
+            .nav-pills .nav-link-loc { padding: 12px 25px; font-size: 0.95rem; margin: 5px; flex: 1; }
+            
+            .btn-naver-blog { font-size: 0.95rem; padding: 12px 25px; width: 100%; box-sizing: border-box; }
+            
+            .calendar-table td { height: 80px; padding: 5px; }
+            .calendar-table .event { font-size: 0.75rem; padding: 3px 6px; }
+
+            .board-table thead th, .board-table tbody td { padding: 15px 10px; font-size: 0.95rem; }
+            
+            /* 네비게이션 모달 최적화 */
+            .navbar-brand img { height: 35px; }
+            .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; text-align: center; }
+            .nav-link { margin: 10px 0; font-size: 1.1rem; }
+            .btn-apply-nav { margin-left: 0; margin-top: 10px; width: 100%; text-align: center; }
+            
+            footer { padding: 40px 20px; font-size: 12px; }
         }
     </style>
 </head>
@@ -135,17 +141,17 @@
     <header class="page-header">
         <div class="container" data-aos="fade-down">
             <h1>학원 안내</h1>
-            <p class="mt-3 fs-5" style="color:var(--next-gold); font-weight: 600;">실시간 시간표 업데이트를 네이버 블로그에서 확인하세요</p>
+            <p class="mt-3 fs-5 px-2" style="color:var(--next-gold); font-weight: 600;">실시간 시간표 업데이트를 네이버 블로그에서 확인하세요</p>
         </div>
     </header>
 
     <div class="container location-tabs-section">
         <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
-            <li class="nav-item">
-                <button class="nav-link-tab nav-link-loc active btn" id="pills-daechi-tab" data-bs-toggle="pill" data-bs-target="#pills-daechi" type="button">대치 캠퍼스</button>
+            <li class="nav-item flex-fill">
+                <button class="nav-link-loc active btn w-100" id="pills-daechi-tab" data-bs-toggle="pill" data-bs-target="#pills-daechi" type="button">대치 캠퍼스</button>
             </li>
-            <li class="nav-item">
-                <button class="nav-link-tab nav-link-loc btn" id="pills-gwangju-tab" data-bs-toggle="pill" data-bs-target="#pills-gwangju" type="button">광주 캠퍼스</button>
+            <li class="nav-item flex-fill">
+                <button class="nav-link-loc btn w-100" id="pills-gwangju-tab" data-bs-toggle="pill" data-bs-target="#pills-gwangju" type="button">광주 캠퍼스</button>
             </li>
         </ul>
     </div>
@@ -154,24 +160,22 @@
         <div class="tab-content" id="pills-tabContent">
             
             <div class="tab-pane fade show active" id="pills-daechi" role="tabpanel">
-                <div class="campus-info-box" data-aos="fade-up">
+                <div class="campus-info-box text-center text-lg-start" data-aos="fade-up">
                     <h4 class="fw-bold mb-3" style="color:var(--next-navy)">NeXT DOC 대치 캠퍼스</h4>
-                    <p><i class="bi bi-geo-alt-fill"></i> 06202 서울 강남구 삼성로 71길 18, 대치스터디타워 5층</p>
+                    <p><i class="bi bi-geo-alt-fill"></i> 서울 강남구 삼성로 71길 18, 5층</p>
                     <p><i class="bi bi-telephone-fill"></i> 02. 567. 9155</p>
                 </div>
 
                 <div class="blog-link-wrapper" data-aos="zoom-in">
                     <a href="https://blog.naver.com/next_doc" target="_blank" class="btn-naver-blog">
-                        <i class="bi bi-chat-dots-fill"></i> 넥스트 닥 실시간 시간표 및 소식 확인 (블로그)
+                        <i class="bi bi-chat-dots-fill"></i> 실시간 시간표 블로그 확인
                     </a>
                 </div>
 
                 <h3 class="section-subtitle">대치 캠퍼스 시간표</h3>
                 <div class="table-responsive mb-4" data-aos="fade-up">
                     <table class="calendar-table">
-                        <thead>
-                            <tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>
-                        </thead>
+                        <thead><tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr></thead>
                         <tbody>
                             <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="event">수학 심화</span></td></tr>
                             <tr><td class="bg-light"></td><td></td><td></td><td></td><td></td><td></td><td><span class="event">의대 로드맵</span></td></tr>
@@ -183,29 +187,29 @@
                 <h3 class="section-subtitle mt-5">대치 캠퍼스 공지사항</h3>
                 <div class="table-responsive" data-aos="fade-up">
                     <table class="table board-table text-center">
-                        <thead><tr><th style="width:15%">번호</th><th style="width:85%">제목</th></tr></thead>
+                        <thead><tr><th style="width:20%">번호</th><th style="width:80%">제목</th></tr></thead>
                         <tbody>
                             <tr onclick="openNoticeModal('schedule1.png', '프리미엄 올케어 과정 안내')">
                                 <td>3</td>
-                                <td class="text-start"><span class="badge-notice">공지</span> 프리미엄 올케어 과정 안내 (스케줄 확인)</td>
+                                <td class="text-start"><span class="badge-notice">공지</span> 프리미엄 올케어 과정 안내</td>
                             </tr>
-                            <tr><td>2</td><td class="text-start"><span class="badge-notice">공지</span> 2024 대치관 여름방학 의대 집중 커리큘럼</td></tr>
-                            <tr><td>1</td><td class="text-start">대치 교육관 주말 테스트 및 보강 스케줄 안내</td></tr>
+                            <tr><td>2</td><td class="text-start"><span class="badge-notice">공지</span> 2024 여름방학 의대 커리큘럼</td></tr>
+                            <tr><td>1</td><td class="text-start">주말 테스트 및 보강 스케줄 안내</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="pills-gwangju" role="tabpanel">
-                <div class="campus-info-box">
+                <div class="campus-info-box text-center text-lg-start">
                     <h4 class="fw-bold mb-3" style="color:var(--next-navy)">NeXT DOC 광주 캠퍼스</h4>
-                    <p><i class="bi bi-geo-alt-fill"></i> 62225 광주 광산구 장신로 98 롯데아울렛 A관 5층</p>
+                    <p><i class="bi bi-geo-alt-fill"></i> 광주광역시 광산구 장신로 98 5층</p>
                     <p><i class="bi bi-telephone-fill"></i> 062. 616. 2465</p>
                 </div>
 
                 <div class="blog-link-wrapper">
                     <a href="https://blog.naver.com/next_doc" target="_blank" class="btn-naver-blog">
-                        <i class="bi bi-chat-dots-fill"></i> 넥스트 닥 실시간 시간표 및 소식 확인 (블로그)
+                        <i class="bi bi-chat-dots-fill"></i> 실시간 시간표 블로그 확인
                     </a>
                 </div>
 
@@ -224,13 +228,13 @@
                 <h3 class="section-subtitle mt-5">광주 캠퍼스 공지사항</h3>
                 <div class="table-responsive">
                     <table class="table board-table text-center">
-                        <thead><tr><th style="width:15%">번호</th><th style="width:85%">제목</th></tr></thead>
+                        <thead><tr><th style="width:20%">번호</th><th style="width:80%">제목</th></tr></thead>
                         <tbody>
                             <tr onclick="openNoticeModal('schedule1.png', '프리미엄 올케어 과정 안내')">
                                 <td>2</td>
-                                <td class="text-start"><span class="badge-notice">공지</span> 프리미엄 올케어 과정 개강 안내</td>
+                                <td class="text-start"><span class="badge-notice">공지</span> 프리미엄 올케어 과정 개강</td>
                             </tr>
-                            <tr><td>1</td><td class="text-start">광주 캠퍼스 셔틀버스 노선 개편 안내</td></tr>
+                            <tr><td>1</td><td class="text-start">광주 캠퍼스 셔틀버스 노선 안내</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -247,7 +251,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <img src="" id="noticeImage" alt="공지사항 이미지">
+                    <img src="" id="noticeImage" style="width:100%; border-radius:10px;">
                 </div>
             </div>
         </div>
@@ -255,8 +259,8 @@
 
     <footer>
         <div class="container">
-            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자등록번호: 315-87-01300</p>
-            <p>서울특별시 강남구 삼성로71길 18, 5층 대치동, 대치스터디타워</p>
+            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자번호: 315-87-01300</p>
+            <p>서울특별시 강남구 삼성로71길 18, 5층</p>
             <p>T. 02. 567. 9155  | E. nextdoc@naver.com</p>
             <p class="mt-4 opacity-50">© 2024 NeXT Doc. All Rights Reserved.</p>
         </div>
@@ -266,7 +270,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
         AOS.init({ duration: 1000, once: true });
-
         function openNoticeModal(imgSrc, title) {
             const modal = new bootstrap.Modal(document.getElementById('noticeModal'));
             document.getElementById('noticeImage').src = imgSrc;
@@ -276,48 +279,3 @@
     </script>
 </body>
 </html>
-/* --- 모바일 최적화 전용 (768px 이하) --- */
-@media (max-width: 768px) {
-    /* 1. 상단 제목 크기 줄이기 (화면 밖으로 나가는 것 방지) */
-    .page-header h1 {
-        font-size: 2rem !important;
-        letter-spacing: 0.05em !important;
-    }
-    
-    /* 2. 섹션 위아래 간격 줄이기 (모바일은 너무 넓으면 안 예뻐요) */
-    .section-padding, .location-section {
-        padding: 50px 0 !important;
-    }
-
-    /* 3. 탭 버튼 크기 조정 (손가락 터치하기 편하게) */
-    .system-tabs .nav-link, .review-tabs .nav-pills .nav-link {
-        font-size: 0.85rem !important;
-        padding: 10px 5px !important;
-        margin: 3px !important;
-    }
-
-    /* 4. 컨텐츠 박스 안쪽 여백 줄이기 */
-    .content-box {
-        padding: 30px 20px !important;
-    }
-
-    /* 5. 텍스트 크기 미세 조정 */
-    .system-title {
-        font-size: 1.6rem !important;
-    }
-    .system-desc {
-        font-size: 1rem !important;
-        margin-bottom: 25px !important;
-    }
-
-    /* 6. 이미지가 화면 꽉 차게 */
-    .roadmap-img, .map-img, .performance-img {
-        margin-top: 20px !important;
-    }
-
-    /* 7. 푸터 폰트 크기 */
-    footer {
-        font-size: 12px !important;
-        padding: 40px 0 !important;
-    }
-}

@@ -16,9 +16,9 @@
             --next-light-gray: #f8f9fa;
         }
 
-        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.8; }
+        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.8; word-break: keep-all; }
 
-        /* --- 네비게이션 (16px) --- */
+        /* --- 1. 헤더 및 네비게이션 --- */
         header { width: 100%; }
         .navbar {
             transition: all 0.4s ease;
@@ -27,36 +27,34 @@
             box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
         .navbar-brand img { height: 45px; }
-        .nav-link { font-weight: 700; color: var(--next-navy) !important; font-size: 16px; margin: 0 10px; }
+        .nav-link { font-weight: 700; color: var(--next-navy) !important; font-size: 16px; margin: 0 10px; transition: 0.3s; }
         .nav-link:hover, .nav-link.active { color: var(--next-gold) !important; }
         .btn-apply-nav {
             background-color: var(--next-gold); color: white !important;
             padding: 10px 22px !important; border-radius: 5px; margin-left: 15px;
-            font-size: 16px; font-weight: 700;
+            font-size: 16px; font-weight: 700; transition: 0.3s;
         }
 
-        /* --- 페이지 헤더 --- */
+        /* --- 2. 페이지 헤더 --- */
         .page-header { 
             background: linear-gradient(135deg, var(--next-navy) 0%, #00152e 100%); 
             color: #fff; padding: 140px 0 80px; text-align: center; 
         }
         .page-header h1 { font-size: 3rem; font-weight: 800; letter-spacing: 0.1em; }
 
-        /* --- 탭 스타일 --- */
+        /* --- 3. 탭 스타일 --- */
         .review-tabs { margin-top: -35px; position: relative; z-index: 10; }
         .review-tabs .nav-pills .nav-link {
             background: #fff; color: var(--next-navy) !important;
             border: 2px solid var(--next-gold);
             border-radius: 50px; padding: 12px 40px; font-weight: 800; margin: 0 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;
         }
         .review-tabs .nav-pills .nav-link.active { 
-            background: var(--next-gold) !important; 
-            color: #fff !important; 
-            border-color: var(--next-gold); 
+            background: var(--next-gold) !important; color: #fff !important; border-color: var(--next-gold); 
         }
 
-        /* --- 실적 & 후기 게시판 --- */
+        /* --- 4. 실적 & 후기 게시판 --- */
         .performance-container, .board-container { max-width: 1100px; margin: 0 auto; padding: 80px 0; }
         .performance-img { width: 100%; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 1px solid #eee; }
         
@@ -69,7 +67,7 @@
         .badge-review { background: var(--next-gold); color: white; padding: 4px 12px; border-radius: 3px; font-size: 0.85rem; font-weight: 700; margin-right: 10px; }
         .badge-student { background: var(--next-navy); }
 
-        /* --- 모달 슬라이드 스타일 --- */
+        /* --- 5. 모달 슬라이드 스타일 --- */
         .modal-content { border-radius: 20px; border: none; overflow: hidden; }
         .modal-body { padding: 0; background: #f8f9fa; }
         .modal-body img { width: 100%; height: auto; }
@@ -79,12 +77,36 @@
             width: 3rem; height: 3rem;
         }
 
-        /* --- 푸터 --- */
+        /* --- 6. 푸터 --- */
         footer { background: #fff; color: #555; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
 
+        /* --- [중요] 모바일 최적화 전용 (Style 안으로 이동) --- */
         @media (max-width: 768px) {
-            .page-header h1 { font-size: 2.2rem; }
-            .review-tabs .nav-pills .nav-link { padding: 10px 20px; font-size: 0.9rem; }
+            .page-header { padding: 100px 0 60px; }
+            .page-header h1 { font-size: 2.2rem !important; }
+            
+            .section-padding, .performance-container, .board-container { padding: 40px 15px !important; }
+            
+            /* 탭 버튼 모바일 최적화 */
+            .review-tabs { margin-top: -25px; }
+            .review-tabs .nav-pills .nav-link { 
+                padding: 12px 15px; font-size: 0.9rem; margin: 5px; flex: 1; text-align: center;
+            }
+
+            /* 게시판 리스트 폰트 조정 */
+            .board-table thead th, .board-table tbody td { padding: 15px 10px; font-size: 0.95rem; }
+            .badge-review { padding: 3px 8px; font-size: 0.75rem; margin-right: 5px; }
+            
+            /* 이미지 모바일 라운딩 제거 */
+            .performance-img { border-radius: 10px; }
+
+            /* 네비게이션 모바일 최적화 */
+            .navbar-brand img { height: 35px; }
+            .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; text-align: center; }
+            .nav-link { margin: 10px 0; font-size: 1.1rem; }
+            .btn-apply-nav { margin-left: 0; margin-top: 10px; width: 100%; text-align: center; }
+            
+            footer { padding: 40px 20px; font-size: 12px; }
         }
     </style>
 </head>
@@ -114,17 +136,17 @@
     <header class="page-header">
         <div class="container" data-aos="fade-down">
             <h1>수상 실적 & 후기</h1>
-            <p class="mt-3 fs-5" style="color:var(--next-gold); font-weight: 600;">결과로 증명하고 진심 어린 후기로 보답합니다</p>
+            <p class="mt-3 fs-5 px-2" style="color:var(--next-gold); font-weight: 600;">결과로 증명하고 진심 어린 후기로 보답합니다</p>
         </div>
     </header>
 
     <div class="container review-tabs">
         <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
-            <li class="nav-item">
-                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#pills-result" type="button">대회 수상 실적</button>
+            <li class="nav-item flex-fill flex-md-initial">
+                <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#pills-result" type="button">대회 수상 실적</button>
             </li>
-            <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-review" type="button">학부모 & 학생 후기</button>
+            <li class="nav-item flex-fill flex-md-initial">
+                <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#pills-review" type="button">학부모 & 학생 후기</button>
             </li>
         </ul>
     </div>
@@ -143,12 +165,12 @@
                     <div class="table-responsive">
                         <table class="table board-table text-center">
                             <thead>
-                                <tr><th style="width:15%">번호</th><th style="width:85%">제목</th></tr>
+                                <tr><th style="width:20%">번호</th><th style="width:80%">제목</th></tr>
                             </thead>
                             <tbody>
                                 <tr onclick="openReviewModal(['contents47.png', 'contents48.png'], '학생 성장 스토리 (Part 1 & 2)')">
                                     <td>10</td>
-                                    <td class="text-start"><span class="badge-review badge-student">학생 후기</span> 초등 5학년에 입학하여 현재 중학교 1학년인 재원생 후기</td>
+                                    <td class="text-start"><span class="badge-review badge-student">학생 후기</span> 초등 5학년 입학 중1 재원생 후기</td>
                                 </tr>
                                 <tr onclick="openReviewModal('contents46.png', '학부모 후기 09')"><td>09</td><td class="text-start"><span class="badge-review">학부모 후기</span> 목동 W중 3학년 000 어머님</td></tr>
                                 <tr onclick="openReviewModal('contents45.png', '학부모 후기 08')"><td>08</td><td class="text-start"><span class="badge-review">학부모 후기</span> 하나고 1학년 000 어머님</td></tr>
@@ -156,8 +178,8 @@
                                 <tr onclick="openReviewModal('contents43.png', '학부모 후기 06')"><td>06</td><td class="text-start"><span class="badge-review">학부모 후기</span> 송파지역 J초 6학년 0 0 0 어머님</td></tr>
                                 <tr onclick="openReviewModal('contents42.png', '학부모 후기 05')"><td>05</td><td class="text-start"><span class="badge-review">학부모 후기</span> 대치 D중 2학년 0 0 0 어머님</td></tr>
                                 <tr onclick="openReviewModal('contents41.png', '학부모 후기 04')"><td>04</td><td class="text-start"><span class="badge-review">학부모 후기</span> D 국제중 1학년 00 0 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents40.png', '학부모 후기 03')"><td>03</td><td class="text-start"><span class="badge-review">학부모 후기</span> 목동지역 D 중 1•U 초 6학년 남매 어머님</td></tr>
-                                <tr onclick="openReviewModal('contents39.png', '학부모 후기 02')"><td>02</td><td class="text-start"><span class="badge-review">학부모 후기</span> 용산 S초 6학년 / Y중 1학년 형제 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents40.png', '학부모 후기 03')"><td>03</td><td class="text-start"><span class="badge-review">학부모 후기</span> 목동 D중 1•U 초 6 남매 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents39.png', '학부모 후기 02')"><td>02</td><td class="text-start"><span class="badge-review">학부모 후기</span> 용산 S초 6 / Y중 1 형제 어머님</td></tr>
                                 <tr onclick="openReviewModal('contents38.png', '학부모 후기 01')"><td>01</td><td class="text-start"><span class="badge-review">학부모 후기</span> 대치 H중 1학년 0 0 0 어머님</td></tr>
                             </tbody>
                         </table>
@@ -182,8 +204,8 @@
 
     <footer>
         <div class="container">
-            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자등록번호: 315-87-01300</p>
-            <p>서울특별시 강남구 삼성로71길 18, 5층 대치동, 대치스터디타워</p>
+            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자번호: 315-87-01300</p>
+            <p>서울특별시 강남구 삼성로71길 18, 5층</p>
             <p>T. 02. 567. 9155  | E. nextdoc@naver.com</p>
             <p class="mt-4 opacity-50">© 2024 NeXT Doc. All Rights Reserved.</p>
         </div>
@@ -193,14 +215,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
         AOS.init({ duration: 1000, once: true });
-
         function openReviewModal(imgInput, title) {
             const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
             const modalBody = document.getElementById('modalBodyContent');
             document.getElementById('reviewModalLabel').innerText = title;
-            
             modalBody.innerHTML = ''; 
-
             if (Array.isArray(imgInput)) {
                 let carouselHtml = `
                     <div id="reviewCarousel" class="carousel slide" data-bs-ride="false">
@@ -228,48 +247,3 @@
     </script>
 </body>
 </html>
-/* --- 모바일 최적화 전용 (768px 이하) --- */
-@media (max-width: 768px) {
-    /* 1. 상단 제목 크기 줄이기 (화면 밖으로 나가는 것 방지) */
-    .page-header h1 {
-        font-size: 2rem !important;
-        letter-spacing: 0.05em !important;
-    }
-    
-    /* 2. 섹션 위아래 간격 줄이기 (모바일은 너무 넓으면 안 예뻐요) */
-    .section-padding, .location-section {
-        padding: 50px 0 !important;
-    }
-
-    /* 3. 탭 버튼 크기 조정 (손가락 터치하기 편하게) */
-    .system-tabs .nav-link, .review-tabs .nav-pills .nav-link {
-        font-size: 0.85rem !important;
-        padding: 10px 5px !important;
-        margin: 3px !important;
-    }
-
-    /* 4. 컨텐츠 박스 안쪽 여백 줄이기 */
-    .content-box {
-        padding: 30px 20px !important;
-    }
-
-    /* 5. 텍스트 크기 미세 조정 */
-    .system-title {
-        font-size: 1.6rem !important;
-    }
-    .system-desc {
-        font-size: 1rem !important;
-        margin-bottom: 25px !important;
-    }
-
-    /* 6. 이미지가 화면 꽉 차게 */
-    .roadmap-img, .map-img, .performance-img {
-        margin-top: 20px !important;
-    }
-
-    /* 7. 푸터 폰트 크기 */
-    footer {
-        font-size: 12px !important;
-        padding: 40px 0 !important;
-    }
-}

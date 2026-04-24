@@ -18,7 +18,7 @@
 
         body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.8; word-break: keep-all; }
 
-        /* --- 1. 헤더 및 네비게이션 (16px) --- */
+        /* --- 1. 헤더 및 네비게이션 --- */
         header { width: 100%; }
         .navbar {
             transition: all 0.4s ease;
@@ -28,23 +28,15 @@
         }
         .navbar-brand img { height: 45px; }
         .nav-link { 
-            font-weight: 700; 
-            color: var(--next-navy) !important; 
-            font-size: 16px; 
-            margin: 0 10px; 
-            transition: 0.3s;
+            font-weight: 700; color: var(--next-navy) !important; font-size: 16px; margin: 0 10px; transition: 0.3s;
         }
         .nav-link:hover, .nav-link.active { color: var(--next-gold) !important; }
         
         .btn-apply-nav {
             background-color: var(--next-gold); color: white !important;
-            padding: 10px 22px !important; 
-            border-radius: 5px; margin-left: 15px;
-            font-size: 16px; 
-            font-weight: 700;
-            transition: 0.3s;
+            padding: 10px 22px !important; border-radius: 5px; margin-left: 15px;
+            font-size: 16px; font-weight: 700; transition: 0.3s;
         }
-        .btn-apply-nav:hover { background-color: #a38249; transform: translateY(-2px); }
 
         /* --- 2. 서브 페이지 헤더 --- */
         .page-header { 
@@ -59,7 +51,7 @@
         .section-title::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 60px; height: 3px; background: var(--next-gold); }
 
         /* --- 4. CEO 섹션 --- */
-        .ceo-profile-list { list-style: none; padding: 0; margin-top: 25px; }
+        .ceo-profile-list { list-style: none; padding: 0; margin-top: 25px; text-align: left; display: inline-block; }
         .ceo-profile-list li { position: relative; padding-left: 20px; margin-bottom: 10px; font-size: 1.1rem; }
         .ceo-profile-list li::before { content: '•'; position: absolute; left: 0; color: var(--next-gold); font-weight: bold; }
         .ceo-name { font-size: 2.2rem; font-weight: 800; color: var(--next-navy); margin-bottom: 5px; }
@@ -72,12 +64,12 @@
         .card-program:hover { transform: translateY(-10px); background: var(--next-navy); color: white; }
         .card-program:hover i, .card-program:hover h4, .card-program:hover p { color: white; }
 
-        /* --- 6. [신규 추가] 중간 이미지 섹션 --- */
+        /* --- 6. 중간 이미지 섹션 --- */
         .content-image-section { background-color: #fff; text-align: center; padding: 60px 0; }
         .full-img-content { max-width: 1100px; width: 100%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
 
         /* --- 7. 커리큘럼 로드맵 --- */
-        .step-card { background: white; border: 1px solid #eee; padding: 50px 30px; border-radius: 15px; position: relative; transition: 0.3s; height: 100%; }
+        .step-card { background: white; border: 1px solid #eee; padding: 50px 30px; border-radius: 15px; position: relative; transition: 0.3s; height: 100%; text-align: center; }
         .step-num { 
             position: absolute; top: -25px; left: 30px; 
             background: var(--next-gold); color: white; 
@@ -91,12 +83,35 @@
 
         /* --- 8. 푸터 --- */
         footer { background: #fff; color: #555; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
-        footer p { margin-bottom: 6px; line-height: 1.6; }
 
+        /* --- [중요] 모달/모바일 최적화 (Style 안으로 이동) --- */
         @media (max-width: 768px) {
-            .page-header h1 { font-size: 2.2rem; }
+            .page-header { padding: 100px 0 60px; }
+            .page-header h1 { font-size: 2.2rem !important; }
+            
             .section-padding { padding: 60px 0; }
+            .section-title { margin-bottom: 30px; text-align: center; display: block; }
+            .section-title::after { left: 50%; transform: translateX(-50%); }
+
+            /* CEO 섹션 중앙 정렬 */
+            .ceo-profile-container { text-align: center; }
+            .ceo-profile-list { text-align: left; font-size: 1rem; }
+            .ceo-name { font-size: 1.8rem; }
+            .ceo-title { font-size: 1.1rem; }
+
+            /* 이미지 섹션 여백 */
+            .content-image-section { padding: 30px 0; }
             .full-img-content { border-radius: 0; }
+
+            /* 커리큘럼 카드 중앙 정렬 및 여백 */
+            .step-card { margin-bottom: 40px; padding: 40px 20px; }
+            .step-num { left: 50%; transform: translateX(-50%); }
+
+            /* 네비게이션 모달 최적화 */
+            .navbar-brand img { height: 35px; }
+            .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; text-align: center; }
+            .nav-link { margin: 10px 0; font-size: 1.1rem; }
+            .btn-apply-nav { margin-left: 0; margin-top: 10px; width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -132,26 +147,28 @@
         </header>
 
         <section class="section-padding container">
-            <div class="row align-items-center">
-                <div class="col-lg-5" data-aos="fade-right">
-                    <img src="ceo.jpg" alt="정혜원 대표" class="img-fluid rounded-4 shadow-lg">
+            <div class="row align-items-center text-center text-lg-start">
+                <div class="col-lg-5 mb-4 mb-lg-0" data-aos="fade-right">
+                    <img src="ceo.jpg" alt="정혜원 대표" class="img-fluid rounded-4 shadow-lg" style="max-width: 90%;">
                 </div>
-                <div class="col-lg-7 ps-lg-5 mt-5 mt-lg-0" data-aos="fade-left">
+                <div class="col-lg-7 ps-lg-5 ceo-profile-container" data-aos="fade-left">
                     <h2 class="section-title">대표 인사말</h2>
                     <div class="ceo-name">정혜원 <span style="font-size: 0.6em; font-weight: 500; color: #666;">대표</span></div>
                     <div class="ceo-title">의대 & 이공계 준비 올케어 교육기관 NeXT DOC</div>
                     
-                    <ul class="ceo-profile-list">
-                        <li>사단법인 과학의 전당 교육사업위원장</li>
-                        <li>초·중 의·치·약 전문학원 BIG5 대표</li>
-                        <li>전국 청소년 토론대회 최고위원</li>
-                        <li>『퍼플카우 미래동기부여』 저자</li>
-                        <li>이공계·의대 진학 교육 30년 경력</li>
-                    </ul>
+                    <div class="w-100 text-center text-lg-start">
+                        <ul class="ceo-profile-list">
+                            <li>사단법인 과학의 전당 교육사업위원장</li>
+                            <li>초·중 의·치·약 전문학원 BIG5 대표</li>
+                            <li>전국 청소년 토론대회 최고위원</li>
+                            <li>『퍼플카우 미래동기부여』 저자</li>
+                            <li>이공계·의대 진학 교육 30년 경력</li>
+                        </ul>
+                    </div>
                     
-                    <p class="mt-4 text-secondary fs-5">
+                    <p class="mt-4 text-secondary fs-5 px-2">
                         "의대 진학, 그 이상의 가치를 설계합니다."<br>
-                        넥스트 닥은 아이들의 잠재력을 깨우고 스스로 문제를 해결하는 사고력의 힘을 믿습니다. 대치동 30년 교육 노하우를 바탕으로 우리 아이의 골든타임을 가장 가치 있게 만듭니다.
+                        넥스트 닥은 아이들의 잠재력을 깨우고 스스로 문제를 해결하는 사고력의 힘을 믿습니다. 대치동 30년 교육 노하우를 바탕으로 골든타임을 가장 가치 있게 만듭니다.
                     </p>
                 </div>
             </div>
@@ -192,7 +209,7 @@
         <section class="section-padding container">
             <div class="text-center mb-5" data-aos="fade-up">
                 <h2 class="section-title">NeXT DOC 커리큘럼</h2>
-                <p class="text-secondary mt-3 fs-5">의대 및 최상위 이공계 진학을 위한 단계별 핵심 성장 전략</p>
+                <p class="text-secondary mt-3 fs-5 px-2">의대 및 최상위 이공계 진학을 위한 단계별 핵심 성장 전략</p>
             </div>
             
             <div class="row g-5 mt-4">
@@ -217,7 +234,7 @@
                         <div class="step-num">03</div>
                         <span class="step-tag">실전 입시 전략</span>
                         <h4 class="step-title">Final Strategy</h4>
-                        <p class="text-secondary">의대 입시를 위한 실전 모의평가와 데이터 분석, 최적화된 포트폴리오 관리로 최종 합격을 만듭니다.</p>
+                        <p class="text-secondary">의대 입시를 위한 실전 모의평가와 데이터 분석을 통해 최종 합격을 만듭니다.</p>
                     </div>
                 </div>
             </div>
@@ -240,48 +257,3 @@
     </script>
 </body>
 </html>
-/* --- 모바일 최적화 전용 (768px 이하) --- */
-@media (max-width: 768px) {
-    /* 1. 상단 제목 크기 줄이기 (화면 밖으로 나가는 것 방지) */
-    .page-header h1 {
-        font-size: 2rem !important;
-        letter-spacing: 0.05em !important;
-    }
-    
-    /* 2. 섹션 위아래 간격 줄이기 (모바일은 너무 넓으면 안 예뻐요) */
-    .section-padding, .location-section {
-        padding: 50px 0 !important;
-    }
-
-    /* 3. 탭 버튼 크기 조정 (손가락 터치하기 편하게) */
-    .system-tabs .nav-link, .review-tabs .nav-pills .nav-link {
-        font-size: 0.85rem !important;
-        padding: 10px 5px !important;
-        margin: 3px !important;
-    }
-
-    /* 4. 컨텐츠 박스 안쪽 여백 줄이기 */
-    .content-box {
-        padding: 30px 20px !important;
-    }
-
-    /* 5. 텍스트 크기 미세 조정 */
-    .system-title {
-        font-size: 1.6rem !important;
-    }
-    .system-desc {
-        font-size: 1rem !important;
-        margin-bottom: 25px !important;
-    }
-
-    /* 6. 이미지가 화면 꽉 차게 */
-    .roadmap-img, .map-img, .performance-img {
-        margin-top: 20px !important;
-    }
-
-    /* 7. 푸터 폰트 크기 */
-    footer {
-        font-size: 12px !important;
-        padding: 40px 0 !important;
-    }
-}

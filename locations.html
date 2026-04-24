@@ -16,7 +16,7 @@
             --next-naver: #03C75A;
         }
 
-        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.8; }
+        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.8; word-break: keep-all; }
 
         /* --- 1. 헤더 (16px 통일) --- */
         header { width: 100%; }
@@ -34,7 +34,7 @@
         .btn-apply-nav {
             background-color: var(--next-gold); color: white !important;
             padding: 10px 22px !important; border-radius: 5px; margin-left: 15px;
-            font-size: 16px; font-weight: 700;
+            font-size: 16px; font-weight: 700; transition: 0.3s;
         }
 
         /* --- 2. 서브 페이지 헤더 --- */
@@ -82,9 +82,31 @@
         /* --- 5. 푸터 --- */
         footer { background: #fff; color: #555; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
 
+        /* --- [중요] 모달/모바일 최적화 (Style 안으로 이동) --- */
         @media (max-width: 768px) {
-            .page-header h1 { font-size: 2.2rem; }
-            .location-card { margin-bottom: 30px; padding: 40px 20px; }
+            /* 1. 상단 타이틀 줄이기 */
+            .page-header { padding: 100px 0 60px; }
+            .page-header h1 { font-size: 2.2rem !important; }
+            
+            /* 2. 섹션 여백 조정 */
+            .section-padding { padding: 60px 0; }
+            
+            /* 3. 카드 내부 중앙 정렬 및 여백 */
+            .location-card { margin-bottom: 30px; padding: 40px 20px; border-radius: 15px; }
+            .loc-name { font-size: 1.5rem; }
+            .info-list { font-size: 0.95rem; display: block; text-align: center; }
+            .info-list li { margin-bottom: 15px; }
+            
+            /* 4. 버튼 모바일 크기 최적화 */
+            .btn-contact { padding: 15px; font-size: 1.1rem; }
+            
+            /* 5. 네비게이션 모바일 메뉴 최적화 */
+            .navbar-brand img { height: 35px; }
+            .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; text-align: center; }
+            .nav-link { margin: 10px 0; font-size: 1.1rem; }
+            .btn-apply-nav { margin-left: 0; margin-top: 10px; width: 100%; text-align: center; }
+            
+            footer { padding: 40px 20px; font-size: 12px; }
         }
     </style>
 </head>
@@ -114,40 +136,40 @@
     <header class="page-header">
         <div class="container" data-aos="fade-down">
             <h1>교육관 안내</h1>
-            <p class="mt-3 fs-5" style="color:var(--next-gold); font-weight: 600;">가까운 교육관에서 최고의 입시 전략을 만나보세요</p>
+            <p class="mt-3 fs-5 px-2" style="color:var(--next-gold); font-weight: 600;">가까운 교육관에서 최고의 입시 전략을 만나보세요</p>
         </div>
     </header>
 
     <main class="container section-padding">
         <div class="row g-4">
             <div class="col-md-6" data-aos="fade-right">
-                <div class="location-card">
+                <div class="location-card shadow-sm">
                     <h2 class="loc-name">넥스트 닥 대치 본원</h2>
                     <ul class="info-list">
                         <li><i class="bi bi-geo-alt-fill"></i> 서울 강남구 삼성로 71길 18, 5층</li>
-                        <li><i class="bi bi-clock-fill"></i> 월-금 14:00 - 22:00 / 주말 10:00 - 22:00</li>
+                        <li><i class="bi bi-clock-fill"></i> 월-금 14:00-22:00 / 주말 10:00-22:00</li>
                         <li><i class="bi bi-telephone-fill"></i> 02. 567. 9155</li>
                     </ul>
                     <div class="btn-group-custom">
-                        <a href="tel:02-567-9155" class="btn-contact btn-call">전화하기</a>
-                        <a href="sms:02-567-9155" class="btn-contact btn-sms">문자하기</a>
-                        <a href="https://naver.me/Gctz918t" target="_blank" class="btn-contact btn-naver">네이버 지도보기</a>
+                        <a href="tel:02-567-9155" class="btn-contact btn-call">전화 문의하기</a>
+                        <a href="sms:02-567-9155" class="btn-contact btn-sms">문자 상담신청</a>
+                        <a href="https://naver.me/Gctz918t" target="_blank" class="btn-contact btn-naver">네이버 지도에서 보기</a>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-6" data-aos="fade-left">
-                <div class="location-card">
+                <div class="location-card shadow-sm">
                     <h2 class="loc-name">넥스트 닥 광주 직영점</h2>
                     <ul class="info-list">
-                        <li><i class="bi bi-geo-alt-fill"></i> 광주 광산구 장신로 98 롯데아울렛 A관 5층</li>
-                        <li><i class="bi bi-clock-fill"></i> 월-금 14:00 - 22:00 / 주말 10:00 - 22:00</li>
+                        <li><i class="bi bi-geo-alt-fill"></i> 광주 광산구 장신로 98 롯데아울렛 5층</li>
+                        <li><i class="bi bi-clock-fill"></i> 월-금 14:00-22:00 / 주말 10:00-22:00</li>
                         <li><i class="bi bi-telephone-fill"></i> 062. 616. 2465</li>
                     </ul>
                     <div class="btn-group-custom">
-                        <a href="tel:062-616-2465" class="btn-contact btn-call">전화하기</a>
-                        <a href="sms:062-616-2465" class="btn-contact btn-sms">문자하기</a>
-                        <a href="https://naver.me/5bVYNpHU" target="_blank" class="btn-contact btn-naver">네이버 지도보기</a>
+                        <a href="tel:062-616-2465" class="btn-contact btn-call">전화 문의하기</a>
+                        <a href="sms:062-616-2465" class="btn-contact btn-sms">문자 상담신청</a>
+                        <a href="https://naver.me/5bVYNpHU" target="_blank" class="btn-contact btn-naver">네이버 지도에서 보기</a>
                     </div>
                 </div>
             </div>
@@ -156,8 +178,8 @@
 
     <footer>
         <div class="container">
-            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자등록번호: 315-87-01300</p>
-            <p>서울특별시 강남구 삼성로71길 18, 5층 대치동, 대치스터디타워</p>
+            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자번호: 315-87-01300</p>
+            <p>서울특별시 강남구 삼성로71길 18, 5층</p>
             <p>T. 02. 567. 9155  | E. nextdoc@naver.com</p>
             <p class="mt-4 opacity-50">© 2024 NeXT Doc. All Rights Reserved.</p>
         </div>
@@ -170,48 +192,3 @@
     </script>
 </body>
 </html>
-/* --- 모바일 최적화 전용 (768px 이하) --- */
-@media (max-width: 768px) {
-    /* 1. 상단 제목 크기 줄이기 (화면 밖으로 나가는 것 방지) */
-    .page-header h1 {
-        font-size: 2rem !important;
-        letter-spacing: 0.05em !important;
-    }
-    
-    /* 2. 섹션 위아래 간격 줄이기 (모바일은 너무 넓으면 안 예뻐요) */
-    .section-padding, .location-section {
-        padding: 50px 0 !important;
-    }
-
-    /* 3. 탭 버튼 크기 조정 (손가락 터치하기 편하게) */
-    .system-tabs .nav-link, .review-tabs .nav-pills .nav-link {
-        font-size: 0.85rem !important;
-        padding: 10px 5px !important;
-        margin: 3px !important;
-    }
-
-    /* 4. 컨텐츠 박스 안쪽 여백 줄이기 */
-    .content-box {
-        padding: 30px 20px !important;
-    }
-
-    /* 5. 텍스트 크기 미세 조정 */
-    .system-title {
-        font-size: 1.6rem !important;
-    }
-    .system-desc {
-        font-size: 1rem !important;
-        margin-bottom: 25px !important;
-    }
-
-    /* 6. 이미지가 화면 꽉 차게 */
-    .roadmap-img, .map-img, .performance-img {
-        margin-top: 20px !important;
-    }
-
-    /* 7. 푸터 폰트 크기 */
-    footer {
-        font-size: 12px !important;
-        padding: 40px 0 !important;
-    }
-}
