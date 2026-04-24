@@ -102,7 +102,7 @@
         /* --- 6. 푸터 --- */
         footer { background: #fff; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
 
-        /* --- [중요] 모바일 최적화 CSS (반드시 style 안에 위치) --- */
+        /* --- [중요] 모바일 최적화 CSS --- */
         @media (max-width: 768px) {
             #intro-logo { width: 220px; }
             
@@ -119,7 +119,6 @@
             .core-section { padding: 60px 0; }
             .core-box { padding: 40px 20px; border-right: none !important; border-bottom: 1px solid #eee; }
             
-            /* 채점 프로그램 모바일에서 숨기기 */
             .pre-footer { display: none !important; }
             
             footer { padding: 40px 20px; font-size: 12px; }
@@ -207,9 +206,9 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
-        // 인트로 애니메이션 제어
         window.addEventListener('load', function() {
             const intro = document.getElementById('intro-layer');
             setTimeout(() => {
