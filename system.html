@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>올케어 시스템 | NeXT DOC</title>
+    <title>실적 & 후기 | NeXT DOC</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
@@ -18,59 +18,95 @@
 
         body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.8; word-break: keep-all; }
 
-        /* --- 네비게이션 (16px) --- */
+        /* --- 1. 헤더 및 네비게이션 --- */
         header { width: 100%; }
-        .navbar { padding: 15px 0; background-color: white !important; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
+        .navbar {
+            transition: all 0.4s ease;
+            padding: 15px 0;
+            background-color: white !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
         .navbar-brand img { height: 45px; }
-        .nav-link { font-weight: 700; color: var(--next-navy) !important; font-size: 16px; margin: 0 10px; }
+        .nav-link { font-weight: 700; color: var(--next-navy) !important; font-size: 16px; margin: 0 10px; transition: 0.3s; }
         .nav-link:hover, .nav-link.active { color: var(--next-gold) !important; }
         .btn-apply-nav {
             background-color: var(--next-gold); color: white !important;
             padding: 10px 22px !important; border-radius: 5px; margin-left: 15px;
-            font-size: 16px; font-weight: 700;
+            font-size: 16px; font-weight: 700; transition: 0.3s;
         }
 
-        /* --- 서브 페이지 헤더 --- */
+        /* --- 2. 페이지 헤더 --- */
         .page-header { 
             background: linear-gradient(135deg, var(--next-navy) 0%, #00152e 100%); 
             color: #fff; padding: 140px 0 80px; text-align: center; 
         }
         .page-header h1 { font-size: 3rem; font-weight: 800; letter-spacing: 0.1em; }
 
-        /* --- 시스템 세부 탭 버튼 --- */
-        .system-tabs-wrapper { margin-top: -35px; position: relative; z-index: 10; }
-        .system-tabs .nav-link {
-            background: #fff; color: var(--next-navy); border: 2px solid var(--next-gold);
-            border-radius: 12px; padding: 15px 10px; font-weight: 700; margin: 5px;
-            transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        /* --- 3. 탭 스타일 --- */
+        .review-tabs { margin-top: -35px; position: relative; z-index: 10; }
+        .review-tabs .nav-pills .nav-link {
+            background: #fff; color: var(--next-navy) !important;
+            border: 2px solid var(--next-gold);
+            border-radius: 50px; padding: 12px 40px; font-weight: 800; margin: 0 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;
         }
-        .system-tabs .nav-link.active { background: var(--next-gold) !important; color: #fff !important; }
+        .review-tabs .nav-pills .nav-link.active { 
+            background: var(--next-gold) !important; color: #fff !important; border-color: var(--next-gold); 
+        }
 
-        /* --- 컨텐츠 박스 (남색 배경 통일) --- */
-        .section-padding { padding: 80px 0; }
-        .content-box { 
-            background: var(--next-navy); color: white; border-radius: 25px; padding: 60px 50px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); border: none;
-        }
+        /* --- 4. 실적 & 후기 게시판 --- */
+        .performance-container, .board-container { max-width: 1100px; margin: 0 auto; padding: 80px 0; }
+        .performance-img { width: 100%; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 1px solid #eee; }
         
-        .system-title { font-size: 2.2rem; font-weight: 800; color: white; margin-bottom: 10px; }
-        .system-desc { font-size: 1.25rem; color: var(--next-gold); font-weight: 700; margin-bottom: 40px; }
+        .board-table { border-top: 2px solid var(--next-navy); }
+        .board-table thead th { background: #f8f9fa; padding: 18px; color: var(--next-navy); border-bottom: 1px solid #dee2e6; }
+        .board-table tbody tr { cursor: pointer; transition: 0.2s; }
+        .board-table tbody tr:hover { background-color: #f9f4eb; }
+        .board-table tbody td { padding: 20px 15px; font-size: 1.1rem; border-bottom: 1px solid #eee; }
+        
+        .badge-review { background: var(--next-gold); color: white; padding: 4px 12px; border-radius: 3px; font-size: 0.85rem; font-weight: 700; margin-right: 10px; }
+        .badge-student { background: var(--next-navy); }
 
-        .sub-title { font-size: 1.4rem; font-weight: 800; color: white; margin: 30px 0 15px; border-left: 5px solid var(--next-gold); padding-left: 15px; }
+        /* --- 5. 모달 슬라이드 스타일 --- */
+        .modal-content { border-radius: 20px; border: none; overflow: hidden; }
+        .modal-body { padding: 0; background: #f8f9fa; }
+        .modal-body img { width: 100%; height: auto; }
+        
+        .carousel-control-prev-icon, .carousel-control-next-icon {
+            filter: invert(1) grayscale(100) brightness(0.5);
+            width: 3rem; height: 3rem;
+        }
 
-        .point-list { list-style: none; padding: 0; }
-        .point-list li { position: relative; padding-left: 30px; margin-bottom: 15px; font-size: 1.1rem; color: rgba(255,255,255,0.9); }
-        .point-list li::before { content: "\F26A"; font-family: "bootstrap-icons"; position: absolute; left: 0; color: var(--next-gold); font-weight: 900; }
-
-        .roadmap-img { width: 100%; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); }
-
-        /* --- 푸터 --- */
+        /* --- 6. 푸터 --- */
         footer { background: #fff; color: #555; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
 
-        @media (max-width: 992px) {
-            .page-header h1 { font-size: 2.2rem; }
-            .content-box { padding: 40px 20px; }
-            .roadmap-img { margin-top: 30px; }
+        /* --- [중요] 모바일 최적화 (Style 안으로 이동 완료) --- */
+        @media (max-width: 768px) {
+            .page-header { padding: 100px 0 60px; }
+            .page-header h1 { font-size: 2.2rem !important; }
+            
+            .performance-container, .board-container { padding: 40px 15px !important; }
+            
+            /* 탭 버튼 최적화: 수직으로 안 떨어지게 flex-fill 적용 */
+            .review-tabs { margin-top: -25px; }
+            .review-tabs .nav-pills .nav-link { 
+                padding: 12px 5px; font-size: 0.85rem; margin: 3px; flex: 1; text-align: center;
+            }
+
+            /* 게시판 리스트 폰트 및 간격 조정 */
+            .board-table thead th, .board-table tbody td { padding: 15px 10px; font-size: 0.9rem; }
+            .badge-review { padding: 3px 8px; font-size: 0.7rem; margin-right: 5px; }
+            
+            /* 이미지 라운딩 조정 */
+            .performance-img { border-radius: 10px; }
+
+            /* 네비게이션 모바일 메뉴 (index.html 스타일) */
+            .navbar-brand img { height: 35px; }
+            .navbar-collapse { background: white; padding: 20px; border-top: 1px solid #eee; text-align: center; }
+            .nav-link { margin: 10px 0; font-size: 1.1rem; }
+            .btn-apply-nav { margin-left: 0; margin-top: 10px; width: 100%; text-align: center; }
+            
+            footer { padding: 40px 20px; font-size: 12px; }
         }
     </style>
 </head>
@@ -87,9 +123,9 @@
                     <ul class="navbar-nav ms-auto align-items-center">
                         <li class="nav-item"><a class="nav-link" href="about.html">학원 소개</a></li>
                         <li class="nav-item"><a class="nav-link" href="guide.html">학원 안내</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="system.html">넥스트 닥 올케어 시스템</a></li>
+                        <li class="nav-item"><a class="nav-link" href="system.html">넥스트 닥 올케어 시스템</a></li>
                         <li class="nav-item"><a class="nav-link" href="locations.html">교육관 안내</a></li>
-                        <li class="nav-item"><a class="nav-link" href="review.html">실적 & 후기</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="review.html">실적 & 후기</a></li>
                         <li class="nav-item"><a class="nav-link btn-apply-nav" href="apply.html">설명회 신청</a></li>
                     </ul>
                 </div>
@@ -99,116 +135,54 @@
 
     <header class="page-header">
         <div class="container" data-aos="fade-down">
-            <h1>NeXT DOC 올케어 시스템</h1>
-            <p class="mt-3 fs-5" style="color:var(--next-gold); font-weight: 600;">진학을 넘어 미래의 역량까지 설계하는 정교한 관리</p>
+            <h1>수상 실적 & 후기</h1>
+            <p class="mt-3 fs-5 px-2" style="color:var(--next-gold); font-weight: 600;">결과로 증명하고 진심 어린 후기로 보답합니다</p>
         </div>
     </header>
 
-    <div class="container system-tabs-wrapper">
-        <ul class="nav nav-pills nav-justified system-tabs" id="pills-tab" role="tablist">
-            <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#sys1">수학 전문 학습</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sys2">과학 통합 탐구</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sys3">맞춤 비교과 전략</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sys4">학생부 설계 & 컨설팅</button></li>
-            <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sys5">학습기록 관리</button></li>
+    <div class="container review-tabs">
+        <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
+            <li class="nav-item flex-fill flex-md-initial">
+                <button class="nav-link active w-100" data-bs-toggle="pill" data-bs-target="#pills-result" type="button">대회 수상 실적</button>
+            </li>
+            <li class="nav-item flex-fill flex-md-initial">
+                <button class="nav-link w-100" data-bs-toggle="pill" data-bs-target="#pills-review" type="button">학부모 & 학생 후기</button>
+            </li>
         </ul>
     </div>
 
-    <main class="container section-padding pb-5">
+    <main class="container">
         <div class="tab-content" id="pills-tabContent">
             
-            <div class="tab-pane fade show active" id="sys1">
-                <div class="content-box">
-                    <div class="row align-items-center g-5">
-                        <div class="col-lg-7">
-                            <h3 class="system-title">01. 수학 전문 계통 학습</h3>
-                            <p class="system-desc">"연산부터 심화까지, 흔들리지 않는 수학 역량"</p>
-                            <ul class="point-list">
-                                <li><strong>초등 과정:</strong> 디딤돌 최상위S + 기본응용 (2개월 완성)</li>
-                                <li><strong>중등 과정:</strong> 개념 핵심 정리 + RPM | 쎈 마스터 (3개월 완성)</li>
-                                <li><strong>고등 과정:</strong> 의대 진학을 위한 H | AP | EP 연계형 심화</li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-5"><img src="contents15.png" class="roadmap-img" alt="수학"></div>
-                    </div>
+            <div class="tab-pane fade show active" id="pills-result">
+                <div class="performance-container text-center" data-aos="fade-up">
+                    <img src="contents31.png" alt="넥스트 닥 수상 실적" class="performance-img">
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="sys2">
-                <div class="content-box">
-                    <div class="row align-items-center g-5">
-                        <div class="col-lg-7">
-                            <h3 class="system-title">02. 과학 통합·탐구 시스템</h3>
-                            <p class="system-desc">"의대 진학의 핵심인 '연구력'과 '보고서' 전문 지도"</p>
-                            <ul class="point-list">
-                                <li><strong>통합 브리핑:</strong> 물/화/생/지 전 영역의 유기적 원리 연결</li>
-                                <li><strong>실험 설계:</strong> 변인을 통제하고 가설을 검증하는 실험 교육</li>
-                                <li><strong>산출물 완성:</strong> 영재원 및 특목고 입시용 '탐구 보고서'</li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-5"><img src="contents10.png" class="roadmap-img" alt="과학"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="sys3">
-                <div class="content-box">
-                    <div class="row align-items-center g-5">
-                        <div class="col-lg-7">
-                            <h3 class="system-title">03. 맞춤형 비교과(EC) 전략</h3>
-                            <p class="system-desc">"나만의 차별화된 포트폴리오로 입시 경쟁력 확보"</p>
-                            <ul class="point-list">
-                                <li><strong>국내외 대회:</strong> 발명품대회, 과학전람회 등 주제 선정 및 지도</li>
-                                <li><strong>국제 올림피아드:</strong> ISEF, AMC/AIME, Genius Olympiad 로드맵</li>
-                                <li><strong>영재원 대비:</strong> 교육청/대학부설 영재원 산출물 및 면접 케어</li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-5">
-                            <img src="contents24.png" class="roadmap-img" alt="비교과 전략">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="sys4">
-                <div class="content-box">
-                    <div class="row align-items-center g-5">
-                        <div class="col-lg-7">
-                            <h3 class="system-title">04. 학생부 설계 & 입시 연계 컨설팅</h3>
-                            <p class="system-desc">"합격생 데이터를 분석하여 학생부를 예술로 만듭니다"</p>
-                            <ul class="point-list">
-                                <li><strong>Dream Map:</strong> 희망 전공과 연계된 3년간의 통합 활동 기획</li>
-                                <li><strong>세특 관리:</strong> 교과 수업 중 탐구 역량이 돋보이는 소재 발굴</li>
-                                <li><strong>독서 로드맵:</strong> 전공 적합성을 드러내는 수준 높은 도서 추천</li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-5">
-                            <img src="contents32.png" class="roadmap-img" alt="학생부 컨설팅">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="sys5">
-                <div class="content-box">
-                    <div class="row align-items-center g-5">
-                        <div class="col-lg-7">
-                            <h3 class="system-title">05. 노트 기반 학습기록 관리시스템</h3>
-                            <p class="system-desc">"손으로 남기고, 기록으로 완성하는 학습 관리"</p>
-                            <p class="opacity-75 fs-5 mb-4">
-                                넥스트 닥은 수업과 시험 결과를 흘려보내지 않습니다.<br>
-                                학생의 사고 과정, 오답 원인, 학습 태도까지<br>
-                                노트에 기록하고 관리하는 학습기록 중심 시스템으로<br>
-                                실력의 누적과 성장을 설계합니다.
-                            </p>
-                            <ul class="point-list">
-                                <li><strong>All-Care 노트:</strong> 강의 요약 및 피드백 중심의 완전 학습</li>
-                                <li><strong>메타인지 훈련:</strong> 아는 것과 모르는 것을 명확히 구분하는 습관</li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-5">
-                            <img src="contents23.png" class="roadmap-img" alt="학습기록 관리">
-                        </div>
+            <div class="tab-pane fade" id="pills-review">
+                <div class="board-container" data-aos="fade-up">
+                    <div class="table-responsive">
+                        <table class="table board-table text-center">
+                            <thead>
+                                <tr><th style="width:20%">번호</th><th style="width:80%">제목</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr onclick="openReviewModal(['contents47.png', 'contents48.png'], '학생 성장 스토리 (Part 1 & 2)')">
+                                    <td>10</td>
+                                    <td class="text-start"><span class="badge-review badge-student">학생 후기</span> 초등 5학년 입학 중1 재원생 후기</td>
+                                </tr>
+                                <tr onclick="openReviewModal('contents46.png', '학부모 후기 09')"><td>09</td><td class="text-start"><span class="badge-review">학부모 후기</span> 목동 W중 3학년 000 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents45.png', '학부모 후기 08')"><td>08</td><td class="text-start"><span class="badge-review">학부모 후기</span> 하나고 1학년 000 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents44.png', '학부모 후기 07')"><td>07</td><td class="text-start"><span class="badge-review">학부모 후기</span> 목동 M중 2학년 0 0 0 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents43.png', '학부모 후기 06')"><td>06</td><td class="text-start"><span class="badge-review">학부모 후기</span> 송파지역 J초 6학년 0 0 0 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents42.png', '학부모 후기 05')"><td>05</td><td class="text-start"><span class="badge-review">학부모 후기</span> 대치 D중 2학년 0 0 0 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents41.png', '학부모 후기 04')"><td>04</td><td class="text-start"><span class="badge-review">학부모 후기</span> D 국제중 1학년 00 0 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents40.png', '학부모 후기 03')"><td>03</td><td class="text-start"><span class="badge-review">학부모 후기</span> 목동 D중 1•U 초 6 남매 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents39.png', '학부모 후기 02')"><td>02</td><td class="text-start"><span class="badge-review">학부모 후기</span> 용산 S초 6 / Y중 1 형제 어머님</td></tr>
+                                <tr onclick="openReviewModal('contents38.png', '학부모 후기 01')"><td>01</td><td class="text-start"><span class="badge-review">학부모 후기</span> 대치 H중 1학년 0 0 0 어머님</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -216,10 +190,22 @@
         </div>
     </main>
 
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="reviewModalLabel">후기 상세 보기</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBodyContent"></div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
-            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자등록번호: 315-87-01300</p>
-            <p>서울특별시 강남구 삼성로71길 18, 5층 대치동, 대치스터디타워</p>
+            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자번호: 315-87-01300</p>
+            <p>서울특별시 강남구 삼성로71길 18, 5층</p>
             <p>T. 02. 567. 9155  | E. nextdoc@naver.com</p>
             <p class="mt-4 opacity-50">© 2024 NeXT Doc. All Rights Reserved.</p>
         </div>
@@ -229,51 +215,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script>
         AOS.init({ duration: 1000, once: true });
+        
+        function openReviewModal(imgInput, title) {
+            const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
+            const modalBody = document.getElementById('modalBodyContent');
+            document.getElementById('reviewModalLabel').innerText = title;
+            modalBody.innerHTML = ''; 
+            
+            if (Array.isArray(imgInput)) {
+                let carouselHtml = `
+                    <div id="reviewCarousel" class="carousel slide" data-bs-ride="false">
+                        <div class="carousel-inner">
+                            ${imgInput.map((img, index) => `
+                                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                                    <img src="${img}" alt="후기 이미지 ${index + 1}">
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#reviewCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#reviewCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                `;
+                modalBody.innerHTML = carouselHtml;
+            } else {
+                modalBody.innerHTML = `<img src="${imgInput}" alt="후기 이미지">`;
+            }
+            modal.show();
+        }
     </script>
 </body>
 </html>
-/* --- 모바일 최적화 전용 (768px 이하) --- */
-@media (max-width: 768px) {
-    /* 1. 상단 제목 크기 줄이기 (화면 밖으로 나가는 것 방지) */
-    .page-header h1 {
-        font-size: 2rem !important;
-        letter-spacing: 0.05em !important;
-    }
-    
-    /* 2. 섹션 위아래 간격 줄이기 (모바일은 너무 넓으면 안 예뻐요) */
-    .section-padding, .location-section {
-        padding: 50px 0 !important;
-    }
-
-    /* 3. 탭 버튼 크기 조정 (손가락 터치하기 편하게) */
-    .system-tabs .nav-link, .review-tabs .nav-pills .nav-link {
-        font-size: 0.85rem !important;
-        padding: 10px 5px !important;
-        margin: 3px !important;
-    }
-
-    /* 4. 컨텐츠 박스 안쪽 여백 줄이기 */
-    .content-box {
-        padding: 30px 20px !important;
-    }
-
-    /* 5. 텍스트 크기 미세 조정 */
-    .system-title {
-        font-size: 1.6rem !important;
-    }
-    .system-desc {
-        font-size: 1rem !important;
-        margin-bottom: 25px !important;
-    }
-
-    /* 6. 이미지가 화면 꽉 차게 */
-    .roadmap-img, .map-img, .performance-img {
-        margin-top: 20px !important;
-    }
-
-    /* 7. 푸터 폰트 크기 */
-    footer {
-        font-size: 12px !important;
-        padding: 40px 0 !important;
-    }
-}
