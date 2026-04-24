@@ -4,172 +4,275 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>학원 안내 | NeXT DOC</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
     <style>
-        :root { --navy: #00234B; --gold: #B89355; --bg-gray: #F8F9FA; }
-        body { font-family: 'Pretendard', sans-serif; color: #333; line-height: 1.8; background-color: #fff; }
+        :root {
+            --next-navy: #00234B;
+            --next-gold: #B89355;
+            --next-naver-green: #03C75A;
+        }
 
-        /* 네비게이션 (모든 페이지 공통) */
-        .navbar { padding: 15px 0; background: #fff !important; border-bottom: 1px solid #eee; }
-        .nav-link { color: var(--navy) !important; font-weight: 700; margin: 0 10px; }
-        .nav-link.active { color: var(--gold) !important; border-bottom: 2px solid var(--gold); }
+        body { font-family: 'Pretendard', sans-serif; color: #333; margin: 0; overflow-x: hidden; line-height: 1.8; }
 
-        /* 페이지 헤더 */
-        .page-header { background: var(--navy); color: #fff; padding: 100px 0 60px; text-align: center; }
-        .page-header h1 { font-size: 2.5rem; font-weight: 800; }
+        /* --- 1. 헤더 및 네비게이션 --- */
+        header { width: 100%; }
+        .navbar {
+            transition: all 0.4s ease;
+            padding: 15px 0;
+            background-color: white !important;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+        .navbar-brand img { height: 45px; }
+        .nav-link { font-weight: 700; color: var(--next-navy) !important; font-size: 16px; margin: 0 10px; }
+        .nav-link:hover, .nav-link.active { color: var(--next-gold) !important; }
+        
+        .btn-apply-nav {
+            background-color: var(--next-gold); color: white !important;
+            padding: 10px 22px !important; border-radius: 5px; margin-left: 15px;
+            font-size: 16px; font-weight: 700;
+        }
 
-        /* 교육관 선택 탭 */
-        .location-tabs { margin-top: -30px; position: relative; z-index: 10; }
-        .location-tabs .nav-pills .nav-link {
-            background: #fff; color: var(--navy); border: 2px solid var(--navy);
+        /* --- 2. 페이지 헤더 --- */
+        .page-header { 
+            background: linear-gradient(135deg, var(--next-navy) 0%, #00152e 100%); 
+            color: #fff; padding: 140px 0 80px; text-align: center; 
+        }
+        .page-header h1 { font-size: 3rem; font-weight: 800; letter-spacing: 0.1em; }
+
+        /* --- 3. 캠퍼스 탭 --- */
+        .location-tabs-section { margin-top: -35px; position: relative; z-index: 10; }
+        .nav-pills .nav-link-loc {
+            background: #fff; color: var(--next-navy); border: 2px solid var(--next-gold);
             border-radius: 50px; padding: 12px 40px; font-weight: 800; margin: 0 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .location-tabs .nav-pills .nav-link.active { background: var(--navy); color: #fff; }
+        .nav-pills .nav-link-loc.active { background: var(--next-gold); color: #fff; border-color: var(--next-gold); }
 
-        /* 섹션 스타일 */
-        .section-padding { padding: 60px 0; }
+        /* --- 4. 섹션 스타일 --- */
+        .section-padding { padding: 80px 0; }
         .section-subtitle { 
-            font-size: 1.5rem; font-weight: 800; color: var(--navy); 
-            margin-bottom: 30px; border-left: 5px solid var(--gold); padding-left: 15px; 
+            font-size: 1.6rem; font-weight: 800; color: var(--next-navy); 
+            margin-bottom: 30px; border-left: 6px solid var(--next-gold); padding-left: 15px; 
         }
 
-        /* 시간표 박스 */
-        .timetable-wrapper { 
-            background: var(--bg-gray); border-radius: 15px; padding: 40px; 
-            text-align: center; margin-bottom: 50px; border: 1px dashed #ccc;
+        .campus-info-box { background: #f9f9f9; padding: 30px; border-radius: 15px; margin-bottom: 30px; border-top: 3px solid var(--next-navy); }
+        .campus-info-box i { color: var(--next-gold); margin-right: 10px; }
+
+        /* [신규] 네이버 블로그 연결 버튼 스타일 */
+        .blog-link-wrapper { margin-bottom: 50px; text-align: center; }
+        .btn-naver-blog {
+            display: inline-block;
+            background-color: var(--next-naver-green);
+            color: white !important;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 800;
+            text-decoration: none;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(3, 199, 90, 0.2);
+            transition: 0.3s;
         }
-        .timetable-img { width: 100%; max-width: 900px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .btn-naver-blog:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(3, 199, 90, 0.3);
+            filter: brightness(1.1);
+        }
+        .btn-naver-blog i { margin-right: 8px; font-size: 1.2rem; }
+
+        /* 달력 스타일 */
+        .calendar-table { width: 100%; border-collapse: collapse; background: #fff; table-layout: fixed; }
+        .calendar-table th { background: var(--next-navy); color: #fff; padding: 15px; font-weight: 700; border: 1px solid #ddd; }
+        .calendar-table td { border: 1px solid #ddd; height: 100px; vertical-align: middle; padding: 10px; text-align: center; }
+        .calendar-table .event { font-size: 0.9rem; background: var(--next-gold); color: white; padding: 5px 10px; border-radius: 4px; display: inline-block; font-weight: 600; }
 
         /* 게시판 스타일 */
-        .board-table { border-top: 2px solid var(--navy); }
-        .board-table thead th { background: #f1f3f5; padding: 15px; font-weight: 700; border-bottom: 1px solid #dee2e6; }
-        .board-table tbody td { padding: 15px; vertical-align: middle; }
-        .badge-notice { background: var(--gold); color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 3px; }
+        .board-table { border-top: 2px solid var(--next-navy); }
+        .board-table thead th { background: #f8f9fa; padding: 15px; font-size: 1.1rem; border-bottom: 1px solid #dee2e6; color: var(--next-navy); }
+        .board-table tbody tr { cursor: pointer; transition: 0.2s; }
+        .board-table tbody tr:hover { background-color: #f1f3f5; }
+        .board-table tbody td { padding: 20px 15px; font-size: 1.1rem; border-bottom: 1px solid #eee; }
+        .badge-notice { background: var(--next-gold); color: white; padding: 4px 12px; border-radius: 3px; font-size: 0.85rem; font-weight: 700; margin-right: 10px; }
 
-        footer { background: #333; color: #fff; padding: 40px 0; text-align: center; }
+        /* 모달 이미지 스타일 */
+        .modal-body img { width: 100%; height: auto; border-radius: 10px; }
+
+        /* --- 5. 푸터 --- */
+        footer { background: #fff; color: #555; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
+        
+        @media (max-width: 768px) {
+            .nav-pills .nav-link-loc { padding: 10px 20px; font-size: 0.9rem; }
+            .btn-naver-blog { font-size: 0.95rem; padding: 12px 25px; width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="index.html"><img src="logo.jpg" height="50"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="about.html">학원 소개</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="guide.html">학원 안내</a></li>
-                    <li class="nav-item"><a class="nav-link" href="system.html">넥스트 닥 올케어 시스템</a></li>
-                    <li class="nav-item"><a class="nav-link" href="locations.html">교육관 안내</a></li>
-                    <li class="nav-item"><a class="nav-link" href="review.html">실적 & 후기</a></li>
-                </ul>
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="index.html"><img src="logo.jpg" alt="NeXT Doc"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item"><a class="nav-link" href="about.html">학원 소개</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="guide.html">학원 안내</a></li>
+                        <li class="nav-item"><a class="nav-link" href="system.html">넥스트 닥 올케어 시스템</a></li>
+                        <li class="nav-item"><a class="nav-link" href="locations.html">교육관 안내</a></li>
+                        <li class="nav-item"><a class="nav-link" href="review.html">실적 & 후기</a></li>
+                        <li class="nav-item"><a class="nav-link btn-apply-nav" href="apply.html">설명회 신청</a></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
     <header class="page-header">
-        <div class="container">
-            <h1>GUIDE</h1>
-            <p style="color:var(--gold)">각 교육관별 시간표 및 주요 공지사항을 확인하세요</p>
+        <div class="container" data-aos="fade-down">
+            <h1>학원 안내</h1>
+            <p class="mt-3 fs-5" style="color:var(--next-gold); font-weight: 600;">실시간 시간표 업데이트를 네이버 블로그에서 확인하세요</p>
         </div>
     </header>
 
-    <div class="container location-tabs">
+    <div class="container location-tabs-section">
         <ul class="nav nav-pills justify-content-center" id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="pills-daechi-tab" data-bs-toggle="pill" data-bs-target="#pills-daechi" type="button">1. 대치 교육관</button>
+            <li class="nav-item">
+                <button class="nav-link-tab nav-link-loc active btn" id="pills-daechi-tab" data-bs-toggle="pill" data-bs-target="#pills-daechi" type="button">대치 캠퍼스</button>
             </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-gwangju-tab" data-bs-toggle="pill" data-bs-target="#pills-gwangju" type="button">2. 광주 교육관</button>
+            <li class="nav-item">
+                <button class="nav-link-tab nav-link-loc btn" id="pills-gwangju-tab" data-bs-toggle="pill" data-bs-target="#pills-gwangju" type="button">광주 캠퍼스</button>
             </li>
         </ul>
     </div>
 
-    <div class="container section-padding">
+    <main class="container section-padding">
         <div class="tab-content" id="pills-tabContent">
             
             <div class="tab-pane fade show active" id="pills-daechi" role="tabpanel">
-                <h3 class="section-subtitle">대치 교육관 시간표</h3>
-                <div class="timetable-wrapper">
-                    <img src="daechi_timetable.jpg" alt="대치 시간표" class="timetable-img" onerror="this.src='https://via.placeholder.com/900x500?text=Daechi+Timetable+Coming+Soon'">
+                <div class="campus-info-box" data-aos="fade-up">
+                    <h4 class="fw-bold mb-3" style="color:var(--next-navy)">NeXT DOC 대치 캠퍼스</h4>
+                    <p><i class="bi bi-geo-alt-fill"></i> 06202 서울 강남구 삼성로 71길 18, 대치스터디타워 5층</p>
+                    <p><i class="bi bi-telephone-fill"></i> 02. 567. 9155</p>
                 </div>
 
-                <h3 class="section-subtitle">대치 공지사항</h3>
-                <div class="table-responsive">
-                    <table class="table board-table text-center">
+                <div class="blog-link-wrapper" data-aos="zoom-in">
+                    <a href="https://blog.naver.com/next_doc" target="_blank" class="btn-naver-blog">
+                        <i class="bi bi-chat-dots-fill"></i> 넥스트 닥 실시간 시간표 및 소식 확인 (블로그)
+                    </a>
+                </div>
+
+                <h3 class="section-subtitle">대치 캠퍼스 시간표</h3>
+                <div class="table-responsive mb-4" data-aos="fade-up">
+                    <table class="calendar-table">
                         <thead>
-                            <tr>
-                                <th style="width:10%">번호</th>
-                                <th style="width:65%">제목</th>
-                                <th style="width:15%">날짜</th>
-                                <th style="width:10%">조회</th>
-                            </tr>
+                            <tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>2</td>
-                                <td class="text-start"><span class="badge-notice">공지</span> 2024 대치관 여름방학 의대 집중 커리큘럼 안내</td>
-                                <td>2024.05.10</td>
-                                <td>342</td>
+                            <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="event">수학 심화</span></td></tr>
+                            <tr><td class="bg-light"></td><td></td><td></td><td></td><td></td><td></td><td><span class="event">의대 로드맵</span></td></tr>
+                            <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="event">통합 과학</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-subtitle mt-5">대치 캠퍼스 공지사항</h3>
+                <div class="table-responsive" data-aos="fade-up">
+                    <table class="table board-table text-center">
+                        <thead><tr><th style="width:15%">번호</th><th style="width:85%">제목</th></tr></thead>
+                        <tbody>
+                            <tr onclick="openNoticeModal('schedule1.png', '프리미엄 올케어 과정 안내')">
+                                <td>3</td>
+                                <td class="text-start"><span class="badge-notice">공지</span> 프리미엄 올케어 과정 안내 (스케줄 확인)</td>
                             </tr>
-                            <tr>
-                                <td>1</td>
-                                <td class="text-start">대치 교육관 주말 테스트 및 보강 스케줄 관련</td>
-                                <td>2024.05.01</td>
-                                <td>156</td>
-                            </tr>
+                            <tr><td>2</td><td class="text-start"><span class="badge-notice">공지</span> 2024 대치관 여름방학 의대 집중 커리큘럼</td></tr>
+                            <tr><td>1</td><td class="text-start">대치 교육관 주말 테스트 및 보강 스케줄 안내</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
             <div class="tab-pane fade" id="pills-gwangju" role="tabpanel">
-                <h3 class="section-subtitle">광주 교육관 시간표</h3>
-                <div class="timetable-wrapper">
-                    <img src="gwangju_timetable.jpg" alt="광주 시간표" class="timetable-img" onerror="this.src='https://via.placeholder.com/900x500?text=Gwangju+Timetable+Coming+Soon'">
+                <div class="campus-info-box">
+                    <h4 class="fw-bold mb-3" style="color:var(--next-navy)">NeXT DOC 광주 캠퍼스</h4>
+                    <p><i class="bi bi-geo-alt-fill"></i> 62225 광주 광산구 장신로 98 롯데아울렛 A관 5층</p>
+                    <p><i class="bi bi-telephone-fill"></i> 062. 616. 2465</p>
                 </div>
 
-                <h3 class="section-subtitle">광주 공지사항</h3>
+                <div class="blog-link-wrapper">
+                    <a href="https://blog.naver.com/next_doc" target="_blank" class="btn-naver-blog">
+                        <i class="bi bi-chat-dots-fill"></i> 넥스트 닥 실시간 시간표 및 소식 확인 (블로그)
+                    </a>
+                </div>
+
+                <h3 class="section-subtitle">광주 캠퍼스 시간표</h3>
+                <div class="table-responsive mb-4">
+                    <table class="calendar-table">
+                        <thead><tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr></thead>
+                        <tbody>
+                            <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="event">통합과학</span></td></tr>
+                            <tr><td class="bg-light"></td><td></td><td></td><td></td><td></td><td></td><td><span class="event">사고력 수학</span></td></tr>
+                            <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><span class="event">비교과 컨설팅</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="section-subtitle mt-5">광주 캠퍼스 공지사항</h3>
                 <div class="table-responsive">
                     <table class="table board-table text-center">
-                        <thead>
-                            <tr>
-                                <th style="width:10%">번호</th>
-                                <th style="width:65%">제목</th>
-                                <th style="width:15%">날짜</th>
-                                <th style="width:10%">조회</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th style="width:15%">번호</th><th style="width:85%">제목</th></tr></thead>
                         <tbody>
-                            <tr>
+                            <tr onclick="openNoticeModal('schedule1.png', '프리미엄 올케어 과정 안내')">
                                 <td>2</td>
-                                <td class="text-start"><span class="badge-notice">공지</span> [광주] 초등 사고력 수학 6월 신규 개강 안내</td>
-                                <td>2024.05.15</td>
-                                <td>289</td>
+                                <td class="text-start"><span class="badge-notice">공지</span> 프리미엄 올케어 과정 개강 안내</td>
                             </tr>
-                            <tr>
-                                <td>1</td>
-                                <td class="text-start">광주 교육관 셔틀버스 노선 개편 안내 (수완/장덕)</td>
-                                <td>2024.04.25</td>
-                                <td>412</td>
-                            </tr>
+                            <tr><td>1</td><td class="text-start">광주 캠퍼스 셔틀버스 노선 개편 안내</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
         </div>
+    </main>
+
+    <div class="modal fade" id="noticeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="noticeModalLabel">공지사항 확인</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="" id="noticeImage" alt="공지사항 이미지">
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer>
         <div class="container">
-            <p class="mb-0">© NeXT DOC. All Rights Reserved. | 상담문의: 062. 616. 2465</p>
+            <p><strong>비아이엘컴퍼니 주식회사 </strong> | 대표: 정혜원 | 사업자등록번호: 315-87-01300</p>
+            <p>서울특별시 강남구 삼성로71길 18, 5층 대치동, 대치스터디타워</p>
+            <p>T. 02. 567. 9155  | E. nextdoc@naver.com</p>
+            <p class="mt-4 opacity-50">© 2024 NeXT Doc. All Rights Reserved.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        function openNoticeModal(imgSrc, title) {
+            const modal = new bootstrap.Modal(document.getElementById('noticeModal'));
+            document.getElementById('noticeImage').src = imgSrc;
+            document.getElementById('noticeModalLabel').innerText = title;
+            modal.show();
+        }
+    </script>
 </body>
 </html>
