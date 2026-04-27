@@ -93,19 +93,33 @@
         .core-box:hover { background: #fcf9f4; border-color: var(--next-gold); }
         .core-box h5 { color: var(--next-gold); font-weight: 800; margin-bottom: 15px; font-size: 1.3rem; }
 
-        /* --- 5. 채점 프로그램 섹션 (아이콘만 남김) --- */
+        /* --- 5. 채점 프로그램 섹션 (A/B 구분 원형 버튼) --- */
         .pre-footer { background-color: #f8f9fa; padding: 40px 0; text-align: center; }
         .btn-score-program {
+            width: 45px;
+            height: 45px;
+            line-height: 41px; /* 원 안의 텍스트 수직 중앙 정렬 (보더 두께 고려) */
             background-color: transparent; 
-            color: #ccc; 
-            font-size: 28px; 
+            color: #ddd; 
+            border: 2px solid #ddd;
+            border-radius: 50%; /* 완벽한 원형 */
+            font-size: 18px; 
+            font-weight: 800;
             text-decoration: none; 
             display: inline-block;
             transition: 0.3s;
-            border: none;
+            border: 2px solid #ddd;
             cursor: pointer;
+            margin: 0 10px;
+            padding: 0;
+            text-transform: uppercase;
         }
-        .btn-score-program:hover { color: var(--next-navy); transform: rotate(90deg); }
+        .btn-score-program:hover { 
+            color: var(--next-gold); 
+            border-color: var(--next-gold);
+            transform: translateY(-3px); /* 호버 시 살짝 들리는 효과 */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
 
         /* --- 6. 푸터 --- */
         footer { background: #fff; padding: 60px 0; font-size: 13.5px; border-top: 1px solid #eee; text-align: center; }
@@ -199,9 +213,8 @@
 
         <section class="pre-footer d-none d-md-block">
             <div class="container" data-aos="zoom-in">
-                <button onclick="accessAdmin()" class="btn-score-program">
-                    ⚙️
-                </button>
+                <button onclick="accessAdmin('test1.html')" class="btn-score-program">A</button>
+                <button onclick="accessAdmin('test2.html')" class="btn-score-program">B</button>
             </div>
         </section>
     </main>
@@ -226,11 +239,11 @@
             }, 2000);
         });
 
-        // [추가] 암호 확인 및 이동 함수
-        function accessAdmin() {
+        // 타겟 페이지를 인자로 받아 처리하는 함수
+        function accessAdmin(targetUrl) {
             const pw = prompt("관리자 암호를 입력하세요.");
             if (pw === "nextdoc9155!!") {
-                window.location.href = "test.html";
+                window.location.href = targetUrl;
             } else if (pw !== null) {
                 alert("암호가 올바르지 않습니다.");
             }
