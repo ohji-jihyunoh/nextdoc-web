@@ -14,18 +14,21 @@
         
         .input-section { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 25px; }
         
-        .db-controls { background: #eef2f5; border: 1px solid #d1d5db; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; }
-        .db-controls select { flex: 1; padding: 10px; font-size: 1.05em; border-radius: 6px; border: 1px solid #ccc; font-weight: bold; color: var(--primary); }
-        .db-btn { padding: 10px 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 1em; color: white; }
+        .db-controls { background: #eef2f5; border: 1px solid #d1d5db; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .db-controls select { flex: 1; min-width: 250px; padding: 10px; font-size: 1em; border-radius: 6px; border: 1px solid #ccc; font-weight: bold; color: var(--primary); }
+        .db-btn { padding: 9px 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.95em; color: white; display: flex; align-items: center; gap: 5px; }
         .db-btn.save { background: var(--secondary); }
-        .db-btn.delete { background: #95a5a6; }
-        .db-btn.excel { background: #27ae60; margin-left: auto; display: flex; align-items: center; gap: 5px; }
+        .db-btn.delete { background: #e74c3c; }
+        .db-btn.backup { background: #f39c12; }
+        .db-btn.restore { background: #8e44ad; position: relative; overflow: hidden; }
+        .db-btn.excel { background: #27ae60; margin-left: auto; }
+        .restore-file { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 
         .input-block { border: 1px solid var(--border); padding: 15px 20px; border-radius: 8px; margin-bottom: 15px; background: #fff; }
-        .input-block h3 { margin-top: 0; color: var(--primary); font-size: 1.15em; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 10px; }
+        .input-block h3 { margin-top: 0; color: var(--primary); font-size: 1.15em; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 12px; }
 
-        .input-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 15px; }
-        .ratio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; }
+        .input-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 15px; }
+        .ratio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; }
         
         .input-group { display: flex; flex-direction: column; }
         .input-group label { font-weight: bold; margin-bottom: 5px; color: var(--primary); font-size: 0.9em; }
@@ -34,10 +37,7 @@
         .btn-generate { width: 100%; padding: 15px; font-size: 1.3em; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px; }
         .btn-print { width: 100%; padding: 15px; font-size: 1.2em; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; display: none; font-weight: bold; margin-top: 10px; }
 
-        /* 📊 성적표 출력 섹션 */
         .report-section { display: none; width: 210mm; margin: 0 auto; }
-        
-        /* 💡 A4 여백 최적화: padding-bottom을 70px로 넉넉하게 주어 로고 침범 방지 */
         .page { background: white; padding: 30px 40px 70px 40px; box-sizing: border-box; min-height: 297mm; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
         
         .header-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 6px; margin-bottom: 10px; }
@@ -72,16 +72,13 @@
         .stat-box .label { font-size: 0.75em; color: #666; margin-bottom: 2px; }
         .stat-box .value { font-size: 1em; font-weight: bold; color: var(--primary); }
 
-        /* 비교 막대그래프 영역 미세 조정 */
         .mini-charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; }
         .chart-wrapper-mini { height: 70px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 15px; box-sizing: border-box; }
         .chart-wrapper-mini canvas { max-width: 100% !important; }
 
-        /* 💡 정규분포 차트 높이를 145px로 줄여 여유 공간 확보 */
         .chart-wrapper { width: 100%; max-width: 100%; height: 145px; position: relative; margin-top: 5px; box-sizing: border-box; }
         .chart-wrapper canvas { max-width: 100% !important; }
 
-        /* 💡 로고 위치를 좀 더 위로 끌어올림 */
         .page-logo-footer { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; height: 12mm; display: flex; justify-content: center; align-items: center; }
         .page-logo-footer img { max-width: 55mm; max-height: 10mm; height: auto; width: auto; }
 
@@ -90,10 +87,8 @@
             body { background: white; padding: 0; margin: 0; }
             .input-section, .btn-print { display: none !important; }
             .report-section { display: block !important; width: 100%; margin: 0; }
-            /* 💡 인쇄 시 레이아웃 보호: padding-bottom을 28mm로 강제 확보하여 로고와 텍스트 겹침 완벽 차단 */
             .page { height: 297mm; min-height: 297mm; page-break-after: always; box-shadow: none; margin: 0; padding: 15mm 18mm 28mm 18mm !important; border: none; }
             .chart-wrapper, .chart-wrapper-mini { width: 100% !important; max-width: 100% !important; page-break-inside: avoid; }
-            /* 💡 인쇄 전용 로고 위치 보호 */
             .page-logo-footer { bottom: 15mm !important; }
         }
     </style>
@@ -104,13 +99,23 @@
     <div class="input-section">
         <h2 style="color:var(--primary); margin-top:0; margin-bottom: 15px;">📝 NeXT DOC 등급만들기 데이터 입력</h2>
 
+        <!-- 💡 DB 컨트롤 버튼 강화: 백업 및 복원 기능 추가 -->
         <div class="db-controls">
             <label>📂 내 학교/시험 DB:</label>
             <select id="examDbSelect" onchange="loadExamFromDB()">
                 <option value="">-- 직접 입력 또는 선택 --</option>
             </select>
-            <button class="db-btn save" onclick="saveExamToDB()">현재 시험 세팅 저장</button>
-            <button class="db-btn delete" onclick="deleteExamFromDB()">삭제</button>
+            <button class="db-btn save" onclick="saveExamToDB()">💾 현재 설정 저장</button>
+            <button class="db-btn delete" onclick="deleteExamFromDB()">🗑️ 삭제</button>
+            
+            <div style="border-left: 1px solid #ccc; height: 30px; margin: 0 5px;"></div>
+            
+            <button class="db-btn backup" onclick="exportDB()">📤 설정 내보내기</button>
+            <div class="db-btn restore">
+                📥 설정 불러오기 (PC이동)
+                <input type="file" id="importFile" class="restore-file" accept=".json" onchange="importDB(event)">
+            </div>
+            
             <button class="db-btn excel" onclick="downloadCSV()">⬇️ 누적 학생 엑셀</button>
         </div>
         
@@ -187,6 +192,7 @@
         <button class="btn-print" id="printBtn" onclick="window.print()">🖨️ PDF 인쇄 / 저장</button>
     </div>
 
+    <!-- 🖨️ 성적표 출력 영역 -->
     <div class="report-section" id="reportSection">
         <div class="page">
             <div class="header-top">
@@ -383,6 +389,42 @@
             updateExamSelect();
             document.getElementById('examDbSelect').value = "";
         }
+    }
+
+    // 💡 DB 내보내기 (JSON 다운로드)
+    function exportDB() {
+        const data = localStorage.getItem('nextdoc_grademaker_db');
+        if(!data || data === "[]") { alert("저장된 학교/시험 설정이 없습니다."); return; }
+        const blob = new Blob([data], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "nextdoc_exam_settings.json";
+        a.click();
+    }
+
+    // 💡 DB 불러오기 (JSON 업로드)
+    function importDB(event) {
+        const file = event.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                if(Array.isArray(importedData)) {
+                    localStorage.setItem('nextdoc_grademaker_db', JSON.stringify(importedData));
+                    examDB = importedData;
+                    updateExamSelect();
+                    alert("성공적으로 다른 PC의 설정 데이터를 불러왔습니다!");
+                } else {
+                    alert("잘못된 파일 형식입니다.");
+                }
+            } catch(err) {
+                alert("파일을 읽는 중 오류가 발생했습니다.");
+            }
+            event.target.value = ''; // 파일 초기화
+        };
+        reader.readAsText(file);
     }
 
     function downloadCSV() {
@@ -604,7 +646,7 @@
             options: {
                 maintainAspectRatio: false,
                 layout: {
-                    padding: { top: 30, left: 30, right: 30, bottom: 5 }
+                    padding: { top: 35, left: 30, right: 30, bottom: 5 }
                 },
                 clip: false, 
                 plugins: {
