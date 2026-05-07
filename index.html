@@ -93,7 +93,7 @@
         .core-box:hover { background: #fcf9f4; border-color: var(--next-gold); }
         .core-box h5 { color: var(--next-gold); font-weight: 800; margin-bottom: 15px; font-size: 1.3rem; }
 
-        /* --- 5. 채점 프로그램 섹션 (A/B 구분 원형 버튼) --- */
+        /* --- 5. 채점 프로그램 섹션 (A/B/C 구분 원형 버튼) --- */
         .pre-footer { background-color: #f8f9fa; padding: 40px 0; text-align: center; }
         .btn-score-program {
             width: 45px;
@@ -108,7 +108,6 @@
             text-decoration: none; 
             display: inline-block;
             transition: 0.3s;
-            border: 2px solid #ddd;
             cursor: pointer;
             margin: 0 10px;
             padding: 0;
@@ -213,8 +212,9 @@
 
         <section class="pre-footer d-none d-md-block">
             <div class="container" data-aos="zoom-in">
-                <button onclick="accessAdmin('test1.html')" class="btn-score-program">A</button>
-                <button onclick="accessAdmin('test2.html')" class="btn-score-program">B</button>
+                <button onclick="accessAdmin('test_A.html')" class="btn-score-program">A</button>
+                <button onclick="accessAdmin('test_B.html')" class="btn-score-program">B</button>
+                <button onclick="accessAdmin('test_C.html')" class="btn-score-program">C</button>
             </div>
         </section>
     </main>
