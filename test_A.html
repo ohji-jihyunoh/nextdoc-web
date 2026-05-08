@@ -73,58 +73,53 @@
         .page-logo-footer img { max-width: 55mm; max-height: 10mm; height: auto; width: auto; }
 
        @media print {
-    /* 1. A4 용지 규격 및 여백 설정 */
     @page {
         size: A4;
-        margin: 0; /* @page 여백을 0으로 하고 .page 내부 패딩으로 조절하는 것이 정확합니다 */
+        margin: 0; /* 브라우저 기본 여백(날짜, URL 등) 제거 */
     }
 
-    /* 2. 인쇄 시 불필요한 요소 제거 및 색상 유지 */
-    * { 
-        -webkit-print-color-adjust: exact !important; 
-        print-color-adjust: exact !important; 
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
-    body { background: white; padding: 0; margin: 0; }
-    .input-section, .btn-print, .btn-print-top { display: none !important; }
-    
-    /* 3. 리포트 섹션 및 페이지 강제 고정 (3페이지 생성 방지) */
+
+    body { margin: 0; padding: 0; background: white; }
+
+    /* 입력 섹션 및 버튼 숨기기 */
+    .input-section, .btn-print, .btn-print-top, .header-controls { 
+        display: none !important; 
+    }
+
     .report-section { display: block !important; width: 100%; margin: 0; }
-    .page { 
-        width: 210mm;
-        height: 296mm; 
-        max-height: 296mm; 
-        page-break-after: always; 
-        box-shadow: none; 
-        margin: 0; 
-        padding: 15mm 15mm 25mm 15mm !important; /* 하단 로고 공간을 위해 padding-bottom 확보 */
-        overflow: hidden; 
-        border: none; 
-        position: relative; /* 하단 로고 배치를 위해 필요 */
-    }
-    .page:last-child { page-break-after: auto; }
 
-    /* 4. 로고 하단 고정 (기존 .print-footer와 통합) */
+    .page {
+        position: relative; /* 로고 위치의 기준점 */
+        width: 210mm;
+        /* 핵심: 297mm보다 아주 살짝 작게 설정하여 페이지 밀림 방지 */
+        height: 296mm; 
+        max-height: 296mm;
+        page-break-after: always;
+        /* 실제 내용 마진은 패딩으로 조절 */
+        padding: 15mm 15mm 30mm 15mm !important; 
+        box-sizing: border-box;
+        overflow: hidden; /* 내용이 넘쳐서 3페이지 생기는 것 차단 */
+    }
+
+    /* 로고 고정 위치 */
     .print-footer {
-        position: absolute; /* 페이지 하단에 고정 */
-        bottom: 10mm;
+        position: absolute;
+        bottom: 12mm; /* 바닥에서 적당히 띄움 */
         left: 0;
         width: 100%;
         text-align: center;
-        z-index: 9999;
     }
 
-    /* 5. 로고 크기 최적화 */
     .print-footer img {
-        width: 100px !important; 
+        width: 100px !important; /* 로고가 너무 크면 밀릴 수 있으니 살짝 축소 */
         height: auto;
     }
 
-    /* 차트 크기 최적화 */
-    .chart-wrapper, .chart-container { 
-        width: 100% !important; 
-        max-width: 100% !important; 
-        page-break-inside: avoid; 
-    }
+    .page:last-child { page-break-after: auto; }
 }
     </style>
 </head>
