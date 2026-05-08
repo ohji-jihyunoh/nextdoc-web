@@ -75,7 +75,7 @@
        @media print {
     @page {
         size: A4;
-        margin: 0; /* 브라우저 기본 여백(날짜, URL 등) 제거 */
+        margin: 0; /* 브라우저가 강제로 넣는 여백 제거 시도 */
     }
 
     * {
@@ -84,38 +84,37 @@
     }
 
     body { margin: 0; padding: 0; background: white; }
-
-    /* 입력 섹션 및 버튼 숨기기 */
-    .input-section, .btn-print, .btn-print-top, .header-controls { 
-        display: none !important; 
-    }
+    .input-section, .btn-print, .btn-print-top, .header-controls { display: none !important; }
 
     .report-section { display: block !important; width: 100%; margin: 0; }
 
     .page {
-        position: relative; /* 로고 위치의 기준점 */
-        width: 210mm;
-        /* 핵심: 297mm보다 아주 살짝 작게 설정하여 페이지 밀림 방지 */
-        height: 296mm; 
-        max-height: 296mm;
+        position: relative;
+        /* 핵심 1: 너비를 100%로 설정하여 Default 마진이 적용된 '출력 가능 영역'에 자동으로 맞춰지게 함 */
+        width: 100%; 
+        /* 핵심 2: 높이를 297mm가 아닌 282mm 정도로 짧게 잡아 Default 마진(상하 여백) 공간을 확보함 */
+        height: 282mm; 
+        max-height: 282mm;
         page-break-after: always;
-        /* 실제 내용 마진은 패딩으로 조절 */
-        padding: 15mm 15mm 30mm 15mm !important; 
+        padding: 10mm 15mm 25mm 15mm !important; /* 내부 여백 조절 */
         box-sizing: border-box;
-        overflow: hidden; /* 내용이 넘쳐서 3페이지 생기는 것 차단 */
+        overflow: hidden; /* 내용이 넘쳐서 2~3페이지 생기는 것을 완벽 차단 */
+        margin: 0;
+        border: none;
     }
 
-    /* 로고 고정 위치 */
+    /* 로고 하단 고정 위치 최적화 */
     .print-footer {
         position: absolute;
-        bottom: 12mm; /* 바닥에서 적당히 띄움 */
+        bottom: 8mm; /* 바닥에서 약간 띄움 */
         left: 0;
         width: 100%;
         text-align: center;
+        z-index: 9999;
     }
 
     .print-footer img {
-        width: 100px !important; /* 로고가 너무 크면 밀릴 수 있으니 살짝 축소 */
+        width: 160px !important; /* 로고 크기가 너무 크면 밀릴 수 있으므로 살짝 축소 */
         height: auto;
     }
 
