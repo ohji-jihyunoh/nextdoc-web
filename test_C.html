@@ -121,37 +121,36 @@
 
     .page {
         position: relative !important;
-        width: 190mm !important;  /* 좌우 마진 대비 20mm 축소 */
-        height: 250mm !important; /* 상하 마진 대비 47mm 축소 (핵심: 아주 짧게 만듦) */
-        max-height: 250mm !important;
+        width: 190mm !important;
+        height: 245mm !important;
+        max-height: 245mm !important;
         
-        margin: 0 auto !important; /* 중앙 정렬 */
-        padding: 10mm 10mm 25mm 10mm !important; /* 하단 로고가 들어갈 바닥 공간 확보 */
+        margin: 0 auto !important;
+        padding: 10mm 10mm 22mm 10mm !important;
         
         page-break-after: always !important;
-        overflow: hidden !important; /* 절대로 내용이 넘쳐서 2페이지를 만들지 못하게 차단 */
+        overflow: hidden !important;
         box-sizing: border-box !important;
         border: none !important;
     }
 
-    /* 로고 위치를 페이지 박스 내부의 절대 바닥으로 고정 */
-    .print-footer {
+    /* 🔥 핵심 버그 수정: HTML이 사용하는 클래스명(.page-logo-footer)을 직접 타겟 */
+    .page-logo-footer {
         position: absolute !important;
-        bottom: 5mm !important; /* 박스 바닥에서 5mm 지점에 고정 */
-        left: 0;
-        width: 100%;
-        text-align: center;
+        bottom: 5mm !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        text-align: center !important;
+        display: block !important;
         z-index: 9999;
     }
 
-    .print-footer img {
-        width: 140px !important; /* 로고가 공간을 너무 차지하지 않게 조금 더 축소 */
-        height: auto;
-    }
-
-    /* 마지막 장 뒤의 빈 페이지 생성 방지 */
-    .page:last-child { 
-        page-break-after: auto !important; 
+    .page-logo-footer img {
+        width: 140px !important;
+        height: auto !important;
+        max-height: 10mm !important;
     }
 }
     
