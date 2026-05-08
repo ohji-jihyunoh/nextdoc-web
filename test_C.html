@@ -94,7 +94,7 @@
 @media print {
     @page {
         size: A4;
-        margin: 0; /* 브라우저가 강제로 넣는 여백 제거 시도 */
+        margin: 0; /* 브라우저에게 여백을 주지 말라고 강력히 암시 */
     }
 
     * {
@@ -102,30 +102,42 @@
         print-color-adjust: exact !important;
     }
 
-    body { margin: 0; padding: 0; background: white; }
-    .input-section, .btn-print, .btn-print-top, .header-controls { display: none !important; }
-
-    .report-section { display: block !important; width: 100%; margin: 0; }
-
-    .page {
-        position: relative;
-        /* 핵심 1: 너비를 100%로 설정하여 Default 마진이 적용된 '출력 가능 영역'에 자동으로 맞춰지게 함 */
-        width: 100%; 
-        /* 핵심 2: 높이를 297mm가 아닌 282mm 정도로 짧게 잡아 Default 마진(상하 여백) 공간을 확보함 */
-        height: 282mm; 
-        max-height: 282mm;
-        page-break-after: always;
-        padding: 10mm 15mm 25mm 15mm !important; /* 내부 여백 조절 */
-        box-sizing: border-box;
-        overflow: hidden; /* 내용이 넘쳐서 2~3페이지 생기는 것을 완벽 차단 */
-        margin: 0;
-        border: none;
+    body { 
+        margin: 0 !important; 
+        padding: 0 !important; 
+        background: white; 
     }
 
-    /* 로고 하단 고정 위치 최적화 */
+    /* 인쇄 시 불필요한 버튼/입력창 완전 제거 */
+    .input-section, .btn-print, .btn-print-top, .header-controls, .no-print { 
+        display: none !important; 
+    }
+
+    .report-section { 
+        display: block !important; 
+        width: 100%; 
+        margin: 0; 
+    }
+
+    .page {
+        position: relative !important;
+        width: 190mm !important;  /* 좌우 마진 대비 20mm 축소 */
+        height: 250mm !important; /* 상하 마진 대비 47mm 축소 (핵심: 아주 짧게 만듦) */
+        max-height: 250mm !important;
+        
+        margin: 0 auto !important; /* 중앙 정렬 */
+        padding: 10mm 10mm 25mm 10mm !important; /* 하단 로고가 들어갈 바닥 공간 확보 */
+        
+        page-break-after: always !important;
+        overflow: hidden !important; /* 절대로 내용이 넘쳐서 2페이지를 만들지 못하게 차단 */
+        box-sizing: border-box !important;
+        border: none !important;
+    }
+
+    /* 로고 위치를 페이지 박스 내부의 절대 바닥으로 고정 */
     .print-footer {
-        position: absolute;
-        bottom: 8mm; /* 바닥에서 약간 띄움 */
+        position: absolute !important;
+        bottom: 5mm !important; /* 박스 바닥에서 5mm 지점에 고정 */
         left: 0;
         width: 100%;
         text-align: center;
@@ -133,11 +145,14 @@
     }
 
     .print-footer img {
-        width: 160px !important; /* 로고 크기가 너무 크면 밀릴 수 있으므로 살짝 축소 */
+        width: 140px !important; /* 로고가 공간을 너무 차지하지 않게 조금 더 축소 */
         height: auto;
     }
 
-    .page:last-child { page-break-after: auto; }
+    /* 마지막 장 뒤의 빈 페이지 생성 방지 */
+    .page:last-child { 
+        page-break-after: auto !important; 
+    }
 }
     
     </style>
