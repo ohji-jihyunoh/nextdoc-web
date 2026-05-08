@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeXT DOC 5등급 상대평가 변환 성적표</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <style>
+        :root { --primary: #1A2B4C; --secondary: #3b5998; --accent: #e74c3c; --bg: #f4f7f9; --border: #e2e8f0; --gold: #d4af37; }
+        body { font-family: 'Pretendard', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        .input-section { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        
+        .db-controls { background: #eef2f5; border: 1px solid #d1d5db; padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .db-controls select { flex: 1; min-width: 250px; padding: 10px; font-size: 1.05em; border-radius: 6px; border: 1px solid #ccc; font-weight: bold; color: var(--primary); }
+        .db-btn { padding: 9px 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.95em; color: white; display: flex; align-items: center; gap: 5px; }
+        .db-btn.save { background: var(--secondary); }
+        .db-btn.delete { background: #e74c3c; }
+        .db-btn.backup { background: #f39c12; }
+        .db-btn.restore { background: #8e44ad; position: relative; overflow: hidden; }
+        .db-btn.excel { background: #27ae60; margin-left: auto; }
+        .restore-file { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+
+        .input-block { border: 1px solid var(--border); padding: 15px 20px; border-radius: 8px; margin-bottom: 15px; background: #fff; }
+        .input-block h3 { margin-top: 0; color: var(--primary); font-size: 1.15em; border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 12px; }
+
+        .input-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 15px; }
+        .ratio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; }
+        
+        .input-group { display: flex; flex-direction: column; }
+        .input-group label { font-weight: bold; margin-bottom: 5px; color: var(--primary); font-size: 0.9em; }
+        .input-group input { padding: 10px; font-size: 1em; border: 1px solid #ccc; border-radius: 6px; }
+
+        .magic-box { background: #fff8e1; border: 1px dashed #f39c12; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+        .magic-box h4 { margin: 0 0 10px 0; color: #d35400; display: flex; justify-content: space-between; align-items: center; }
+        .magic-box .magic-inputs { display: flex; gap: 10px; align-items: flex-end; }
+        .magic-box .magic-inputs input { width: 100%; text-align: center; font-weight: bold; }
+        .magic-btn { background: #e67e22; color: white; border: none; border-radius: 6px; padding: 10px 15px; font-weight: bold; cursor: pointer; white-space: nowrap; height: 42px; transition: 0.2s; }
+        .magic-btn:hover { background: #d35400; }
+        
+        .btn-generate { width: 100%; padding: 15px; font-size: 1.3em; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 5px; transition: 0.2s; }
+        .btn-generate:hover { background: #111d33; }
+        .btn-print { width: 100%; padding: 15px; font-size: 1.2em; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; display: none; font-weight: bold; margin-top: 10px; }
+
+        /* 📊 성적표 출력 섹션 (A4 1장 최적화 다이어트) */
+        .report-section { display: none; width: 210mm; margin: 0 auto; }
+        .page { background: white; padding: 25px 35px 50px 35px; box-sizing: border-box; min-height: 297mm; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
+        
+        .header-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 5px; margin-bottom: 8px; }
+        .header-title { font-size: 1em; font-weight: bold; color: #555; }
+        .header-info { font-size: 1em; font-weight: bold; color: var(--primary); }
+        
+        .main-title { text-align: center; font-size: 2em; font-weight: 900; color: var(--primary); margin: 0 0 10px 0; letter-spacing: 1px; }
+
+        .info-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 10px 15px; margin-bottom: 10px; }
+        .info-box h3 { margin-top: 0; color: var(--primary); font-size: 1em; border-left: 4px solid var(--gold); padding-left: 8px; margin-bottom: 4px; }
+        .info-box p { margin: 2px 0; font-size: 0.85em; line-height: 1.4; color: #444; word-break: keep-all; }
+
+        .grade-table-container { margin-bottom: 10px; }
+        .grade-table-container h3 { color: var(--primary); font-size: 1em; border-left: 4px solid var(--gold); padding-left: 8px; margin-bottom: 4px; margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+        th, td { border: 1px solid #ccc; padding: 6px; text-align: center; white-space: nowrap; }
+        th { background-color: var(--primary); color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .td-wrap { white-space: normal; word-break: keep-all; line-height: 1.3; text-align: left; padding-left: 12px; }
+
+        .result-section { border: 2px solid var(--primary); border-radius: 10px; padding: 12px 15px; margin-bottom: 0; }
+        .school-title { font-size: 1.1em; font-weight: bold; color: var(--primary); margin-bottom: 8px; border-bottom: 1px dashed #ccc; padding-bottom: 6px; text-align: center; }
+        
+        .result-highlight { display: flex; justify-content: space-around; margin-bottom: 10px; background: #f0f4f8; padding: 10px; border-radius: 8px; }
+        .highlight-item { text-align: center; }
+        .highlight-item .label { font-size: 0.85em; color: #666; margin-bottom: 2px; font-weight: bold; }
+        .highlight-item .value { font-size: 1.7em; font-weight: 900; color: var(--accent); }
+        .highlight-item .value.grade { color: var(--primary); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; text-align: center; margin-bottom: 10px; }
+        .stat-box { border: 1px solid #e2e8f0; padding: 5px; border-radius: 6px; background: white; }
+        .stat-box .label { font-size: 0.75em; color: #666; margin-bottom: 2px; }
+        .stat-box .value { font-size: 1em; font-weight: bold; color: var(--primary); }
+
+        .mini-charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+        .chart-wrapper-mini { height: 60px; background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 4px 10px; box-sizing: border-box; }
+        .chart-wrapper-mini canvas { max-width: 100% !important; }
+
+        .chart-wrapper { width: 100%; max-width: 100%; height: 135px; position: relative; margin-top: 5px; box-sizing: border-box; }
+        .chart-wrapper canvas { max-width: 100% !important; }
+
+        .page-logo-footer { position: absolute; bottom: 15px; left: 0; right: 0; text-align: center; height: 12mm; display: flex; justify-content: center; align-items: center; }
+        .page-logo-footer img { max-width: 55mm; max-height: 10mm; height: auto; width: auto; }
+
+@media print {
+    @page {
+        size: A4;
+        margin: 0; /* 브라우저에게 여백을 주지 말라고 강력히 암시 */
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    body { 
+        margin: 0 !important; 
+        padding: 0 !important; 
+        background: white; 
+    }
+
+    /* 인쇄 시 불필요한 버튼/입력창 완전 제거 */
+    .input-section, .btn-print, .btn-print-top, .header-controls, .no-print { 
+        display: none !important; 
+    }
+
+    .report-section { 
+        display: block !important; 
+        width: 100%; 
+        margin: 0; 
+    }
+
+    .page {
+        position: relative !important;
+        width: 190mm !important;
+        height: 245mm !important;
+        max-height: 245mm !important;
+        
+        margin: 0 auto !important;
+        padding: 10mm 10mm 22mm 10mm !important;
+        
+        page-break-after: always !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        border: none !important;
+    }
+
+    /* 🔥 핵심 버그 수정: HTML이 사용하는 클래스명(.page-logo-footer)을 직접 타겟 */
+    .page-logo-footer {
+        position: absolute !important;
+        bottom: 5mm !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        text-align: center !important;
+        display: block !important;
+        z-index: 9999;
+    }
+
+    .page-logo-footer img {
+        width: 140px !important;
+        height: auto !important;
+        max-height: 10mm !important;
+    }
+}
+    
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="input-section">
+        <h2 style="color:var(--primary); margin-top:0; margin-bottom: 15px;">📝 NeXT DOC 5등급제 데이터 입력</h2>
+
+        <div class="db-controls">
+            <label>📂 5등급제 전용 DB:</label>
+            <select id="examDbSelect" onchange="loadExamFromDB()">
+                <option value="">-- 직접 입력 또는 선택 --</option>
+            </select>
+            <button type="button" class="db-btn save" onclick="saveExamToDB()">💾 현재 설정 저장</button>
+            <button type="button" class="db-btn delete" onclick="deleteExamFromDB()">🗑️ 삭제</button>
+            
+            <div style="border-left: 1px solid #ccc; height: 30px; margin: 0 5px;"></div>
+            
+            <button type="button" class="db-btn backup" onclick="exportDB()">📤 설정 내보내기</button>
+            <div class="db-btn restore">
+                📥 설정 불러오기
+                <input type="file" id="importFile" class="restore-file" accept=".json" onchange="importDB(event)">
+            </div>
+            
+            <button type="button" class="db-btn excel" onclick="downloadCSV()">⬇️ 누적 학생 엑셀</button>
+        </div>
+        
+        <div class="input-block">
+            <h3>🏫 1. 시험 및 학교 기본 설정 (저장 가능)</h3>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>시험 년도/학기</label>
+                    <input type="text" id="examTerm" value="2026년 1학기">
+                </div>
+                <div class="input-group">
+                    <label>해당 학년</label>
+                    <input type="text" id="studentGrade" value="중3">
+                </div>
+                <div class="input-group">
+                    <label>학교명</label>
+                    <input type="text" id="schoolName" value="신목중학교">
+                </div>
+                <div class="input-group">
+                    <label>총 응시자 수</label>
+                    <input type="number" id="totalStudents" value="232">
+                </div>
+            </div>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>학교 평균 점수</label>
+                    <input type="number" id="schoolAvg" value="75.5" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label style="color:var(--accent);">표준편차 (필수)</label>
+                    <input type="number" id="schoolStd" value="15.9" step="0.1" placeholder="직접 입력 or 역산 적용">
+                </div>
+            </div>
+
+            <div class="magic-box">
+                <h4>
+                    <span>🔮 성취도 비율로 표준편차 역산기</span>
+                    <span style="font-size: 0.8em; color: #888; font-weight: normal;">* 중학교 등 표준편차 비공개 시 사용 (평균이 반드시 입력되어야 합니다)</span>
+                </h4>
+                <div class="magic-inputs">
+                    <div class="input-group" style="flex:1;"><label>A (90점~)</label><input type="number" id="ratioA" placeholder="%"></div>
+                    <div class="input-group" style="flex:1;"><label>B (80점~)</label><input type="number" id="ratioB" placeholder="%"></div>
+                    <div class="input-group" style="flex:1;"><label>C (70점~)</label><input type="number" id="ratioC" placeholder="%"></div>
+                    <div class="input-group" style="flex:1;"><label>D (60점~)</label><input type="number" id="ratioD" placeholder="%"></div>
+                    <div class="input-group" style="flex:1;"><label>E (~59점)</label><input type="number" id="ratioE" placeholder="%"></div>
+                    <button type="button" class="magic-btn" onclick="estimateStdDev()">자동 역산 적용</button>
+                </div>
+            </div>
+
+            <div class="ratio-grid">
+                <div class="input-group">
+                    <label>중간고사 반영 비율 (%)</label>
+                    <input type="number" id="midRatio" value="40">
+                </div>
+                <div class="input-group">
+                    <label>기말고사 반영 비율 (%)</label>
+                    <input type="number" id="finRatio" value="40">
+                </div>
+                <div class="input-group">
+                    <label>수행평가 반영 비율 (%)</label>
+                    <input type="number" id="perfRatio" value="20">
+                    <span style="font-size: 0.8em; color: #888; margin-top:3px;">* 수행은 100점 만점으로 자동 합산</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-block" style="border-color: var(--secondary);">
+            <h3 style="color: var(--secondary); border-bottom-color: var(--secondary);">🧑‍🎓 2. 학생 개별 성적 입력 (생성 시 자동 누적)</h3>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>학생 이름</label>
+                    <input type="text" id="studentName" placeholder="예: 이강민">
+                </div>
+                <div class="input-group">
+                    <label>원래 학년(비고)</label>
+                    <input type="text" id="studentSubInfo" value="중1">
+                </div>
+                <div class="input-group">
+                    <label>나의 중간고사 점수</label>
+                    <input type="number" id="myMidScore" value="95" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label>나의 기말고사 점수</label>
+                    <input type="number" id="myFinScore" value="88" step="0.1">
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn-generate" onclick="generateGradeReport()">성적표 생성 (동시에 학생 데이터 누적)</button>
+        <button type="button" class="btn-print" id="printBtn" onclick="window.print()">🖨️ PDF 인쇄 / 저장</button>
+    </div>
+
+    <div class="report-section" id="reportSection">
+        <div class="page">
+            <div class="header-top">
+                <div class="header-title">학교별 5등급 상대평가 변환 성적표</div>
+                <div class="header-info" id="outHeaderDate">발행일자: 2026. 4. 27.</div>
+            </div>
+
+            <div class="main-title">NeXT DOC 5등급만들기 성적표</div>
+
+            <div class="info-box">
+                <h3>5등급 상대평가 변환 성적표란?</h3>
+                <p>5등급 상대평가는 2028학년도 대입 개편안(현 중학교 이하 적용)에 맞추어 가장 명확하게 본인의 고교 진학 후 성적 위치를 확인할 수 있는 선제적 성적산출 방법입니다.</p>
+                <p>본인의 백분율을 통해 5등급 범위 안에서도 상위권인지 세밀하게 파악이 가능하며, 성적표가 나오지 않는 [내신 기출 모의 테스트]에서도 본인의 고교 경쟁력을 확실히 예상해 볼 수 있는 강력한 지표입니다.</p>
+            </div>
+
+            <div class="grade-table-container">
+                <h3>5등급 상대평가 기준 (2028 대입 개편안)</h3>
+                <p style="font-size:0.8em; color:#666; margin-top:-5px; margin-bottom:6px;">새로운 교육과정의 5등급 상대평가 구분 기준입니다.</p>
+                <table>
+                    <tr>
+                        <th style="width: 25%;">등급</th>
+                        <th style="width: 35%;">백분율</th>
+                        <th style="width: 40%;">비고</th>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">1등급</td>
+                        <td style="font-weight: bold;">10% 이내</td>
+                        <td rowspan="5" class="td-wrap" style="background:#fff; text-align:center;">
+                            <strong>2028 대입 개편안</strong><br>
+                            새로운 5등급 내신<br>상대평가 기준 적용
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">2등급</td>
+                        <td>10% 초과 ~ 34% 이내</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">3등급</td>
+                        <td>34% 초과 ~ 66% 이내</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">4등급</td>
+                        <td>66% 초과 ~ 90% 이내</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold; color: var(--primary);">5등급</td>
+                        <td>90% 초과 ~ 100% 이내</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="td-wrap" style="background:#fff; color:#c0392b; font-weight:bold; text-align: left; padding: 10px;">
+                            [성적표 해석 방법] 본인의 예상 평가 등급(1~5등급)을 확인 후 나의 백분위를 반드시 확인합니다.<br>
+                            나의 백분위가 등급컷 백분위보다 여유 있게 높아야 실제 고교 진학 시 안정적으로 해당 등급을 방어할 수 있습니다.
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="result-section">
+                <div class="school-title" id="outSchoolTitle">2025년 신목중학교 | 중3 1학기 | 이강민 | 중1</div>
+                
+                <div class="result-highlight">
+                    <div class="highlight-item">
+                        <div class="label">환산 총점 (내점수)</div>
+                        <div class="value" id="outMyScore">93.20</div>
+                    </div>
+                    <div class="highlight-item" style="border-left: 2px dashed #ccc; padding-left: 40px;">
+                        <div class="label">5등급 상대평가 예상 등급</div>
+                        <div class="value grade" id="outMyGrade">1등급</div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="label">Z값</div>
+                        <div class="value" id="outZScore">1.11</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">나의 백분위</div>
+                        <div class="value" id="outPercentile">13.4%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">예상 등수</div>
+                        <div class="value" id="outRank">31</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">학교 평균</div>
+                        <div class="value" id="outAvg">75.5</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">표준편차</div>
+                        <div class="value" id="outStd">15.9</div>
+                    </div>
+                </div>
+
+                <div style="text-align: right; font-size: 0.8em; color: #888; margin-bottom: 0px;">* 응시자 인원: <span id="outTotalPop">232</span>명</div>
+                
+                <div class="mini-charts-grid">
+                    <div class="chart-wrapper-mini">
+                        <canvas id="scoreCompareChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper-mini">
+                        <canvas id="rankCompareChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-wrapper">
+                    <canvas id="bellCurveChart"></canvas>
+                </div>
+            </div>
+
+            <div class="page-logo-footer">
+                <img src="testlogo.png" alt="NeXT DOC 로고">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    if (typeof ChartDataLabels !== 'undefined') { Chart.register(ChartDataLabels); }
+
+    let bellChart = null;
+    let scoreChart = null;
+    let rankChart = null;
+
+    // 💡 5등급제 전용으로 저장소 Key 분리
+    let examDB = JSON.parse(localStorage.getItem('nextdoc_grademaker_5tier_db')) || [];
+
+    window.onload = function() {
+        updateExamSelect();
+    };
+
+    function updateExamSelect() {
+        const select = document.getElementById('examDbSelect');
+        select.innerHTML = '<option value="">-- 직접 입력 또는 저장된 시험 선택 --</option>';
+        examDB.forEach((exam, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.text = `[${exam.term}] ${exam.schoolName} ${exam.grade} (평균:${exam.avg})`;
+            select.appendChild(option);
+        });
+    }
+
+    function saveExamToDB() {
+        const exam = {
+            term: document.getElementById('examTerm').value,
+            grade: document.getElementById('studentGrade').value,
+            schoolName: document.getElementById('schoolName').value,
+            avg: document.getElementById('schoolAvg').value,
+            std: document.getElementById('schoolStd').value,
+            pop: document.getElementById('totalStudents').value,
+            midRatio: document.getElementById('midRatio').value,
+            finRatio: document.getElementById('finRatio').value,
+            perfRatio: document.getElementById('perfRatio').value
+        };
+        
+        const existingIndex = examDB.findIndex(e => e.term === exam.term && e.schoolName === exam.schoolName && e.grade === exam.grade);
+        if(existingIndex >= 0) {
+            if(confirm("이미 저장된 같은 시험이 있습니다. 업데이트 하시겠습니까?")) {
+                examDB[existingIndex] = exam;
+            } else return;
+        } else {
+            examDB.push(exam);
+        }
+        localStorage.setItem('nextdoc_grademaker_5tier_db', JSON.stringify(examDB));
+        updateExamSelect();
+        alert("학교 시험 정보가 완벽하게 저장되었습니다!");
+    }
+
+    function loadExamFromDB() {
+        const index = document.getElementById('examDbSelect').value;
+        if(index === "") return;
+        const exam = examDB[index];
+        document.getElementById('examTerm').value = exam.term;
+        document.getElementById('studentGrade').value = exam.grade;
+        document.getElementById('schoolName').value = exam.schoolName;
+        document.getElementById('schoolAvg').value = exam.avg;
+        document.getElementById('schoolStd').value = exam.std;
+        document.getElementById('totalStudents').value = exam.pop;
+        document.getElementById('midRatio').value = exam.midRatio;
+        document.getElementById('finRatio').value = exam.finRatio;
+        document.getElementById('perfRatio').value = exam.perfRatio;
+    }
+
+    function deleteExamFromDB() {
+        const index = document.getElementById('examDbSelect').value;
+        if(index === "") { alert("삭제할 시험을 먼저 선택해주세요."); return; }
+        if(confirm("선택한 시험 정보를 삭제하시겠습니까?")) {
+            examDB.splice(index, 1);
+            localStorage.setItem('nextdoc_grademaker_5tier_db', JSON.stringify(examDB));
+            updateExamSelect();
+            document.getElementById('examDbSelect').value = "";
+        }
+    }
+
+    function exportDB() {
+        const data = localStorage.getItem('nextdoc_grademaker_5tier_db');
+        if(!data || data === "[]") { alert("저장된 학교/시험 설정이 없습니다."); return; }
+        const blob = new Blob([data], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        // 💡 5등급제 전용 파일명으로 백업
+        a.download = "nextdoc_5tier_exam_settings.json";
+        a.click();
+    }
+
+    function importDB(event) {
+        const file = event.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                if(Array.isArray(importedData)) {
+                    localStorage.setItem('nextdoc_grademaker_5tier_db', JSON.stringify(importedData));
+                    examDB = importedData;
+                    updateExamSelect();
+                    alert("성공적으로 다른 PC의 설정 데이터를 불러왔습니다!");
+                } else {
+                    alert("잘못된 파일 형식입니다.");
+                }
+            } catch(err) {
+                alert("파일을 읽는 중 오류가 발생했습니다.");
+            }
+            event.target.value = ''; 
+        };
+        reader.readAsText(file);
+    }
+
+    function downloadCSV() {
+        // 💡 5등급제 전용 학생 누적 데이터 분리
+        let studentDB = JSON.parse(localStorage.getItem('nextdoc_student_grades_5tier')) || [];
+        if(studentDB.length === 0) { alert("아직 생성된 학생 데이터가 없습니다."); return; }
+        
+        let csv = "생성일자,시험년도/학기,학교명,학년,원학년,학생이름,환산총점,상대평가등급,상위백분위,예상등수\n";
+        studentDB.forEach(row => {
+            csv += `${row.date},${row.examTerm},${row.schoolName},${row.studentGrade},${row.studentSubInfo},${row.studentName},${row.totalScore},${row.finalGrade}등급,${row.percentile}%,${row.rank}등\n`;
+        });
+        
+        let blob = new Blob(["\ufeff"+csv], { type: 'text/csv;charset=utf-8;' }); 
+        let link = document.createElement("a");
+        let url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        // 💡 다운로드 파일명 분리
+        link.setAttribute("download", "넥스트닥_5등급_학생성적누적데이터.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function getPercentile(z) {
+        let sign = z < 0 ? -1 : 1;
+        let x = Math.abs(z) / Math.sqrt(2);
+        let t = 1 / (1 + 0.3275911 * x);
+        let erf = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+        let prob = 0.5 * (1 + sign * erf);
+        return (1 - prob) * 100;
+    }
+
+    function normSInv(p) {
+        let a1 = -39.6968302866538, a2 = 220.946098424521, a3 = -275.928510446969;
+        let a4 = 138.357751867269, a5 = -30.6647980661472, a6 = 2.50662827745924;
+        let b1 = -54.4760987982241, b2 = 161.585836858041, b3 = -155.698979859887;
+        let b4 = 66.8013118877197, b5 = -13.2806815528857;
+        let c1 = -7.78489400243029E-03, c2 = -0.322396458041136, c3 = -2.40075827716184;
+        let c4 = -2.54973253934373, c5 = 4.37466414146497, c6 = 2.93816398269878;
+        let d1 = 7.78469570904146E-03, d2 = 0.32246712907004, d3 = 2.445134137143;
+        let d4 = 3.75440866190742;
+        let p_low = 0.02425, p_high = 1 - p_low;
+        let q, r;
+        let retVal = 0;
+
+        if ((p > 0) && (p < p_low)) {
+            q = Math.sqrt(-2 * Math.log(p));
+            retVal = (((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+        } else if ((p >= p_low) && (p <= p_high)) {
+            q = p - 0.5;
+            r = q * q;
+            retVal = (((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q / (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1);
+        } else if ((p > p_high) && (p < 1)) {
+            q = Math.sqrt(-2 * Math.log(1 - p));
+            retVal = -(((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+        }
+        return retVal;
+    }
+
+    function estimateStdDev() {
+        let avg = parseFloat(document.getElementById('schoolAvg').value);
+        let rA = parseFloat(document.getElementById('ratioA').value) || 0;
+        let rB = parseFloat(document.getElementById('ratioB').value) || 0;
+        let rC = parseFloat(document.getElementById('ratioC').value) || 0;
+        let rD = parseFloat(document.getElementById('ratioD').value) || 0;
+
+        if (isNaN(avg)) { 
+            alert("위의 '학교 평균 점수'를 먼저 입력해주세요."); 
+            return; 
+        }
+        
+        let candidates = [];
+        let cutoffs = [
+            { score: 90, cumulativeRatio: rA },
+            { score: 80, cumulativeRatio: rA + rB },
+            { score: 70, cumulativeRatio: rA + rB + rC },
+            { score: 60, cumulativeRatio: rA + rB + rC + rD }
+        ];
+
+        for (let c of cutoffs) {
+            if (c.cumulativeRatio > 0 && c.cumulativeRatio < 100) {
+                let z = normSInv(1 - (c.cumulativeRatio / 100));
+                if (z !== 0) {
+                    let std = (c.score - avg) / z;
+                    if (std > 0 && std < 100) {
+                        candidates.push(std);
+                    }
+                }
+            }
+        }
+
+        if (candidates.length === 0) {
+            for (let c of cutoffs) {
+                if (c.cumulativeRatio > 0 && c.cumulativeRatio < 100) {
+                    let z = normSInv(1 - (c.cumulativeRatio / 100));
+                    if (z !== 0) {
+                        let std = Math.abs((c.score - avg) / z);
+                        if (std > 0 && std < 100) {
+                            candidates.push(std);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (candidates.length > 0) {
+            let sum = candidates.reduce((a, b) => a + b, 0);
+            let estimatedStd = sum / candidates.length;
+            
+            document.getElementById('schoolStd').value = estimatedStd.toFixed(1);
+            alert(`✅ 마법 적용 완료! 성취도 비율을 바탕으로 표준편차가 [${estimatedStd.toFixed(1)}] 로 자동 계산되었습니다.`);
+        } else {
+            alert("입력하신 평균 점수와 비율로는 통계적인 표준편차를 도출할 수 없습니다. (비율 데이터 확인 필요)");
+        }
+    }
+
+    function generateGradeReport() {
+        try {
+            const examTerm = document.getElementById('examTerm').value;
+            const studentGrade = document.getElementById('studentGrade').value;
+            const studentName = document.getElementById('studentName').value || "이름없음";
+            const studentSubInfo = document.getElementById('studentSubInfo').value;
+            
+            const schoolName = document.getElementById('schoolName').value;
+            const schoolAvg = parseFloat(document.getElementById('schoolAvg').value);
+            const schoolStd = parseFloat(document.getElementById('schoolStd').value);
+            
+            if(isNaN(schoolStd)) {
+                alert("표준편차가 입력되지 않았습니다. 직접 입력하거나 '자동 역산 적용' 버튼을 눌러주세요.");
+                return;
+            }
+
+            const totalStudents = parseInt(document.getElementById('totalStudents').value);
+
+            const midRatio = parseFloat(document.getElementById('midRatio').value) / 100;
+            const finRatio = parseFloat(document.getElementById('finRatio').value) / 100;
+            const perfRatio = parseFloat(document.getElementById('perfRatio').value) / 100;
+            const myMidScore = parseFloat(document.getElementById('myMidScore').value);
+            const myFinScore = parseFloat(document.getElementById('myFinScore').value);
+
+            const myTotalScore = (myMidScore * midRatio) + (myFinScore * finRatio) + (100 * perfRatio);
+
+            const zScore = (myTotalScore - schoolAvg) / schoolStd;
+            const percentile = getPercentile(zScore);
+            const estimatedRank = Math.max(1, Math.round((percentile / 100) * totalStudents));
+
+            let finalGrade = 5;
+            if (percentile <= 10) finalGrade = 1;
+            else if (percentile <= 34) finalGrade = 2;
+            else if (percentile <= 66) finalGrade = 3;
+            else if (percentile <= 90) finalGrade = 4;
+            else finalGrade = 5;
+
+            const today = new Date();
+            document.getElementById('outHeaderDate').innerText = `발행일자: ${today.getFullYear()}. ${today.getMonth() + 1}. ${today.getDate()}.`;
+            
+            let termParts = examTerm.split(' ');
+            let yearStr = termParts[0] || examTerm;
+            let semStr = termParts.length > 1 ? termParts.slice(1).join(' ') : "";
+            
+            let customSchoolTitle = `${yearStr} ${schoolName} | ${studentGrade} ${semStr} | ${studentName} | ${studentSubInfo}`;
+            document.getElementById('outSchoolTitle').innerText = customSchoolTitle;
+            
+            document.getElementById('outMyScore').innerText = myTotalScore.toFixed(2);
+            document.getElementById('outMyGrade').innerText = `${finalGrade}등급`;
+            document.getElementById('outZScore').innerText = zScore.toFixed(2);
+            document.getElementById('outPercentile').innerText = percentile.toFixed(1) + '%';
+            document.getElementById('outRank').innerText = estimatedRank;
+            
+            document.getElementById('outAvg').innerText = schoolAvg.toFixed(1);
+            document.getElementById('outStd').innerText = schoolStd.toFixed(1);
+            document.getElementById('outTotalPop').innerText = totalStudents;
+
+            // 💡 학생 누적 데이터 저장소 분리 
+            let studentDB = JSON.parse(localStorage.getItem('nextdoc_student_grades_5tier')) || [];
+            const record = {
+                date: new Date().toLocaleDateString(),
+                examTerm: examTerm,
+                schoolName: schoolName,
+                studentGrade: studentGrade,
+                studentSubInfo: studentSubInfo,
+                studentName: studentName,
+                totalScore: myTotalScore.toFixed(2),
+                finalGrade: finalGrade,
+                percentile: percentile.toFixed(1),
+                rank: estimatedRank
+            };
+            studentDB.push(record);
+            localStorage.setItem('nextdoc_student_grades_5tier', JSON.stringify(studentDB));
+
+            drawMiniCharts(schoolAvg, myTotalScore, totalStudents, estimatedRank);
+            drawBellCurve(schoolAvg, schoolStd, myTotalScore, percentile);
+
+            document.getElementById('reportSection').style.display = 'block';
+            document.getElementById('printBtn').style.display = 'block';
+            document.getElementById('reportSection').scrollIntoView({ behavior: 'smooth' });
+        } catch (error) {
+            console.error("리포트 생성 중 에러 발생:", error);
+            alert("차트를 생성하는 도중 문제가 발생했습니다. 입력하신 값을 다시 확인해주세요.");
+        }
+    }
+
+    function drawMiniCharts(avg, myScore, totalPop, rank) {
+        if (scoreChart) scoreChart.destroy();
+        if (rankChart) rankChart.destroy();
+
+        scoreChart = new Chart(document.getElementById('scoreCompareChart'), {
+            type: 'bar',
+            data: {
+                labels: ['학교 평균', '내 점수'],
+                datasets: [{
+                    data: [avg, myScore],
+                    backgroundColor: ['#9ca3af', '#e74c3c'],
+                    borderRadius: 4,
+                    barThickness: 12
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                layout: { padding: { right: 40 } },
+                scales: {
+                    x: { display: false, max: 100 },
+                    y: { grid: { display: false }, ticks: { font: { weight: 'bold', size: 11 }, color: '#333' } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        align: 'end', anchor: 'end', color: '#1A2B4C', font: { weight: 'bold', size: 10 },
+                        formatter: v => v.toFixed(1) + '점'
+                    }
+                }
+            }
+        });
+
+        rankChart = new Chart(document.getElementById('rankCompareChart'), {
+            type: 'bar',
+            data: {
+                labels: ['응시 인원', '예상 등수'],
+                datasets: [{
+                    data: [totalPop, rank],
+                    backgroundColor: ['#9ca3af', '#3b5998'],
+                    borderRadius: 4,
+                    barThickness: 12
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                layout: { padding: { right: 40 } },
+                scales: {
+                    x: { display: false, max: totalPop },
+                    y: { grid: { display: false }, ticks: { font: { weight: 'bold', size: 11 }, color: '#333' } }
+                },
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        align: 'end', anchor: 'end', color: '#1A2B4C', font: { weight: 'bold', size: 10 },
+                        formatter: (v, ctx) => ctx.dataIndex === 0 ? v + '명' : v + '등'
+                    }
+                }
+            }
+        });
+    }
+
+    function drawBellCurve(avg, std, myScore, myPercentile) {
+        if(bellChart) bellChart.destroy();
+
+        const dataPoints = [];
+        
+        for (let p = 0.5; p <= 99.5; p += 0.5) {
+            let z = normSInv(1 - (p / 100));
+            let y = Math.exp(-0.5 * z * z); 
+            dataPoints.push({x: p, y: y});
+        }
+        
+        dataPoints.unshift({x: 0, y: 0});
+        dataPoints.push({x: 100, y: 0});
+
+        let myZ = (myScore - avg) / std;
+        let myY = Math.exp(-0.5 * myZ * myZ);
+
+        bellChart = new Chart(document.getElementById('bellCurveChart'), {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: '나의 위치',
+                        data: [{x: myPercentile, y: myY}],
+                        backgroundColor: '#e74c3c',
+                        borderColor: '#c0392b',
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        showLine: false,
+                        order: 1
+                    },
+                    {
+                        label: '확률밀도',
+                        data: dataPoints,
+                        borderColor: '#3b5998',
+                        backgroundColor: 'rgba(59, 89, 152, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        pointRadius: 0,
+                        pointHoverRadius: 0,
+                        tension: 0.4,
+                        order: 2
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { top: 35, left: 30, right: 30, bottom: 5 }
+                },
+                clip: false, 
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                if (ctx.datasetIndex === 0) return `상위 ${myPercentile.toFixed(1)}%`;
+                                return `상위 ${ctx.parsed.x}%`;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        display: function(context) { return context.datasetIndex === 0; },
+                        align: 'top',
+                        anchor: 'end',
+                        color: '#e74c3c',
+                        font: { size: 12, weight: 'bold' },
+                        formatter: function() { return '나의 위치'; },
+                        offset: 4
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear', 
+                        min: 0,
+                        max: 100,
+                        reverse: true, 
+                        ticks: {
+                            stepSize: 20, 
+                            font: { size: 11, weight: 'bold' },
+                            color: '#444',
+                            callback: function(value) {
+                                return value + '%'; 
+                            }
+                        },
+                        grid: { display: false }
+                    },
+                    y: { display: false, min: 0 }
+                },
+                animation: { duration: 1500, easing: 'easeOutQuart' }
+            }
+        });
+    }
+</script>
+</body>
+</html>
